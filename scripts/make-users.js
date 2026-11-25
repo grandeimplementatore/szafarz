@@ -5,7 +5,7 @@
 const fs = require('fs');
 const { hashPassword } = require('../lib/auth');
 const file = process.argv[2] || 'users.local.json';
-const src = JSON.parse(fs.readFileSync(file, 'utf8'));
+const src = JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));   // Notatnik bywa, że dodaje BOM
 const out = {};
 for (const [login, u] of Object.entries(src)) {
   if (!u.password || u.password.length < 8) { console.error('Hasło dla "' + login + '" musi mieć co najmniej 8 znaków.'); process.exit(1); }

@@ -13,9 +13,15 @@ const REVEAL_CODE = process.env.REVEAL_CODE || '1234';
 const COOKIE = 'sz_session';
 const MAX_BODY = 1024 * 1024;
 
-const users = auth.loadUsers();
-auth.secret();                       // w produkcji przerwie start, jeśli brak SESSION_SECRET
-const store = createStore();
+let users, store;
+try {
+  users = auth.loadUsers();
+  auth.secret();                     // w produkcji przerwie start, jeśli brak SESSION_SECRET
+  store = createStore();
+} catch (e) {
+  console.error('[szafarz] BŁĄD KONFIGURACJI: ' + e.message);
+  process.exit(1);
+}
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json' };
