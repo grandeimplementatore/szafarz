@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Nasi Chorzy (telefon)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#BD4F38}a:hover{color:#9A3E2B}
+input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; display: flex; flex-direction: column; overflow: hidden">
+<header style="flex: none; background: {{accent}}; color: #FFFFFF; padding: 10px 12px; display: flex; align-items: center; gap: 8px">
+<a href="Telefon.dc.html" aria-label="Wróć do strony głównej" style="flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; border-radius: 6px">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+</a>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 22px; line-height: 1.1">Nasi Chorzy</span>
+<span style="font-size: 11px; opacity: .92">Łącznie {{total}} osób · dane ukryte</span>
+</div>
+</header>
+<div style="flex: none; background: #FFFFFF; padding: 10px 12px; border-bottom: 1px solid #DDDDDD">
+<div role="group" aria-label="Filtr osiedla" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{osTiles}}" as="c" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{c.selected}}" onClick="{{c.pick}}" aria-label="Osiedle {{c.os}}, {{c.cnt}}" style="min-height: 56px; padding: 4px; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
+<span style="font-size: 17px; font-weight: 900; line-height: 1">{{c.os}}</span>
+<span style="font-size: 11px; color: {{c.sub}}">{{c.cnt}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
+<h2 style="margin: 0; font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Lista chorych ({{listCount}})</h2>
+<div style="display: flex; align-items: center; gap: 8px">
+<sc-if value="{{notAdding}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{onAddOpen}}" style="flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Dodaj</button></sc-if>
+<sc-if value="{{allLocked}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{onRevealAll}}" aria-label="Odkryj nazwiska" style="flex: none; width: 40px; height: 40px; border: 1px solid #003C60; border-radius: 50%; background: #FFFFFF; color: #003C60; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></sc-if><sc-if value="{{allUnlocked}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{onHideAll}}" aria-label="Ukryj nazwiska" style="flex: none; width: 40px; height: 40px; border: 1px solid #BDBDBD; border-radius: 50%; background: #FFFFFF; color: #333333; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 5.4-1.6"></path></svg></button></sc-if>
+</div>
+</div>
+<sc-if value="{{askAll}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Kod dostępu" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 10px; padding: 12px 14px; background: #FFF6F3; border: 1px solid #F1D6CE">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="kod-all" style="font-size: 12px; font-weight: 700">Kod dostępu</label>
+<input id="kod-all" type="password" inputMode="numeric" autoComplete="off" value="{{codeAll}}" onChange="{{onCodeAll}}" onKeyDown="{{onKeyAll}}" style="width: 120px; min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 18px; letter-spacing: 0.3em"></div>
+<button type="button" onClick="{{onSubmitAll}}" style="min-height: 44px; padding: 0 16px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Odkryj</button>
+<button type="button" onClick="{{onCancelAll}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Anuluj</button>
+<sc-if value="{{errAll}}" hint-placeholder-val="{{ false }}"><span role="alert" style="flex-basis: 100%; font-size: 13px; font-weight: 700; color: #B3261E">Nieprawidłowy kod.</span></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{isAdding}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-labelledby="nowy-h" style="background: #FFFFFF; border: 2px solid {{accent}}; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h3 id="nowy-h" style="margin: 0; font-size: 14px; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; color: #222222">Nowy chory</h3>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-fn" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Imię *</label><input id="nf-fn" value="{{nfFn}}" onChange="{{onNfFn}}" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-ln" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Nazwisko *</label><input id="nf-ln" value="{{nfLn}}" onChange="{{onNfLn}}" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-st" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Ulica *</label><input id="nf-st" value="{{nfStreet}}" onChange="{{onNfStreet}}" placeholder="np. ul. Tołstoja" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-no" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Nr domu *</label><input id="nf-no" value="{{nfNo}}" onChange="{{onNfNo}}" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-fl" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Nr mieszkania</label><input id="nf-fl" value="{{nfFlat}}" onChange="{{onNfFlat}}" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-pi" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Piętro</label><input id="nf-pi" value="{{nfFloor}}" onChange="{{onNfFloor}}" placeholder="np. 2 albo parter" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-os" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Osiedle *</label><select id="nf-os" value="{{nfOs}}" onChange="{{onNfOs}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF; font-weight: 700; color: #003C60"><sc-for list="{{nfOsOptions}}" as="x" hint-placeholder-count="4"><option value="{{x.v}}">{{x.label}}</option></sc-for></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="nf-uw" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Uwagi</label><textarea id="nf-uw" value="{{nfNote}}" onChange="{{onNfNote}}" rows="3" placeholder="np. domofon, winda, kogo uprzedzić" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; min-height: 80px; padding: 8px 10px; resize: vertical"></textarea></div>
+<sc-if value="{{addErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; font-weight: 700; color: #B3261E">Uzupełnij pola oznaczone gwiazdką: imię, nazwisko, ulicę i numer domu.</span></sc-if>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{onAddSave}}" style="min-height: 44px; padding: 0 18px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Zapisz chorego</button>
+<button type="button" onClick="{{onAddCancel}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Anuluj</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{justAdded}}" hint-placeholder-val="{{ false }}"><div role="status" style="padding: 10px 12px; background: #EEF6F1; border: 1px solid #BFDCCB; font-size: 13px; font-weight: 700; color: #1F5E3A">{{justAddedText}}</div></sc-if>
+<sc-for list="{{people}}" as="p" hint-placeholder-count="3">
+<article style="border: 1px solid #DDDDDD; background: #FFFFFF; display: flex; flex-direction: column">
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 14px 14px">
+<span aria-hidden="true" style="flex: none; width: 46px; height: 46px; border-radius: 50%; background: #E8EEF3; color: #003C60; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="4.2"></circle><path d="M3.5 21c.6-4.4 4.1-7.2 8.5-7.2s7.9 2.8 8.5 7.2z"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px">
+<sc-if value="{{p.hidden}}" hint-placeholder-val="{{ true }}">
+<span style="font-size: 18px; font-weight: 900; color: #1A1A1A; filter: blur(3.5px); user-select: none" aria-hidden="true">{{p.nameMasked}}</span>
+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Dane ukryte</span>
+
+</sc-if>
+<sc-if value="{{p.shown}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 18px; font-weight: 900; color: #1A1A1A">{{p.nameShown}}</span>
+
+</sc-if>
+</div>
+<span style="font-size: 15px; font-weight: 700; color: #222222">{{p.address}}, Tychy</span>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px"><span style="font-size: 12px; font-weight: 900; color: #003C60; background: #E8EEF3; padding: 3px 8px; border-radius: 999px">Osiedle {{p.os}}</span><span style="font-size: 13px; color: #444444">{{p.floorText}}</span></span>
+</div>
+</div>
+<sc-if value="{{p.hasNote}}" hint-placeholder-val="{{ true }}"><div style="margin: 0 16px 12px; padding: 10px 12px; background: #FFF9E6; border-left: 4px solid #E0B43A; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #7A5A00">Uwagi</span><span style="font-size: 14px; line-height: 1.45; color: #222222">{{p.note}}</span></div></sc-if>
+
+<sc-if value="{{p.isAsking}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Kod dostępu" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 10px; padding: 12px 16px; background: #FFF6F3; border-top: 1px solid #F1D6CE">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.inputId}}" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Kod dostępu</label>
+<input id="{{p.inputId}}" type="password" inputMode="numeric" autoComplete="off" value="{{p.code}}" onChange="{{p.onCode}}" onKeyDown="{{p.onKey}}" style="width: 120px; min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 18px; letter-spacing: 0.3em"></div>
+<button type="button" onClick="{{p.onSubmit}}" style="min-height: 42px; padding: 0 16px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Potwierdź</button>
+<button type="button" onClick="{{p.onCancel}}" style="min-height: 42px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Anuluj</button>
+<sc-if value="{{p.err}}" hint-placeholder-val="{{ false }}"><span role="alert" style="flex-basis: 100%; font-size: 13px; font-weight: 700; color: #B3261E">Nieprawidłowy kod.</span></sc-if>
+</div>
+</sc-if>
+
+<div style="border-top: 1px solid #EEEEEE; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Wizyta w najbliższą niedzielę</span>
+<sc-if value="{{p.noNearest}}" hint-placeholder-val="{{ false }}"><div style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #FFF6F3; border: 1px solid #F1D6CE; font-size: 14px; font-weight: 700; color: #8C3524">Brak wizyty na najbliższą Niedzielę</div></sc-if>
+<sc-for list="{{p.visits}}" as="v" hint-placeholder-count="1">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 10px 12px; background: #F3F6F9; border-left: 4px solid #003C60; font-size: 14px">
+<span style="font-weight: 900; color: #222222">{{v.date}}</span><span style="color: #333333">{{v.where}}</span>
+<sc-if value="{{v.foreign}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 900; color: #8A4B00; background: #FFF1DC; border: 1px solid #F3C98B; padding: 2px 6px">{{v.foreignLabel}}</span></sc-if>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{p.isEditing}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Modyfikuj dane chorego" style="border-top: 1px solid #EEEEEE; padding: 14px 16px; background: #FAFAFA; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Modyfikuj dane chorego</span>
+<sc-if value="{{p.canEditName}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-fn" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Imię</label><input id="{{p.fid}}-fn" value="{{p.fFn}}" onChange="{{p.onFn}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-ln" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Nazwisko</label><input id="{{p.fid}}-ln" value="{{p.fLn}}" onChange="{{p.onLn}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+</div>
+</sc-if>
+<sc-if value="{{p.cannotEditName}}" hint-placeholder-val="{{ true }}"><span style="font-size: 13px; color: #555555">Aby zmienić imię i nazwisko, najpierw odkryj dane chorego.</span></sc-if>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-st" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Ulica</label><input id="{{p.fid}}-st" value="{{p.fStreet}}" onChange="{{p.onStreet}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-no" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Nr domu</label><input id="{{p.fid}}-no" value="{{p.fNo}}" onChange="{{p.onNo}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-fl" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Nr mieszkania</label><input id="{{p.fid}}-fl" value="{{p.fFlat}}" onChange="{{p.onFlat}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-pi" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Piętro</label><input id="{{p.fid}}-pi" value="{{p.fFloor}}" onChange="{{p.onFloor}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-os" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Osiedle</label><select id="{{p.fid}}-os" value="{{p.fOs}}" onChange="{{p.onFOs}}" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF; font-weight: 700; color: #003C60"><sc-for list="{{p.osOptions}}" as="x" hint-placeholder-count="4"><option value="{{x.v}}">{{x.label}}</option></sc-for></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="{{p.fid}}-uw" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Uwagi</label><textarea id="{{p.fid}}-uw" value="{{p.fNote}}" onChange="{{p.onNote}}" rows="3" style="min-height: 42px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; min-height: 80px; padding: 8px 10px; resize: vertical"></textarea></div>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{p.onSave}}" style="min-height: 44px; padding: 0 18px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Zapisz</button>
+<button type="button" onClick="{{p.onCancelEdit}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Anuluj</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{p.isConfirm}}" hint-placeholder-val="{{ false }}">
+<div role="alertdialog" aria-label="Potwierdź usunięcie" style="border-top: 1px solid #F1D6CE; padding: 12px 16px; background: #FFF6F3; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px">
+<span style="flex: 1 1 200px; font-size: 14px; font-weight: 700; color: #8C3524">Usunąć chorego z listy? Zostanie też usunięty z zaplanowanych wizyt.</span>
+<button type="button" onClick="{{p.onConfirmDelete}}" style="min-height: 42px; padding: 0 16px; border: 0; background: #B3261E; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Usuń</button>
+<button type="button" onClick="{{p.onCancelDelete}}" style="min-height: 42px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Anuluj</button>
+</div>
+</sc-if>
+
+<div role="group" aria-label="Akcje" style="border-top: 1px solid #E5E5E5; background: #F6F6F6; padding: 4px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px">
+<button type="button" onClick="{{p.onEdit}}" aria-expanded="{{p.isEditing}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; padding: 6px 2px; border: 0; border-radius: 6px; background: transparent; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; cursor: pointer; box-sizing: border-box; color: #333333"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg><span>Modyfikuj</span></button>
+<button type="button" onClick="{{p.onDelete}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; padding: 6px 2px; border: 0; border-radius: 6px; background: transparent; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; cursor: pointer; box-sizing: border-box; color: #B3261E"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg><span>Usuń</span></button>
+<a href="{{p.mapUrl}}" target="_blank" rel="noopener" aria-label="{{p.mapAria}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; padding: 6px 2px; border: 0; border-radius: 6px; background: transparent; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; cursor: pointer; box-sizing: border-box; color: #003C60"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3 3 10.5l7.5 2.9L13.5 21z"></path></svg><span>Nawiguj</span></a>
+<a href="PlannerTelefon.dc.html" onClick="{{p.plan}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; padding: 6px 2px; border: 0; border-radius: 6px; background: transparent; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.15; text-align: center; text-decoration: none; cursor: pointer; box-sizing: border-box; color: {{accent}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg><span>Zaplanuj</span></a>
+</div>
+</article>
+</sc-for>
+<p style="margin: 2px 0 8px; font-size: 11px; color: #5D5D5D; text-align: center">Dane przykładowe · kod dostępu odkrywa imię i nazwisko</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+const accent = this.props.accent ?? '#BD4F38';
+const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
+const KEY = 'szafarz-proto-v1';
+const OS = ['W', 'T2', 'U', 'NO'];
+const OSI = { W: 2, T2: 3, U: 4, NO: 5 };
+const T = [
+['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
+['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
+['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
+['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
+['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
+['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
+['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
+['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
+['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
+['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
+['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
+['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
+['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
+];
+const SICK0 = [{"id": "h1", "fn": "Helena", "ln": "Nowak", "street": "ul. Wieniawskiego", "no": "14", "flat": "3", "os": "W", "floor": "2", "note": "Domofon 3 – otwiera córka. Prosi o wizytę po godz. 10:00."}, {"id": "h2", "fn": "Stanisław", "ln": "Kowalczyk", "street": "ul. Wieniawskiego", "no": "27", "flat": "8", "os": "W", "floor": "4", "note": "Jest winda. Pan Stanisław słabo słyszy – mówić głośno i wyraźnie."}, {"id": "h3", "fn": "Janina", "ln": "Wójcik", "street": "ul. Tołstoja", "no": "5", "flat": "12", "os": "T2", "floor": "parter", "note": "Wejście od podwórza. W mieszkaniu pies – zadzwonić przed wizytą."}, {"id": "h4", "fn": "Józef", "ln": "Kamiński", "street": "ul. Tołstoja", "no": "18", "flat": "2", "os": "T2", "floor": "1", "note": "Przyjmuje Komunię w fotelu. Żona prosi o krótką modlitwę za rodzinę."}, {"id": "h5", "fn": "Zofia", "ln": "Lewandowska", "street": "ul. Uczniowska", "no": "9", "flat": "4", "os": "U", "floor": "3", "note": "Brak windy. Gdy nikt nie otwiera – klucz u sąsiadki spod nr 5."}, {"id": "h6", "fn": "Kazimierz", "ln": "Zieliński", "street": "ul. Uczniowska", "no": "21", "flat": "15", "os": "U", "floor": "7", "note": "Winda bywa nieczynna – zarezerwować więcej czasu."}, {"id": "h7", "fn": "Irena", "ln": "Szymańska", "street": "ul. Ustronna", "no": "3", "flat": "7", "os": "U", "floor": "parter", "note": "Furtka od strony ulicy, dzwonek przy bramie."}, {"id": "h8", "fn": "Tadeusz", "ln": "Woźniak", "street": "al. Piłsudskiego", "no": "30", "flat": "10", "os": "NO", "floor": "5", "note": "Prosi o telefon do syna dzień wcześniej."}, {"id": "h9", "fn": "Genowefa", "ln": "Dąbrowska", "street": "al. Piłsudskiego", "no": "44", "flat": "6", "os": "NO", "floor": "2", "note": "Lubi wspólnie odmówić dziesiątkę różańca po Komunii."}, {"id": "h10", "fn": "Władysław", "ln": "Mazur", "street": "al. Piłsudskiego", "no": "52", "flat": "1", "os": "NO", "floor": "1", "note": "Mieszka sam – zapytać, czy czegoś nie potrzebuje."}];
+const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
+const WDF = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
+const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
+const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== 2026 ? ' ' + d.y : ''); };
+const fmtLong = (iso) => { const d = parse(iso); return WDF[d.wd] + ', ' + d.d + ' ' + GEN[d.m - 1]; };
+const chorych = (n) => n + ' ' + (n === 1 ? 'chory' : 'chorych');
+const SUNDAYS = (() => { const sun = T.filter((r) => parse(r[0]).wd === 0).map((r) => r[0]); const up = sun.filter((iso) => iso >= TODAY); return up.length ? up.slice(0, 1) : sun.slice(-1); })();
+const seed = () => { const plan = {}; SUNDAYS.forEach((iso, k) => { plan[iso] = {}; OS.forEach((o) => { plan[iso][o] = k === 0 ? SICK0.filter((s) => s.os === o).map((s) => s.id) : []; }); }); return { sickOs: {}, edits: {}, removed: [], plan, focus: null }; };
+const load = () => { try { const raw = window.localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
+const save = (d) => { try { window.localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
+const st = this.state || {};
+const db = st.db || load() || seed();
+SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach((o) => { if (!db.plan[iso][o]) db.plan[iso][o] = []; }); });
+const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
+const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
+const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
+const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
+const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
+const CODE = '1234';
+const mask = (s) => s.split(' ').map((w) => 'X' + 'x'.repeat(Math.max(2, w.length - 1))).join(' ');
+const osSel = st.osf || 'all';
+const revealed = st.revealed || {};
+const asking = st.asking || null;
+const code = st.code || '';
+const err = !!st.err;
+const editing = st.editing || null;
+const form = st.form || {};
+const confirmDel = st.confirmDel || null;
+const counts = {};
+OS.forEach((o) => { counts[o] = SICK.filter((s) => homeOs(s.id) === o).length; });
+const chips = [{ v: 'all', label: 'Wszystkie (' + SICK.length + ')' }].concat(OS.map((o) => ({ v: o, label: 'Os. ' + o + ' (' + counts[o] + ')' }))).map((c) => {
+const on = c.v === osSel;
+return { label: c.label, pressed: on ? 'true' : 'false', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#333333', border: on ? accent : '#C9C9C9', pick: () => this.setState({ osf: on && c.v !== 'all' ? 'all' : c.v }) };
+});
+const osTiles = OS.map((o) => { const on = o === osSel; return { os: o, cnt: chorych(counts[o]), selected: on ? 'true' : 'false', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#222222', sub: on ? 'rgba(255,255,255,.9)' : '#5D5D5D', border: on ? accent : '#DDDDDD', pick: () => this.setState({ osf: on ? 'all' : o }) }; });
+const nf = st.nf || {};
+const nfield = (k) => (e) => this.setState({ nf: Object.assign({}, nf, { [k]: e.target.value }), addErr: false });
+const addOpen = !!st.adding;
+const onAddSave = () => {
+const v = { fn: (nf.fn || '').trim(), ln: (nf.ln || '').trim(), street: (nf.street || '').trim(), no: (nf.no || '').trim(), flat: (nf.flat || '').trim(), floor: (nf.floor || '').trim(), note: (nf.note || '').trim(), os: nf.os || (osSel !== 'all' ? osSel : 'W') };
+if (!v.fn || !v.ln || !v.street || !v.no) { this.setState({ addErr: true }); return; }
+v.id = 'n' + Date.now();
+commit({ added: (db.added || []).concat([v]) });
+this.setState({ adding: false, nf: {}, addErr: false, added: v.fn + ' ' + v.ln });
+};
+const field = (k) => (e) => this.setState({ form: Object.assign({}, form, { [k]: e.target.value }) });
+const list = SICK.filter((s) => osSel === 'all' || homeOs(s.id) === osSel);
+const people = list.map((s) => {
+const o = homeOs(s.id);
+const shown = !!revealed[s.id] || !!st.all;
+const isAsking = asking === s.id;
+const isEditing = editing === s.id;
+const dest = s.street + ' ' + s.no + ', 43-100 Tychy';
+const visits = SUNDAYS.slice(0, 1).map((iso) => { const w = plannedWhere(iso, s.id); return w ? { date: 'Zaplanowano: ' + fmtLong(iso), where: 'Osiedle ' + w + ' · szafarz: ' + whoOn(iso, w), foreign: w !== o, foreignLabel: 'spoza osiedla ' + o } : null; }).filter((x) => x);
+const nearest = !!plannedWhere(SUNDAYS[0], s.id);
+const planIso = nearest ? (SUNDAYS.find((iso) => !plannedWhere(iso, s.id)) || SUNDAYS[0]) : SUNDAYS[0];
+return {
+id: s.id, os: o, shown, hidden: !shown,
+nameShown: s.fn + ' ' + s.ln, nameMasked: mask(s.fn + ' ' + s.ln),
+address: s.street + ' ' + s.no + (s.flat ? '/' + s.flat : ''),
+floorText: s.floor ? (s.floor === 'parter' ? 'parter' : 'piętro ' + s.floor) : 'piętro: brak danych',
+note: s.note || '', hasNote: !!s.note,
+mapUrl: 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(dest) + '&travelmode=driving',
+mapAria: 'Nawiguj do: ' + s.street + ' ' + s.no + ', Tychy',
+visits, hasVisits: visits.length > 0, noNearest: !nearest,
+plan: () => goPlan(planIso, o),
+isAsking, code: isAsking ? code : '', err: isAsking && err, inputId: 'kod-' + s.id,
+onReveal: () => this.setState({ asking: s.id, code: '', err: false }),
+onHide: () => { const r = Object.assign({}, revealed); delete r[s.id]; this.setState({ revealed: r }); },
+onCode: (e) => this.setState({ code: e.target.value, err: false }),
+onCancel: () => this.setState({ asking: null, code: '', err: false }),
+onSubmit: () => { if (String(code).trim() === CODE) this.setState({ revealed: Object.assign({}, revealed, { [s.id]: true }), asking: null, code: '', err: false }); else this.setState({ err: true }); },
+onKey: (e) => { if (e && e.key === 'Enter') { if (String(code).trim() === CODE) this.setState({ revealed: Object.assign({}, revealed, { [s.id]: true }), asking: null, code: '', err: false }); else this.setState({ err: true }); } },
+isEditing, notEditing: !isEditing,
+onEdit: () => this.setState({ editing: isEditing ? null : s.id, confirmDel: null, form: { fn: s.fn, ln: s.ln, street: s.street, no: s.no, flat: s.flat, floor: s.floor || '', note: s.note || '', os: o } }),
+fid: 'f-' + s.id,
+fFn: form.fn || '', fLn: form.ln || '', fStreet: form.street || '', fNo: form.no || '', fFlat: form.flat || '', fFloor: form.floor || '', fNote: form.note || '', fOs: form.os || o,
+onFn: field('fn'), onLn: field('ln'), onStreet: field('street'), onNo: field('no'), onFlat: field('flat'), onFloor: field('floor'), onNote: field('note'), onFOs: field('os'),
+canEditName: shown, cannotEditName: !shown,
+osOptions: OS.map((x) => ({ v: x, label: 'Osiedle ' + x })),
+onSave: (e) => {
+if (e && e.preventDefault) e.preventDefault();
+const ed = Object.assign({}, db.edits || {});
+ed[s.id] = { fn: form.fn || s.fn, ln: form.ln || s.ln, street: form.street || s.street, no: form.no || s.no, flat: form.flat || '', floor: (form.floor || '').trim(), note: (form.note || '').trim() };
+const so = Object.assign({}, db.sickOs); so[s.id] = form.os || o;
+commit({ edits: ed, sickOs: so }); this.setState({ editing: null });
+},
+onCancelEdit: () => this.setState({ editing: null }),
+isConfirm: confirmDel === s.id,
+onDelete: () => this.setState({ confirmDel: confirmDel === s.id ? null : s.id, editing: null }),
+onCancelDelete: () => this.setState({ confirmDel: null }),
+onConfirmDelete: () => {
+const np = {}; Object.keys(db.plan).forEach((iso) => { np[iso] = {}; OS.forEach((x) => { np[iso][x] = (db.plan[iso][x] || []).filter((id) => id !== s.id); }); });
+commit({ removed: (db.removed || []).concat([s.id]), plan: np }); this.setState({ confirmDel: null });
+}
+};
+});
+const nextIso = SUNDAYS[0];
+const nextRows = OS.map((o) => ({ os: o, who: whoOn(nextIso, o), cnt: chorych(plannedCount(nextIso, o)), go: () => goPlan(nextIso, o) }));
+const maxC = Math.max.apply(null, OS.map((o) => counts[o]).concat([1]));
+const bars = OS.map((o) => ({ os: o, count: String(counts[o]), w: Math.round(counts[o] / maxC * 100) + '%' }));
+const askAll = asking === '__all';
+const subAll = () => { if (String(code).trim() === CODE) this.setState({ all: true, asking: null, code: '', err: false }); else this.setState({ err: true }); };
+return { isAdding: addOpen, notAdding: !addOpen, addErr: !!st.addErr, justAdded: !!st.added && !addOpen, justAddedText: 'Dodano chorego do listy. Możesz go teraz zaplanować w Plannerze.',
+onAddOpen: () => this.setState({ adding: true, added: null, nf: { os: osSel !== 'all' ? osSel : 'W' }, addErr: false }), onAddCancel: () => this.setState({ adding: false, nf: {}, addErr: false }), onAddSave,
+nfFn: nf.fn || '', nfLn: nf.ln || '', nfStreet: nf.street || '', nfNo: nf.no || '', nfFlat: nf.flat || '', nfFloor: nf.floor || '', nfNote: nf.note || '', onNfFloor: nfield('floor'), onNfNote: nfield('note'), nfOs: nf.os || (osSel !== 'all' ? osSel : 'W'),
+onNfFn: nfield('fn'), onNfLn: nfield('ln'), onNfStreet: nfield('street'), onNfNo: nfield('no'), onNfFlat: nfield('flat'), onNfOs: nfield('os'),
+nfOsOptions: OS.map((x) => ({ v: x, label: 'Osiedle ' + x })),
+allLocked: !st.all, allUnlocked: !!st.all, askAll, codeAll: askAll ? code : '', errAll: askAll && err,
+onRevealAll: () => this.setState({ asking: '__all', code: '', err: false }), onHideAll: () => this.setState({ all: false, revealed: {} }),
+onCodeAll: (e) => this.setState({ code: e.target.value, err: false }), onCancelAll: () => this.setState({ asking: null, code: '', err: false }),
+onSubmitAll: subAll, onKeyAll: (e) => { if (e && e.key === 'Enter') subAll(); }, listCount: String(people.length),
+accent, chips, osTiles, people, isEmpty: people.length === 0, nextDate: fmt(nextIso), nextName: (T.find((r) => r[0] === nextIso) || [])[1] || '', nextRows, bars, total: String(SICK.length) };
+}
+}
+</script>
+</body>
+</html>

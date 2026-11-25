@@ -1,0 +1,21 @@
+{
+  "name": "szafarz-3",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aplikacja Wspólnoty Szafarzy Nadzwyczajnych Komunii Świętej – Parafia bł. Karoliny Kózkówny w Tychach",
+  "main": "server.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "node server.js",
+    "dev": "node scripts/build.js && node server.js",
+    "hash": "node scripts/hash-password.js",
+    "users": "node scripts/make-users.js",
+    "heroku-postbuild": "node scripts/build.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Harmonogram (telefon)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#BD4F38}a:hover{color:#9A3E2B}
+select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="flex: none; background: {{accent}}; color: #FFFFFF; padding: 10px 12px; display: flex; align-items: center; gap: 8px">
+<a href="Telefon.dc.html" aria-label="Wróć do strony głównej" style="flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; border-radius: 6px">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+</a>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 22px; line-height: 1.1">Harmonogram</span>
+<span style="font-size: 11px; opacity: .92">Wspólnota Szafarzy · parafia bł. Karoliny</span>
+</div>
+</header>
+
+<div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
+
+<section aria-labelledby="filtry-m" style="background: #FFFFFF; padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #DDDDDD">
+<h2 id="filtry-m" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0">Filtry</h2>
+<div style="display: flex; gap: 8px; align-items: flex-end">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<label for="dzien-m" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Dzień</label>
+<select id="dzien-m" value="{{day}}" onChange="{{onDay}}" style="min-height: 44px; width: 100%; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; background: #FFFFFF; font-family: inherit; font-size: 15px; color: #222222">
+<sc-for list="{{dayOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.value}}">{{o.label}}</option></sc-for>
+</select>
+</div>
+<button type="button" onClick="{{reset}}" aria-label="Wyczyść filtry" style="flex: none; width: 44px; height: 44px; border: 1px solid #BDBDBD; border-radius: 4px; background: #FFFFFF; color: #333333; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; color: #3F3F3F">Osiedle</span>
+<div role="group" aria-label="Filtr osiedla" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{osTiles}}" as="c" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{c.selected}}" onClick="{{c.pick}}" aria-label="Osiedle {{c.os}}, {{c.cnt}}" style="min-height: 56px; padding: 4px; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
+<span style="font-size: 17px; font-weight: 900; line-height: 1">{{c.os}}</span>
+<span style="font-size: 11px; color: {{c.sub}}">{{c.cnt}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+<div role="group" aria-labelledby="szafarz-m" style="display: flex; flex-direction: column; gap: 6px">
+<span id="szafarz-m" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Szafarz</span>
+<div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin: 0 -14px; padding-left: 14px; padding-right: 14px">
+<sc-for list="{{people}}" as="p" hint-placeholder-count="10">
+<button type="button" aria-pressed="{{p.pressed}}" onClick="{{p.pick}}" style="flex: none; min-height: 40px; padding: 0 13px; border-radius: 999px; border: 1px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: inherit; font-size: 14px; font-weight: 700; white-space: nowrap; cursor: pointer">{{p.label}}</button>
+</sc-for>
+</div>
+</div>
+</section>
+
+<div style="padding: 12px 12px 20px; display: flex; flex-direction: column; gap: 10px">
+
+<sc-if value="{{hasPerson}}" hint-placeholder-val="{{ false }}">
+<section aria-labelledby="moje-m" style="background: #003C60; color: #FFFFFF; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+<h2 id="moje-m" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 22px">{{sum.name}}</h2>
+<span style="font-size: 13px"><strong style="font-size: 18px">{{sum.upcoming}}</strong> przed nami · {{sum.total}} łącznie</span>
+</div>
+<div style="font-size: 13px; line-height: 1.4"><span style="opacity: .85">Najbliższa:</span> <strong>{{sum.nextDate}}</strong><br>{{sum.nextOs}}</div>
+</section>
+</sc-if>
+
+<p aria-live="polite" style="margin: 0; font-size: 13px; color: #555555">{{resultText}}</p>
+
+<sc-for list="{{months}}" as="m" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 6px 0 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 21px; color: {{accent}}">{{m.label}}</h3>
+<sc-for list="{{m.rows}}" as="r" hint-placeholder-count="3">
+<article style="background: #FFFFFF; border-left: 4px solid {{r.edge}}; padding: 12px; display: flex; flex-direction: column; gap: 10px; opacity: {{r.op}}">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="flex: none; font-size: 28px; font-weight: 900; color: #222222; width: 36px; text-align: center">{{r.dayNum}}</span>
+<span style="display: flex; flex-direction: column; min-width: 0">
+<span style="font-size: 14px; font-weight: 700">{{r.wd}}</span>
+<span style="font-size: 12px; color: #5D5D5D">{{r.name}}</span>
+</span>
+</div>
+<div style="display: grid; grid-template-columns: {{r.cols}}; gap: 6px">
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4">
+<div aria-label="{{c.aria}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 10px; border-radius: 6px; background: {{c.bg}}; color: {{c.fg}}; box-shadow: {{c.ring}}">
+<span style="flex: none; font-size: 12px; font-weight: 900; color: {{c.lbl}}; width: 22px">{{c.os}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2"><span style="font-size: 15px; font-weight: {{c.fw}}"><sc-if value="{{c.isEditing}}" hint-placeholder-val="{{ false }}"><span style="display: flex; flex-direction: column; gap: 4px; width: 100%"><label for="{{c.selId}}" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Wybierz szafarza</label><select id="{{c.selId}}" value="{{c.name}}" onChange="{{c.onSel}}" style="min-height: 40px; width: 100%; padding: 0 6px; border: 2px solid #E08A1E; border-radius: 4px; background: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; color: #222222"><sc-for list="{{c.options}}" as="x" hint-placeholder-count="10"><option value="{{x.v}}">{{x.label}}</option></sc-for></select><button type="button" onClick="{{c.cancel}}" style="border: 0; background: transparent; color: #555555; font-family: inherit; font-size: 12px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0">Anuluj</button></span></sc-if><sc-if value="{{c.showLink}}" hint-placeholder-val="{{ true }}"><span style="display: inline-flex; align-items: baseline; justify-content: center; max-width: 100%"><button type="button" onClick="{{c.pick}}" title="Zmień szafarza" aria-label="Zmień szafarza: {{c.name}}" style="border: 0; background: transparent; color: inherit; font-family: inherit; font-size: 15px; font-weight: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; padding: 0">{{c.name}}</button><sc-if value="{{c.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></sc-if><sc-if value="{{c.showPlain}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: baseline"><span>{{c.name}}</span><sc-if value="{{c.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></sc-if></span><sc-if value="{{c.link}}" hint-placeholder-val="{{ false }}"><a href="PlannerTelefon.dc.html" onClick="{{c.go}}" style="font-size: 12px; font-weight: 900; color: inherit; text-decoration: underline">{{c.cnt}} ›</a></sc-if></span>
+</div>
+</sc-for>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-for>
+
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; padding: 28px 16px; text-align: center; color: #555555; font-size: 14px">Brak wizyt dla wybranych filtrów.</div>
+</sc-if>
+
+<section aria-labelledby="zmiany" style="background: #FFFFFF; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+<h2 id="zmiany" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 18px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Zmiany w harmonogramie</h2>
+<span style="font-size: 12px; color: #5D5D5D">Ostatnie 2 tygodnie, od najnowszych. Kliknij nazwisko szafarza w tabeli, aby przypisać innego.</span>
+<sc-if value="{{noLog}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px; background: #F5F5F5; font-size: 13px; color: #555555">Brak zmian w ostatnich 2 tygodniach.</div></sc-if>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{logShown}}" as="e" hint-placeholder-count="3">
+<li style="padding: 10px 12px; background: #FFF8EE; border-left: 4px solid #E08A1E; display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 12px; color: #5D5D5D">{{e.when}}</span>
+<span style="font-size: 13px; font-weight: 700; color: #222222">{{e.what}}</span>
+<span style="font-size: 14px; color: #222222"><span style="text-decoration: line-through; color: #767676">{{e.from}}</span> → <strong>{{e.to}}</strong></span>
+</li>
+</sc-for>
+</ol>
+<sc-if value="{{hasMoreLog}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{toggleLog}}" style="align-self: flex-start; min-height: 36px; padding: 0; border: 0; background: transparent; color: #BD4F38; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">{{logToggleLabel}}</button></sc-if>
+</section>
+<p style="margin: 6px 0 0; font-size: 11px; color: #5D5D5D; text-align: center">26.12 i 6.01 – tylko posługa na Mszy · 25.03 – do ustalenia</p>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+const accent = this.props.accent ?? '#BD4F38';
+const S = (() => {
+const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
+const KEY = 'szafarz-proto-v1';
+const OS = ['W', 'T2', 'U', 'NO'];
+const OSI = { W: 2, T2: 3, U: 4, NO: 5 };
+const T = [
+['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
+['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
+['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
+['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
+['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
+['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
+['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
+['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
+['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
+['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
+['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
+['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
+['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
+];
+const SICK0 = [{"id": "h1", "fn": "Helena", "ln": "Nowak", "street": "ul. Wieniawskiego", "no": "14", "flat": "3", "os": "W", "floor": "2", "note": "Domofon 3 – otwiera córka. Prosi o wizytę po godz. 10:00."}, {"id": "h2", "fn": "Stanisław", "ln": "Kowalczyk", "street": "ul. Wieniawskiego", "no": "27", "flat": "8", "os": "W", "floor": "4", "note": "Jest winda. Pan Stanisław słabo słyszy – mówić głośno i wyraźnie."}, {"id": "h3", "fn": "Janina", "ln": "Wójcik", "street": "ul. Tołstoja", "no": "5", "flat": "12", "os": "T2", "floor": "parter", "note": "Wejście od podwórza. W mieszkaniu pies – zadzwonić przed wizytą."}, {"id": "h4", "fn": "Józef", "ln": "Kamiński", "street": "ul. Tołstoja", "no": "18", "flat": "2", "os": "T2", "floor": "1", "note": "Przyjmuje Komunię w fotelu. Żona prosi o krótką modlitwę za rodzinę."}, {"id": "h5", "fn": "Zofia", "ln": "Lewandowska", "street": "ul. Uczniowska", "no": "9", "flat": "4", "os": "U", "floor": "3", "note": "Brak windy. Gdy nikt nie otwiera – klucz u sąsiadki spod nr 5."}, {"id": "h6", "fn": "Kazimierz", "ln": "Zieliński", "street": "ul. Uczniowska", "no": "21", "flat": "15", "os": "U", "floor": "7", "note": "Winda bywa nieczynna – zarezerwować więcej czasu."}, {"id": "h7", "fn": "Irena", "ln": "Szymańska", "street": "ul. Ustronna", "no": "3", "flat": "7", "os": "U", "floor": "parter", "note": "Furtka od strony ulicy, dzwonek przy bramie."}, {"id": "h8", "fn": "Tadeusz", "ln": "Woźniak", "street": "al. Piłsudskiego", "no": "30", "flat": "10", "os": "NO", "floor": "5", "note": "Prosi o telefon do syna dzień wcześniej."}, {"id": "h9", "fn": "Genowefa", "ln": "Dąbrowska", "street": "al. Piłsudskiego", "no": "44", "flat": "6", "os": "NO", "floor": "2", "note": "Lubi wspólnie odmówić dziesiątkę różańca po Komunii."}, {"id": "h10", "fn": "Władysław", "ln": "Mazur", "street": "al. Piłsudskiego", "no": "52", "flat": "1", "os": "NO", "floor": "1", "note": "Mieszka sam – zapytać, czy czegoś nie potrzebuje."}];
+const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
+const WDF = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
+const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
+const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== 2026 ? ' ' + d.y : ''); };
+const fmtLong = (iso) => { const d = parse(iso); return WDF[d.wd] + ', ' + d.d + ' ' + GEN[d.m - 1]; };
+const chorych = (n) => n + ' ' + (n === 1 ? 'chory' : 'chorych');
+const SUNDAYS = (() => { const sun = T.filter((r) => parse(r[0]).wd === 0).map((r) => r[0]); const up = sun.filter((iso) => iso >= TODAY); return up.length ? up.slice(0, 1) : sun.slice(-1); })();
+const seed = () => { const plan = {}; SUNDAYS.forEach((iso, k) => { plan[iso] = {}; OS.forEach((o) => { plan[iso][o] = k === 0 ? SICK0.filter((s) => s.os === o).map((s) => s.id) : []; }); }); return { sickOs: {}, edits: {}, removed: [], plan, focus: null }; };
+const load = () => { try { const raw = window.localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
+const save = (d) => { try { window.localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
+const st = this.state || {};
+const db = st.db || load() || seed();
+SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach((o) => { if (!db.plan[iso][o]) db.plan[iso][o] = []; }); });
+const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
+const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
+const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
+const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
+const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
+return { db, SUNDAYS, plannedCount, plannedWhere, goPlan, homeOs, commit, whoOn, fmt, fmtLong, chorych, OS, SICK };
+})();
+const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
+const OS = ['W', 'T2', 'U', 'NO'];
+const T = [
+['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
+['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
+['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
+['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
+['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
+['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
+['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
+['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
+['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
+['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
+['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
+['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
+['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
+];
+const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
+const MON = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
+const OVR = S.db.overrides || {};
+const baseOf = (iso, o) => { const r = T.find((x) => x[0] === iso); return r ? r[{ W: 2, T2: 3, U: 4, NO: 5 }[o]] : ''; };
+const terms = T.map((r) => ({ iso: r[0], name: r[1], who: Object.assign({ W: r[2], T2: r[3], U: r[4], NO: r[5] }, OVR[r[0]] || {}) }));
+const ALLSZ = ['Kępiński','Klimek','Klimontko','Leszczyna','Matlak','Mosio','Pawera','Pełka','Piecuch','Stawiszyński'];
+const editKey = (this.state || {}).edit || null;
+const setWho = (iso, o, from, to) => {
+if (!to || to === from) { this.setState({ edit: null }); return; }
+const ov = JSON.parse(JSON.stringify(S.db.overrides || {}));
+ov[iso] = ov[iso] || {};
+if (to === baseOf(iso, o)) delete ov[iso][o]; else ov[iso][o] = to;
+const log = [{ ts: new Date().toISOString(), iso, os: o, from, to }].concat(S.db.changelog || []);
+S.commit({ overrides: ov, changelog: log });
+this.setState({ edit: null });
+};
+
+const next = terms.find((t) => t.iso >= TODAY);
+const nextIso = next ? next.iso : '';
+const st = this.state || {};
+const day = st.day || 'upcoming';
+const person = st.person || null;
+
+let list = day === 'upcoming' ? terms.filter((t) => t.iso >= TODAY) : day === 'all' ? terms : terms.filter((t) => t.iso === day);
+const osf = st.osf || null;
+if (person) list = list.filter((t) => (osf ? [osf] : OS).some((o) => t.who[o] === person));
+
+const groups = [];
+list.forEach((t) => {
+const d = parse(t.iso);
+const key = t.iso.slice(0, 7);
+let g = groups[groups.length - 1];
+if (!g || g.key !== key) { g = { key, label: MON[d.m - 1] + ' ' + d.y, rows: [] }; groups.push(g); }
+const past = t.iso < TODAY;
+const isNext = t.iso === nextIso;
+g.rows.push({
+dayNum: String(d.d),
+wd: WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1],
+nextTag: isNext,
+badge: '',
+changed: !!(OVR[t.iso] && Object.keys(OVR[t.iso]).length),
+name: t.name,
+edge: isNext ? '#003C60' : 'transparent',
+op: past ? '0.55' : '1',
+cols: osf ? 'minmax(0, 1fr)' : 'repeat(2, minmax(0, 1fr))',
+cells: (osf ? [osf] : OS).map((o) => {
+const n = t.who[o];
+const mine = person && n === person;
+const dim = person && n !== person;
+return {
+os: o,
+lbl: mine ? '#FFFFFF' : '#003C60',
+name: n,
+changed: !!(OVR[t.iso] && OVR[t.iso][o]),
+ring: (OVR[t.iso] && OVR[t.iso][o]) ? 'inset 0 0 0 2px #E08A1E' : 'none',
+editable: !past,
+isEditing: editKey === t.iso + '|' + o,
+showLink: !past && editKey !== t.iso + '|' + o,
+showPlain: past,
+pick: () => this.setState({ edit: t.iso + '|' + o }),
+cancel: () => this.setState({ edit: null }),
+onSel: (e) => setWho(t.iso, o, n, e.target.value),
+selId: 'sel-' + t.iso + '-' + o,
+options: ALLSZ.map((x) => ({ v: x, label: x })),
+link: S.SUNDAYS.indexOf(t.iso) >= 0,
+cnt: S.SUNDAYS.indexOf(t.iso) >= 0 ? S.chorych(S.plannedCount(t.iso, o)) : '',
+go: () => S.goPlan(t.iso, o),
+aria: 'Osiedle ' + o + ': ' + n + (S.SUNDAYS.indexOf(t.iso) >= 0 ? ', ' + S.chorych(S.plannedCount(t.iso, o)) : ''),
+bg: mine ? accent : dim ? '#FAFAFA' : '#F2F2F2',
+fg: mine ? '#FFFFFF' : dim ? '#767676' : '#222222',
+fw: mine ? '900' : dim ? '400' : '700'
+};
+})
+});
+});
+
+const n = list.length;
+const word = n === 1 ? 'termin' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 'terminy' : 'terminów';
+const scope = day === 'upcoming' ? 'nadchodzące' : day === 'all' ? 'cały harmonogram' : 'wybrany dzień';
+const resultText = 'Pokazano ' + n + ' ' + word + ' (' + scope + (person ? ', szafarz: ' + person : '') + ').';
+
+const names = [];
+terms.forEach((t) => OS.forEach((o) => { if (names.indexOf(t.who[o]) < 0) names.push(t.who[o]); }));
+names.sort((a, b) => a.localeCompare(b, 'pl'));
+const chip = (label, value) => {
+const on = value === person;
+return { label, pressed: on ? 'true' : 'false', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#333333', border: on ? accent : '#C9C9C9', pick: () => this.setState({ person: on ? null : value }) };
+};
+const people = [chip('Wszyscy', null)].concat(names.map((nm) => chip(nm, nm)));
+const osTiles = OS.map((o) => { const on = o === osf; return { os: o, cnt: S.chorych(S.SICK.filter((x) => S.homeOs(x.id) === o).length), selected: on ? 'true' : 'false', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#222222', sub: on ? 'rgba(255,255,255,.9)' : '#5D5D5D', border: on ? accent : '#DDDDDD', pick: () => this.setState({ osf: on ? null : o }) }; });
+
+
+const dayOptions = [{ value: 'upcoming', label: 'Nadchodzące terminy' }, { value: 'all', label: 'Wszystkie terminy (15.11.2026 – 9.05.2027)' }].concat(terms.map((t) => {
+const d = parse(t.iso);
+const dd = (d.d < 10 ? '0' : '') + d.d + '.' + (d.m < 10 ? '0' : '') + d.m + '.' + d.y;
+return { value: t.iso, label: WD[d.wd] + ' ' + dd + ' · ' + t.name };
+}));
+
+let sum = { name: '', total: 0, upcoming: 0, nextDate: '', nextOs: '', perOs: [] };
+if (person) {
+const mineAll = terms.filter((t) => OS.some((o) => t.who[o] === person));
+const mineUp = mineAll.filter((t) => t.iso >= TODAY);
+const nx = mineUp[0];
+const counts = OS.map((o) => ({ os: o, count: mineAll.filter((t) => t.who[o] === person).length }));
+const max = Math.max.apply(null, counts.map((c) => c.count).concat([1]));
+let nd = 'brak', no = '';
+if (nx) { const d = parse(nx.iso); nd = WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + ' ' + d.y; no = 'Osiedle ' + OS.find((o) => nx.who[o] === person) + ' · ' + nx.name; }
+sum = { name: person, total: mineAll.length, upcoming: mineUp.length, nextDate: nd, nextOs: no, perOs: counts.map((c) => ({ os: c.os, count: c.count, w: Math.round(c.count / max * 100) + '%' })) };
+}
+
+const NOW = Date.now();
+const fmtTs = (ts) => { const d = new Date(ts); const z = (x) => (x < 10 ? '0' : '') + x; return z(d.getDate()) + '.' + z(d.getMonth() + 1) + '.' + d.getFullYear() + ', ' + z(d.getHours()) + ':' + z(d.getMinutes()); };
+const logAll = (S.db.changelog || []).filter((e) => NOW - new Date(e.ts).getTime() <= 14 * 864e5).sort((a, b) => (a.ts < b.ts ? 1 : -1)).map((e) => { const d = parse(e.iso); return { when: fmtTs(e.ts), what: WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + ' · osiedle ' + e.os, from: e.from, to: e.to }; });
+const logOpen = !!st.logOpen;
+return {
+accent,
+logShown: logOpen ? logAll : logAll.slice(0, 3), hasLog: logAll.length > 0, noLog: logAll.length === 0, hasMoreLog: logAll.length > 3, logToggleLabel: logOpen ? 'Pokaż mniej' : 'Pokaż wszystkie (' + logAll.length + ')', toggleLog: () => this.setState({ logOpen: !logOpen }),
+day,
+dayOptions,
+people,
+osTiles,
+months: groups,
+isEmpty: n === 0,
+resultText,
+hasPerson: !!person,
+sum,
+onDay: (e) => this.setState({ day: e.target.value }),
+reset: () => this.setState({ day: 'upcoming', person: null, osf: null })
+};
+}
+}
+</script>
+</body>
+</html>

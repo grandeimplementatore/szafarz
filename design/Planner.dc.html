@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Planner wizyt – Wspólnota Szafarzy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F0F0F0}
+a{color:#BD4F38}a:hover{color:#9A3E2B}
+.nav a:hover{background:rgba(0,0,0,.12)}
+input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outline-offset:2px}
+@media (max-width: 760px){.pl-os{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pl-cols{grid-template-columns:minmax(0,1fr)!important}}
+</style>
+</helmet>
+<div style="background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; min-height: 100vh">
+<div style="background: #A9442F; color: #FFFFFF; font-size: 13px">
+<div style="max-width: 1200px; margin: 0 auto; padding: 8px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px">
+<span style="font-weight: 700">{{lit.dateLabel}}</span>
+<span>Szczęść Boże! · {{lit.dayName}}</span>
+</div>
+</div>
+
+<header style="background: {{accent}}; color: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px">
+<a href="Main.dc.html" style="flex: 1 1 420px; display: flex; align-items: center; gap: 14px; color: #FFFFFF; text-decoration: none">
+<svg aria-hidden="true" width="46" height="52" viewBox="0 0 24 27" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 1v5M9.8 3.2h4.4"></path><path d="M4 26V14a8 8 0 0 1 16 0v12"></path><path d="M9 26v-6a3 3 0 0 1 6 0v6"></path><path d="M2 26h20"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 22px; line-height: 1.15">Wspólnota Szafarzy Nadzwyczajnych Komunii Świętej</span>
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 16px; line-height: 1.2">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span>
+<span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .9">Archidiecezja Katowicka</span>
+</span>
+</a>
+<nav class="nav" aria-label="Menu główne" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="Kalendarz.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>Harmonogram</a>
+<a href="Planner.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; background: rgba(0,0,0,.18); color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>Planner</a>
+<a href="Chorzy.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>Nasi Chorzy</a>
+<a href="Obrzed.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.6"></circle><path d="M6 9.5h12c0 3.8-2.7 6.3-6 6.3s-6-2.5-6-6.3z"></path><path d="M12 15.8V20M8.5 20.5h7"></path></svg>Obrzęd</a>
+<a href="Wspolnota.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.6"></circle><path d="M15.6 14.3A5 5 0 0 1 21 19"></path></svg>Nasza Wspólnota</a>
+</nav>
+</div>
+</header>
+<section aria-labelledby="tytul" style="position: relative; height: 170px; overflow: hidden; background: #2B3643">
+<img src="/_blob/76d363a5a7d437f5b94ab76a50712418" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 55%">
+<div style="position: absolute; inset: 0; background: rgba(20,24,30,.55); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #FFFFFF; padding: 0 20px 36px; gap: 6px">
+<h1 id="tytul" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4.4vw, 50px); line-height: 1.05; text-shadow: 0 2px 12px rgba(0,0,0,.5)">Planner wizyt</h1>
+<div style="font-size: 15px; text-shadow: 0 1px 6px rgba(0,0,0,.6)">Zaplanuj chorych na najbliższą niedzielę</div>
+</div>
+</section>
+<main style="max-width: 1200px; margin: -36px auto 0; padding: 0 20px 48px; box-sizing: border-box; position: relative">
+<div style="background: #FFFFFF; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px">
+<nav aria-label="Ścieżka" style="font-size: 13px; color: #5D5D5D"><a href="Main.dc.html">Strona główna</a> › Planner wizyt</nav>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; font-weight: 700"><a href="Kalendarz.dc.html">Harmonogram ›</a><a href="Chorzy.dc.html">Lista chorych ›</a></div>
+</div>
+
+<section aria-labelledby="krok1" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="krok1" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">1. Niedziela</h2>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px">
+<sc-for list="{{dates}}" as="d" hint-placeholder-count="2">
+<button type="button" aria-pressed="{{d.selected}}" onClick="{{d.pick}}" style="text-align: left; min-height: 76px; padding: 12px 16px; border: 2px solid {{d.border}}; background: {{d.bg}}; color: {{d.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: {{d.sub2}}">{{d.sub}}</span>
+<span style="font-size: 20px; font-weight: 900">{{d.label}}</span>
+<span style="font-size: 13px; color: {{d.sub2}}">{{d.total}}</span>
+</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: #5D5D5D">Planować można tylko najbliższą niedzielę.</span>
+</section>
+
+<section aria-labelledby="krok2" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="krok2" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">2. Wybierz osiedle</h2>
+<div class="pl-os" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{osCards}}" as="c" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{c.selected}}" onClick="{{c.pick}}" style="text-align: left; min-height: 96px; padding: 12px 14px; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 26px; font-weight: 900; line-height: 1">{{c.os}}</span>
+<span style="font-size: 14px; font-weight: 700">{{c.who}}</span>
+<span style="font-size: 13px; color: {{c.sub}}">{{c.cnt}} <span style="font-weight: 700">{{c.foreign}}</span></span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="krok3" style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #E5E5E5; padding-top: 20px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 16px">
+<h2 id="krok3" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">3. Chorzy na osiedle {{selOs}} <span style="font-family: 'Lato', sans-serif; font-size: 15px; color: #555555">· {{selDate}} · szafarz: {{selWho}}</span></h2>
+<sc-if value="{{locked}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{onUnlock}}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border: 1px solid #003C60; background: #FFFFFF; color: #003C60; font-family: inherit; font-size: 13px; font-weight: 900; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Odkryj nazwiska</button></sc-if>
+<sc-if value="{{unlocked}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{onLock}}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>Ukryj nazwiska</button></sc-if>
+</div>
+<sc-if value="{{asking}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Kod dostępu" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 10px; padding: 12px 14px; background: #FFF6F3; border: 1px solid #F1D6CE">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="kod-planner-d" style="font-size: 12px; font-weight: 700">Kod dostępu</label>
+<input id="kod-planner-d" type="password" inputMode="numeric" autoComplete="off" value="{{code}}" onChange="{{onCode}}" onKeyDown="{{onKeyCode}}" style="width: 120px; min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 18px; letter-spacing: 0.3em"></div>
+<button type="button" onClick="{{onSubmitCode}}" style="min-height: 44px; padding: 0 16px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Odkryj</button>
+<button type="button" onClick="{{onCancelCode}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Anuluj</button>
+<sc-if value="{{err}}" hint-placeholder-val="{{ false }}"><span role="alert" style="flex-basis: 100%; font-size: 13px; font-weight: 700; color: #B3261E">Nieprawidłowy kod.</span></sc-if>
+</div>
+</sc-if>
+<div class="pl-cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 8px"><section aria-labelledby="zapl-d" style="display: flex; flex-direction: column; gap: 8px">
+<h3 id="zapl-d" style="margin: 0; font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Zaplanowani ({{selCount}})</h3>
+<sc-if value="{{noPlanned}}" hint-placeholder-val="{{ false }}"><div style="padding: 16px; border: 1px dashed #C9C9C9; text-align: center; font-size: 14px; color: #555555">Nikt nie jest jeszcze zaplanowany. Dodaj chorych z list poniżej.</div></sc-if>
+<sc-for list="{{planned}}" as="p" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #FFFFFF; border: 1px solid #DDDDDD; border-left: 4px solid #2E7D4F">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E8EEF3; color: #003C60; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="4.2"></circle><path d="M3.5 21c.6-4.4 4.1-7.2 8.5-7.2s7.9 2.8 8.5 7.2z"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<sc-if value="{{p.hidden}}" hint-placeholder-val="{{ true }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A; filter: blur(3.5px); user-select: none" aria-hidden="true">{{p.nameMasked}}</span><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Dane ukryte</span></sc-if>
+<sc-if value="{{p.shown}}" hint-placeholder-val="{{ false }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A">{{p.nameShown}}</span></sc-if>
+<span style="font-size: 14px; font-weight: 700; color: #222222">{{p.address}}</span>
+<sc-if value="{{p.foreign}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 11px; font-weight: 900; color: #8A4B00; background: #FFF1DC; border: 1px solid #F3C98B; padding: 3px 8px">{{p.foreignLabel}}</span></sc-if>
+</div>
+<span aria-label="Osiedle {{p.home}}" title="Osiedle {{p.home}}" style="flex: none; min-width: 38px; height: 34px; padding: 0 6px; box-sizing: border-box; border-radius: 6px; background: {{p.badgeBg}}; color: {{p.badgeFg}}; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 12px; font-weight: 900"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>{{p.home}}</span>
+<button type="button" onClick="{{p.remove}}" aria-label="Usuń z planu" style="flex: none; width: 40px; height: 40px; border: 1px solid #DDDDDD; border-radius: 50%; background: #FFFFFF; color: #8A8A8A; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+</div>
+</sc-for>
+</section>
+
+</div><div style="display: flex; flex-direction: column; gap: 8px"><section aria-labelledby="dodaj-d" style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px">
+<h3 id="dodaj-d" style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Chorzy niezaplanowani z osiedla <strong style="font-size: 15px; font-weight: 900; color: #003C60">{{selOs}}</strong></h3>
+<sc-if value="{{hasOwn}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{addAllOwn}}" style="min-height: 36px; padding: 0 12px; border: 1px solid {{accent}}; background: #FFFFFF; color: {{accent}}; font-family: inherit; font-size: 13px; font-weight: 900; cursor: pointer">Dodaj wszystkich</button></sc-if>
+</div>
+<sc-if value="{{ownDone}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; background: #EEF6F1; font-size: 13px; color: #1F5E3A">Wszyscy chorzy z tego osiedla są już zaplanowani.</div></sc-if>
+<sc-for list="{{own}}" as="p" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #FAFAFA; border: 1px solid #E5E5E5">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E8EEF3; color: #003C60; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="4.2"></circle><path d="M3.5 21c.6-4.4 4.1-7.2 8.5-7.2s7.9 2.8 8.5 7.2z"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<sc-if value="{{p.hidden}}" hint-placeholder-val="{{ true }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A; filter: blur(3.5px); user-select: none" aria-hidden="true">{{p.nameMasked}}</span><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Dane ukryte</span></sc-if>
+<sc-if value="{{p.shown}}" hint-placeholder-val="{{ false }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A">{{p.nameShown}}</span></sc-if>
+<span style="font-size: 14px; font-weight: 700; color: #222222">{{p.address}}</span>
+</div>
+<span aria-label="Osiedle {{p.home}}" title="Osiedle {{p.home}}" style="flex: none; min-width: 38px; height: 34px; padding: 0 6px; box-sizing: border-box; border-radius: 6px; background: {{p.badgeBg}}; color: {{p.badgeFg}}; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 12px; font-weight: 900"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>{{p.home}}</span>
+<button type="button" onClick="{{p.add}}" aria-label="Dodaj do planu" style="flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</sc-for>
+<sc-for list="{{ownElsewhere}}" as="p" hint-placeholder-count="0">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #FAFAFA; border: 1px dashed #C9C9C9">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E8EEF3; color: #003C60; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="4.2"></circle><path d="M3.5 21c.6-4.4 4.1-7.2 8.5-7.2s7.9 2.8 8.5 7.2z"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<sc-if value="{{p.hidden}}" hint-placeholder-val="{{ true }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A; filter: blur(3.5px); user-select: none" aria-hidden="true">{{p.nameMasked}}</span><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Dane ukryte</span></sc-if>
+<sc-if value="{{p.shown}}" hint-placeholder-val="{{ false }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A">{{p.nameShown}}</span></sc-if>
+<span style="font-size: 14px; font-weight: 700; color: #222222">{{p.address}}</span>
+<span style="font-size: 12px; font-weight: 700; color: #003C60">{{p.where}}</span>
+</div>
+<span aria-label="Osiedle {{p.home}}" title="Osiedle {{p.home}}" style="flex: none; min-width: 38px; height: 34px; padding: 0 6px; box-sizing: border-box; border-radius: 6px; background: {{p.badgeBg}}; color: {{p.badgeFg}}; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 12px; font-weight: 900"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>{{p.home}}</span>
+<button type="button" onClick="{{p.move}}" style="flex: none; min-height: 40px; padding: 0 10px; border: 1px solid #003C60; background: #FFFFFF; color: #003C60; font-family: inherit; font-size: 12px; font-weight: 900; cursor: pointer">Przenieś</button>
+</div>
+</sc-for>
+</section>
+
+<section aria-labelledby="inne-d" style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px">
+<h3 id="inne-d" style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Chorzy niezaplanowani z innych osiedli</h3>
+<sc-if value="{{noOthers}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; background: #F5F5F5; font-size: 13px; color: #555555">Wszyscy chorzy z innych osiedli są już zaplanowani.</div></sc-if>
+<sc-if value="{{hasOthers}}" hint-placeholder-val="{{ true }}"><span style="font-size: 12px; color: #8A4B00">Chory spoza osiedla {{selOs}} zostanie oznaczony na liście zaplanowanych.</span></sc-if>
+<sc-for list="{{others}}" as="p" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #FFFFFF; border: 1px solid #E5E5E5">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E8EEF3; color: #003C60; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="4.2"></circle><path d="M3.5 21c.6-4.4 4.1-7.2 8.5-7.2s7.9 2.8 8.5 7.2z"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<sc-if value="{{p.hidden}}" hint-placeholder-val="{{ true }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A; filter: blur(3.5px); user-select: none" aria-hidden="true">{{p.nameMasked}}</span><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Dane ukryte</span></sc-if>
+<sc-if value="{{p.shown}}" hint-placeholder-val="{{ false }}"><span style="font-size: 18px; font-weight: 900; color: #1A1A1A">{{p.nameShown}}</span></sc-if>
+<span style="font-size: 14px; font-weight: 700; color: #222222">{{p.address}}</span>
+</div>
+<span aria-label="Osiedle {{p.home}}" title="Osiedle {{p.home}}" style="flex: none; min-width: 38px; height: 34px; padding: 0 6px; box-sizing: border-box; border-radius: 6px; background: {{p.badgeBg}}; color: {{p.badgeFg}}; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 12px; font-weight: 900"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>{{p.home}}</span>
+<button type="button" onClick="{{p.add}}" aria-label="Dodaj do planu" style="flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</sc-for>
+</section>
+</div>
+</div>
+<span style="font-size: 12px; color: #5D5D5D">Zmiany zapisują się od razu i są widoczne na stronie głównej, w harmonogramie i na liście chorych.</span>
+</section>
+</div>
+</main>
+<footer style="background: #003C60; color: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 28px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 14px; line-height: 1.6">
+<div style="display: flex; flex-direction: column"><span style="font-family: 'Fondamento', Georgia, serif; font-size: 19px">Wspólnota Szafarzy Nadzwyczajnych Komunii Świętej</span><span style="opacity: .85">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span></div>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 700">Kancelaria parafialna</span><span style="opacity: .85">ul. ks. Tischnera 50, 43-100 Tychy · tel. 32 217 50 30</span></div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":1280,"height":1900}}'>
+const LIT = (() => {
+const now = new Date();
+const Y = now.getFullYear(), M = now.getMonth() + 1, D = now.getDate();
+const dn = (y, m, d) => Math.round(Date.UTC(y, m - 1, d) / 864e5);
+const wdOf = (x) => new Date(x * 864e5).getUTCDay();
+const x = dn(Y, M, D), wd = wdOf(x);
+const WDF = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+const GEN = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+const ROM = (n) => { const v = [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let r = ''; v.forEach(([k, s]) => { while (n >= k) { r += s; n -= k; } }); return r; };
+const easter = (y) => { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451); const mo = Math.floor((h + l - 7 * m + 114) / 31), da = ((h + l - 7 * m + 114) % 31) + 1; return dn(y, mo, da); };
+const advent1 = (y) => { const c = dn(y, 12, 25); const w = wdOf(c); return c - (w === 0 ? 7 : w) - 21; };
+const E = easter(Y), ash = E - 46, pent = E + 49, adv = advent1(Y);
+const ep = dn(Y, 1, 6), bapt = ep + (7 - wdOf(ep));
+const sun = x - wd;
+const GREEN = '#2E7D4F', VIOLET = '#6B3FA0', WHITE = '#C9A227', RED = '#B3261E';
+let name = '', color = GREEN, sunday = wd === 0, privileged = false;
+if (x >= adv && x < dn(Y, 12, 25)) {
+  const w = Math.floor((sun - adv) / 7) + 1; color = VIOLET; privileged = true;
+  name = sunday ? ROM(w) + ' Niedziela Adwentu' : WDF[wd] + ' ' + ROM(w) + ' tygodnia Adwentu';
+} else if (x >= dn(Y, 12, 25) || x <= bapt) {
+  color = WHITE;
+  const hf = (() => { for (let k = dn(Y, 12, 26); k <= dn(Y, 12, 31); k++) if (wdOf(k) === 0) return k; return dn(Y, 12, 30); })();
+  if (x === bapt) name = 'Święto Chrztu Pańskiego';
+  else if (x >= dn(Y, 12, 25) && x === hf) name = 'Święto Świętej Rodziny: Jezusa, Maryi i Józefa';
+  else if (x > dn(Y, 12, 25)) name = WDF[wd] + ' w oktawie Narodzenia Pańskiego';
+  else name = sunday ? 'II Niedziela po Narodzeniu Pańskim' : WDF[wd] + ' okresu Narodzenia Pańskiego';
+} else if (x < ash) {
+  const w = Math.floor((sun - bapt) / 7) + 1;
+  name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
+} else if (x < E) {
+  color = VIOLET; privileged = true;
+  const lent1 = ash + 4;
+  if (x === ash) name = 'Środa Popielcowa';
+  else if (x < lent1) name = WDF[wd] + ' po Popielcu';
+  else if (x === E - 7) { name = 'Niedziela Palmowa Męki Pańskiej'; color = RED; }
+  else if (x > E - 7) { name = ['', 'Wielki Poniedziałek', 'Wielki Wtorek', 'Wielka Środa', 'Wielki Czwartek', 'Wielki Piątek', 'Wielka Sobota'][wd]; if (wd === 5) color = RED; if (wd === 4) color = WHITE; }
+  else { const w = Math.floor((sun - lent1) / 7) + 1; name = sunday ? ROM(w) + ' Niedziela Wielkiego Postu' : WDF[wd] + ' ' + ROM(w) + ' tygodnia Wielkiego Postu'; }
+} else if (x <= pent) {
+  color = WHITE; privileged = true;
+  const w = Math.floor((sun - E) / 7) + 1;
+  if (x === E) name = 'Niedziela Zmartwychwstania Pańskiego';
+  else if (x < E + 7) name = WDF[wd] + ' w oktawie Wielkanocy';
+  else if (x === E + 7) name = 'II Niedziela Wielkanocna, czyli Miłosierdzia Bożego';
+  else if (x === E + 42) name = 'Uroczystość Wniebowstąpienia Pańskiego';
+  else if (x === pent) { name = 'Uroczystość Zesłania Ducha Świętego'; color = RED; }
+  else name = sunday ? ROM(w) + ' Niedziela Wielkanocna' : WDF[wd] + ' ' + ROM(w) + ' tygodnia wielkanocnego';
+} else {
+  const w = 35 - (adv - sun) / 7;
+  if (x === adv - 7) { name = 'Uroczystość Jezusa Chrystusa, Króla Wszechświata'; color = WHITE; }
+  else if (x === pent + 1) { name = 'Święto Najświętszej Maryi Panny, Matki Kościoła'; color = WHITE; }
+  else if (x === pent + 7) { name = 'Uroczystość Najświętszej Trójcy'; color = WHITE; }
+  else if (x === pent + 11) { name = 'Uroczystość Najświętszego Ciała i Krwi Chrystusa'; color = WHITE; }
+  else if (x === pent + 19) { name = 'Uroczystość Najświętszego Serca Pana Jezusa'; color = WHITE; }
+  else name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
+}
+const FIXED = {
+  '1-1': ['Uroczystość Świętej Bożej Rodzicielki Maryi', WHITE, 'S'], '1-6': ['Uroczystość Objawienia Pańskiego', WHITE, 'S'],
+  '2-2': ['Święto Ofiarowania Pańskiego', WHITE, 'L'], '2-22': ['Święto Katedry św. Piotra Apostoła', WHITE, 'F'],
+  '3-19': ['Uroczystość św. Józefa, Oblubieńca NMP', WHITE, 'S'], '3-25': ['Uroczystość Zwiastowania Pańskiego', WHITE, 'S'],
+  '5-3': ['Uroczystość NMP Królowej Polski', WHITE, 'S'], '6-29': ['Uroczystość św. Apostołów Piotra i Pawła', RED, 'S'],
+  '8-6': ['Święto Przemienienia Pańskiego', WHITE, 'L'], '8-15': ['Uroczystość Wniebowzięcia NMP', WHITE, 'S'],
+  '8-26': ['Uroczystość NMP Częstochowskiej', WHITE, 'S'], '9-14': ['Święto Podwyższenia Krzyża Świętego', RED, 'L'],
+  '11-1': ['Uroczystość Wszystkich Świętych', WHITE, 'S'], '11-2': ['Wspomnienie wszystkich wiernych zmarłych', VIOLET, 'S'],
+  '11-18': ['Bł. Karoliny Kózkówny, patronki parafii', RED, 'S'], '11-30': ['Święto św. Andrzeja, Apostoła', RED, 'F'],
+  '12-8': ['Uroczystość Niepokalanego Poczęcia NMP', WHITE, 'S'], '12-25': ['Uroczystość Narodzenia Pańskiego', WHITE, 'S'],
+  '12-26': ['Święto św. Szczepana, pierwszego męczennika', RED, 'F'], '12-27': ['Święto św. Jana, Apostoła i Ewangelisty', WHITE, 'F'],
+  '12-28': ['Święto świętych Młodzianków, męczenników', RED, 'F']
+};
+const fx = FIXED[M + '-' + D];
+const holyWeek = x >= E - 7 && x <= E + 7;
+if (fx && !holyWeek && !(sunday && privileged) && !(sunday && fx[2] === 'F')) { name = fx[0]; color = fx[1]; }
+const iso = Y + '-' + String(M).padStart(2, '0') + '-' + String(D).padStart(2, '0');
+const READ = {
+  '2026-11-23': ['Prawdziwie powiadam wam: ta uboga wdowa wrzuciła więcej niż wszyscy inni', 'Łk 21, 3', [['I czytanie', 'Ap 14, 1-3. 4b-5'], ['Psalm', 'Ps 24 (23)'], ['Ewangelia', 'Łk 21, 1-4']]],
+  '2026-11-25': ['Ale włos z głowy wam nie spadnie', 'Łk 21, 18', [['I czytanie', 'Ap 15, 1-4'], ['Ewangelia', 'Łk 21, 12-19']]],
+  '2026-11-26': ['…zbliża się wasze odkupienie', 'Łk 21, 28', [['I czytanie', 'Ap 18, 1-2. 21-23; 19, 1-3. 9a'], ['Ewangelia', 'Łk 21, 20-28']]],
+  '2026-11-27': ['Niebo i ziemia przeminą, ale moje słowa nie przeminą', 'Łk 21, 33', [['I czytanie', 'Ap 20, 1-4. 11 – 21, 2'], ['Ewangelia', 'Łk 21, 29-33']]],
+  '2026-11-28': ['Czuwajcie więc i módlcie się w każdym czasie', 'Łk 21, 36', [['I czytanie', 'Ap 22, 1-7'], ['Ewangelia', 'Łk 21, 34-36']]],
+  '2026-11-29': ['Uważajcie, czuwajcie, bo nie wiecie, kiedy czas ten nadejdzie', 'Mk 13, 33', [['I czytanie', 'Iz 63, 16b-17. 19b; 64, 2b-7'], ['II czytanie', '1 Kor 1, 3-9'], ['Ewangelia', 'Mk 13, 33-37']]],
+  '2026-11-30': ['Pójdźcie za Mną, a uczynię was rybakami ludzi', 'Mt 4, 19', [['I czytanie', 'Iz 49, 1-6'], ['Ewangelia', 'Mt 4, 18-22']]]
+};
+const r = READ[iso];
+const rows = r ? r[2].map((z, k) => ({ label: z[0], sig: z[1], border: k < r[2].length - 1 ? '1px solid #E5E5E5' : '0' })) : [];
+return {
+  dateLabel: WDF[wd] + ', ' + D + ' ' + GEN[M - 1] + ' ' + Y,
+  dayName: name, dayColor: color,
+  hasQuote: !!r, noQuote: !r,
+  quote: r ? '„' + r[0] + '”' : '', quoteRef: r ? r[1] : '',
+  rows, hasRows: rows.length > 0, sigLine: rows.map((z) => z.sig).join(' · '),
+  url: 'https://www.archidiecezjakatowicka.pl/slowo-na-dzisiaj?data=' + String(D).padStart(2, '0') + '-' + String(M).padStart(2, '0') + '-' + Y,
+  dayShort: D + ' ' + GEN[M - 1]
+};
+})();
+class Component extends DCLogic {
+renderVals() { return Object.assign({}, this._rv0(), { lit: LIT }); }
+_rv0() {
+const accent = this.props.accent ?? '#BD4F38';
+const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
+const KEY = 'szafarz-proto-v1';
+const OS = ['W', 'T2', 'U', 'NO'];
+const OSI = { W: 2, T2: 3, U: 4, NO: 5 };
+const T = [
+['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
+['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
+['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
+['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
+['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
+['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
+['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
+['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
+['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
+['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
+['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
+['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
+['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
+['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
+['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
+['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
+['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
+['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
+];
+const SICK0 = [{"id": "h1", "fn": "Helena", "ln": "Nowak", "street": "ul. Wieniawskiego", "no": "14", "flat": "3", "os": "W", "floor": "2", "note": "Domofon 3 – otwiera córka. Prosi o wizytę po godz. 10:00."}, {"id": "h2", "fn": "Stanisław", "ln": "Kowalczyk", "street": "ul. Wieniawskiego", "no": "27", "flat": "8", "os": "W", "floor": "4", "note": "Jest winda. Pan Stanisław słabo słyszy – mówić głośno i wyraźnie."}, {"id": "h3", "fn": "Janina", "ln": "Wójcik", "street": "ul. Tołstoja", "no": "5", "flat": "12", "os": "T2", "floor": "parter", "note": "Wejście od podwórza. W mieszkaniu pies – zadzwonić przed wizytą."}, {"id": "h4", "fn": "Józef", "ln": "Kamiński", "street": "ul. Tołstoja", "no": "18", "flat": "2", "os": "T2", "floor": "1", "note": "Przyjmuje Komunię w fotelu. Żona prosi o krótką modlitwę za rodzinę."}, {"id": "h5", "fn": "Zofia", "ln": "Lewandowska", "street": "ul. Uczniowska", "no": "9", "flat": "4", "os": "U", "floor": "3", "note": "Brak windy. Gdy nikt nie otwiera – klucz u sąsiadki spod nr 5."}, {"id": "h6", "fn": "Kazimierz", "ln": "Zieliński", "street": "ul. Uczniowska", "no": "21", "flat": "15", "os": "U", "floor": "7", "note": "Winda bywa nieczynna – zarezerwować więcej czasu."}, {"id": "h7", "fn": "Irena", "ln": "Szymańska", "street": "ul. Ustronna", "no": "3", "flat": "7", "os": "U", "floor": "parter", "note": "Furtka od strony ulicy, dzwonek przy bramie."}, {"id": "h8", "fn": "Tadeusz", "ln": "Woźniak", "street": "al. Piłsudskiego", "no": "30", "flat": "10", "os": "NO", "floor": "5", "note": "Prosi o telefon do syna dzień wcześniej."}, {"id": "h9", "fn": "Genowefa", "ln": "Dąbrowska", "street": "al. Piłsudskiego", "no": "44", "flat": "6", "os": "NO", "floor": "2", "note": "Lubi wspólnie odmówić dziesiątkę różańca po Komunii."}, {"id": "h10", "fn": "Władysław", "ln": "Mazur", "street": "al. Piłsudskiego", "no": "52", "flat": "1", "os": "NO", "floor": "1", "note": "Mieszka sam – zapytać, czy czegoś nie potrzebuje."}];
+const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
+const WDF = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
+const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
+const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== 2026 ? ' ' + d.y : ''); };
+const fmtLong = (iso) => { const d = parse(iso); return WDF[d.wd] + ', ' + d.d + ' ' + GEN[d.m - 1]; };
+const chorych = (n) => n + ' ' + (n === 1 ? 'chory' : 'chorych');
+const SUNDAYS = (() => { const sun = T.filter((r) => parse(r[0]).wd === 0).map((r) => r[0]); const up = sun.filter((iso) => iso >= TODAY); return up.length ? up.slice(0, 1) : sun.slice(-1); })();
+const seed = () => { const plan = {}; SUNDAYS.forEach((iso, k) => { plan[iso] = {}; OS.forEach((o) => { plan[iso][o] = k === 0 ? SICK0.filter((s) => s.os === o).map((s) => s.id) : []; }); }); return { sickOs: {}, edits: {}, removed: [], plan, focus: null }; };
+const load = () => { try { const raw = window.localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
+const save = (d) => { try { window.localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
+const st = this.state || {};
+const db = st.db || load() || seed();
+SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach((o) => { if (!db.plan[iso][o]) db.plan[iso][o] = []; }); });
+const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
+const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
+const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
+const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
+const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
+
+const CODE = '1234';
+const unlocked = !!st.unlocked;
+const asking = !!st.asking;
+const code = st.code || '';
+const err = !!st.err;
+const focus = db.focus && SUNDAYS.indexOf(db.focus.iso) >= 0 ? db.focus : null;
+const selIso = st.iso || (focus ? focus.iso : SUNDAYS[0]);
+const selOs = st.os || (focus ? focus.os : 'W');
+const showOthers = !!st.others;
+const plan = db.plan[selIso];
+const byId = (id) => SICK.find((s) => s.id === id);
+const mask = (s) => s.split(' ').map((w) => 'X' + 'x'.repeat(Math.max(2, w.length - 1))).join(' ');
+const setPlan = (iso, o, ids) => { const np = Object.assign({}, db.plan); np[iso] = Object.assign({}, np[iso]); np[iso][o] = ids; commit({ plan: np, focus: { iso, os: o } }); };
+const person = (s) => { const h = homeOs(s.id); const own = h === selOs; return { id: s.id, shown: unlocked, hidden: !unlocked, nameShown: s.fn + ' ' + s.ln, nameMasked: mask(s.fn + ' ' + s.ln), address: s.street + ' ' + s.no + (s.flat ? '/' + s.flat : ''), home: h, badgeBg: own ? '#003C60' : '#FFF1DC', badgeFg: own ? '#FFFFFF' : '#8A4B00' }; };
+
+const dates = SUNDAYS.map((iso, k) => {
+const on = iso === selIso;
+const total = OS.reduce((a, o) => a + plannedCount(iso, o), 0);
+return { label: fmtLong(iso), sub: k === 0 ? 'najbliższa niedziela' : 'kolejna niedziela', total: total ? 'zaplanowano: ' + total : 'nic nie zaplanowano', selected: on ? 'true' : 'false', bg: on ? '#003C60' : '#FFFFFF', fg: on ? '#FFFFFF' : '#222222', sub2: on ? 'rgba(255,255,255,.85)' : '#5D5D5D', border: on ? '#003C60' : '#C9C9C9', pick: () => this.setState({ iso, others: false }) };
+});
+
+const osCards = OS.map((o) => {
+const on = o === selOs;
+const ids = plan[o];
+const foreign = ids.filter((id) => homeOs(id) !== o).length;
+return { os: o, who: whoOn(selIso, o), cnt: chorych(ids.length), foreign: foreign ? 'w tym ' + foreign + ' spoza' : '', selected: on ? 'true' : 'false', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#222222', sub: on ? 'rgba(255,255,255,.9)' : '#5D5D5D', border: on ? accent : '#DDDDDD', pick: () => this.setState({ os: o, others: false }) };
+});
+
+const ids = plan[selOs];
+const planned = ids.map((id) => { const s = byId(id); const h = homeOs(id); return Object.assign(person(s), { foreign: h !== selOs, foreignLabel: 'Spoza osiedla – na co dzień os. ' + h, remove: () => setPlan(selIso, selOs, ids.filter((x) => x !== id)) }); });
+const own = SICK.filter((s) => homeOs(s.id) === selOs && !plannedWhere(selIso, s.id)).map((s) => Object.assign(person(s), { add: () => setPlan(selIso, selOs, ids.concat([s.id])) }));
+const ownElsewhere = SICK.filter((s) => homeOs(s.id) === selOs && plannedWhere(selIso, s.id) && plannedWhere(selIso, s.id) !== selOs).map((s) => { const w = plannedWhere(selIso, s.id); return Object.assign(person(s), { where: 'Zaplanowany na os. ' + w + ' (' + whoOn(selIso, w) + ')', move: () => { const np = Object.assign({}, db.plan); np[selIso] = Object.assign({}, np[selIso]); np[selIso][w] = np[selIso][w].filter((x) => x !== s.id); np[selIso][selOs] = ids.concat([s.id]); commit({ plan: np, focus: { iso: selIso, os: selOs } }); } }); });
+const others = SICK.filter((s) => homeOs(s.id) !== selOs && !plannedWhere(selIso, s.id)).map((s) => Object.assign(person(s), { add: () => setPlan(selIso, selOs, ids.concat([s.id])) }));
+
+return {
+accent,
+unlocked, locked: !unlocked, asking, code, err,
+onUnlock: () => this.setState({ asking: true, code: '', err: false }),
+onLock: () => this.setState({ unlocked: false }),
+onCode: (e) => this.setState({ code: e.target.value, err: false }),
+onCancelCode: () => this.setState({ asking: false, code: '', err: false }),
+onSubmitCode: () => { if (String(code).trim() === CODE) this.setState({ unlocked: true, asking: false, code: '', err: false }); else this.setState({ err: true }); },
+onKeyCode: (e) => { if (e && e.key === 'Enter') { if (String(code).trim() === CODE) this.setState({ unlocked: true, asking: false, code: '', err: false }); else this.setState({ err: true }); } },
+dates,
+osCards,
+selOs,
+selWho: whoOn(selIso, selOs),
+selDate: fmtLong(selIso),
+selCount: String(ids.length),
+planned, hasPlanned: planned.length > 0, noPlanned: planned.length === 0,
+own, hasOwn: own.length > 0, ownTitle: 'Chorzy z osiedla ' + selOs + ' (' + own.length + ')',
+addAllOwn: () => setPlan(selIso, selOs, ids.concat(own.map((p) => p.id))),
+ownDone: own.length === 0 && ownElsewhere.length === 0,
+ownElsewhere, hasOwnElsewhere: ownElsewhere.length > 0,
+others, hasOthers: others.length > 0, noOthers: others.length === 0, othersOpen: showOthers, othersLabel: (showOthers ? 'Ukryj niezaplanowanych z innych osiedli' : 'Pokaż niezaplanowanych z innych osiedli') + ' (' + others.length + ')',
+toggleOthers: () => this.setState({ others: !showOthers })
+};
+
+}
+}
+</script>
+</body>
+</html>

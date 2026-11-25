@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Wspólnota – Szafarze Nadzwyczajni Komunii Świętej</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;family=Source+Serif+4:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F0F0F0}
+a{color:#BD4F38}a:hover{color:#9A3E2B}
+.nav a:hover{background:rgba(0,0,0,.12)}
+.btn:hover{filter:brightness(.9)}
+</style>
+</helmet>
+<div style="background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; min-height: 100vh">
+
+<div style="background: #A9442F; color: #FFFFFF; font-size: 13px">
+<div style="max-width: 1200px; margin: 0 auto; padding: 8px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px">
+<span style="font-weight: 700">{{lit.dateLabel}}</span>
+<span>Szczęść Boże! · {{lit.dayName}}</span>
+</div>
+</div>
+
+<header style="background: {{accent}}; color: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px">
+<a href="Main.dc.html" style="flex: 1 1 420px; display: flex; align-items: center; gap: 14px; color: #FFFFFF; text-decoration: none">
+<svg aria-hidden="true" width="46" height="52" viewBox="0 0 24 27" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 1v5M9.8 3.2h4.4"></path><path d="M4 26V14a8 8 0 0 1 16 0v12"></path><path d="M9 26v-6a3 3 0 0 1 6 0v6"></path><path d="M2 26h20"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 22px; line-height: 1.15">Wspólnota Szafarzy Nadzwyczajnych Komunii Świętej</span>
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 16px; line-height: 1.2">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span>
+<span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .9">Archidiecezja Katowicka</span>
+</span>
+</a>
+<nav class="nav" aria-label="Menu główne" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="Kalendarz.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>Harmonogram</a>
+<a href="Planner.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>Planner</a>
+<a href="Chorzy.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>Nasi Chorzy</a>
+<a href="Obrzed.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.6"></circle><path d="M6 9.5h12c0 3.8-2.7 6.3-6 6.3s-6-2.5-6-6.3z"></path><path d="M12 15.8V20M8.5 20.5h7"></path></svg>Obrzęd</a>
+<a href="Wspolnota.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 6px; background: rgba(0,0,0,.18); color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.6"></circle><path d="M15.6 14.3A5 5 0 0 1 21 19"></path></svg>Nasza Wspólnota</a>
+</nav>
+</div>
+</header>
+
+<section aria-labelledby="tytul" style="position: relative; height: 190px; overflow: hidden; background: #2B3643">
+<img src="/_blob/76d363a5a7d437f5b94ab76a50712418" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 60%">
+<div style="position: absolute; inset: 0; background: rgba(20,24,30,.55); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #FFFFFF; padding: 0 20px 40px; gap: 6px">
+<h1 id="tytul" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4.4vw, 50px); line-height: 1.05; text-shadow: 0 2px 12px rgba(0,0,0,.5)">Nasza wspólnota</h1>
+<div style="font-size: 15px; text-shadow: 0 1px 6px rgba(0,0,0,.6)">Szafarze Nadzwyczajni Komunii Świętej parafii bł. Karoliny</div>
+</div>
+</section>
+
+<main style="max-width: 1200px; margin: -40px auto 0; padding: 0 20px 48px; box-sizing: border-box; position: relative; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px">
+
+<div style="flex: 999 1 600px; min-width: 0; background: #FFFFFF; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 30px">
+<nav aria-label="Ścieżka" style="font-size: 13px; color: #5D5D5D"><a href="Main.dc.html">Strona główna</a> › Wspólnota</nav>
+
+<section aria-labelledby="o-nas" style="display: flex; flex-direction: column; gap: 14px">
+<h2 id="o-nas" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 34px; color: {{accent}}">O naszej wspólnocie</h2>
+<p style="margin: 0; font-family: 'Source Serif 4', Georgia, serif; font-size: 20px; line-height: 1.55; color: #2A2A2A">Jesteśmy świeckimi wiernymi parafii bł. Karoliny Kózkówny, którzy z upoważnienia biskupa pomagają kapłanom w udzielaniu Komunii Świętej – przy ołtarzu i w domach osób chorych.</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.65">W każdą niedzielę czterech z nas zanosi Komunię Świętą chorym na osiedlach W, T2, U i NO. Przydział zmienia się co tydzień według stałej kolejki, tak aby każdy szafarz poznał chorych z różnych części parafii. W dni powszednie pełnimy posługę przy ołtarzu podczas wieczornych Mszy Świętych.</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.65">Spotykamy się w środy o 19:00 w kaplicy św. Józefa na modlitwie i formacji. Naszym opiekunem jest ks. Grzegorz Kolbiarz.</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.65; color: #555555">[Miejsce na historię wspólnoty: od kiedy działa w parafii, ilu szafarzy było na początku, ważne wydarzenia.]</p>
+</section>
+
+</div>
+
+<aside aria-label="Panel boczny" style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<section aria-labelledby="spotkania" style="background: #FFFFFF; padding: 28px 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<svg aria-hidden="true" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+<h2 id="spotkania" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 21px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Spotkania</h2>
+<span style="font-size: 20px; font-weight: 900; color: #222222">Środa, 19:00</span>
+<span style="font-size: 14px; color: #555555">Kaplica św. Józefa</span>
+</section>
+
+<section aria-labelledby="opieka" style="background: #FFFFFF; padding: 28px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<h2 id="opieka" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 21px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F; text-align: center">Prowadzą nas</h2>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; background: #F5F5F5"><span style="font-size: 12px; color: #5D5D5D; text-transform: uppercase; letter-spacing: 0.06em">Opiekun</span><span style="font-size: 17px; font-weight: 900">ks. Grzegorz Kolbiarz</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; background: #F5F5F5"><span style="font-size: 12px; color: #5D5D5D; text-transform: uppercase; letter-spacing: 0.06em">Lider</span><span style="font-size: 17px; font-weight: 900">Paweł Pełka</span></div>
+</section>
+
+</aside>
+</main>
+
+<footer style="background: #003C60; color: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 28px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 14px; line-height: 1.6">
+<div style="display: flex; flex-direction: column"><span style="font-family: 'Fondamento', Georgia, serif; font-size: 19px">Wspólnota Szafarzy Nadzwyczajnych Komunii Świętej</span><span style="opacity: .85">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span></div>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 700">Kancelaria parafialna</span><span style="opacity: .85">ul. ks. Tischnera 50, 43-100 Tychy · tel. 32 217 50 30</span></div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":1280,"height":2400}}'>
+const LIT = (() => {
+const now = new Date();
+const Y = now.getFullYear(), M = now.getMonth() + 1, D = now.getDate();
+const dn = (y, m, d) => Math.round(Date.UTC(y, m - 1, d) / 864e5);
+const wdOf = (x) => new Date(x * 864e5).getUTCDay();
+const x = dn(Y, M, D), wd = wdOf(x);
+const WDF = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+const GEN = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+const ROM = (n) => { const v = [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let r = ''; v.forEach(([k, s]) => { while (n >= k) { r += s; n -= k; } }); return r; };
+const easter = (y) => { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451); const mo = Math.floor((h + l - 7 * m + 114) / 31), da = ((h + l - 7 * m + 114) % 31) + 1; return dn(y, mo, da); };
+const advent1 = (y) => { const c = dn(y, 12, 25); const w = wdOf(c); return c - (w === 0 ? 7 : w) - 21; };
+const E = easter(Y), ash = E - 46, pent = E + 49, adv = advent1(Y);
+const ep = dn(Y, 1, 6), bapt = ep + (7 - wdOf(ep));
+const sun = x - wd;
+const GREEN = '#2E7D4F', VIOLET = '#6B3FA0', WHITE = '#C9A227', RED = '#B3261E';
+let name = '', color = GREEN, sunday = wd === 0, privileged = false;
+if (x >= adv && x < dn(Y, 12, 25)) {
+  const w = Math.floor((sun - adv) / 7) + 1; color = VIOLET; privileged = true;
+  name = sunday ? ROM(w) + ' Niedziela Adwentu' : WDF[wd] + ' ' + ROM(w) + ' tygodnia Adwentu';
+} else if (x >= dn(Y, 12, 25) || x <= bapt) {
+  color = WHITE;
+  const hf = (() => { for (let k = dn(Y, 12, 26); k <= dn(Y, 12, 31); k++) if (wdOf(k) === 0) return k; return dn(Y, 12, 30); })();
+  if (x === bapt) name = 'Święto Chrztu Pańskiego';
+  else if (x >= dn(Y, 12, 25) && x === hf) name = 'Święto Świętej Rodziny: Jezusa, Maryi i Józefa';
+  else if (x > dn(Y, 12, 25)) name = WDF[wd] + ' w oktawie Narodzenia Pańskiego';
+  else name = sunday ? 'II Niedziela po Narodzeniu Pańskim' : WDF[wd] + ' okresu Narodzenia Pańskiego';
+} else if (x < ash) {
+  const w = Math.floor((sun - bapt) / 7) + 1;
+  name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
+} else if (x < E) {
+  color = VIOLET; privileged = true;
+  const lent1 = ash + 4;
+  if (x === ash) name = 'Środa Popielcowa';
+  else if (x < lent1) name = WDF[wd] + ' po Popielcu';
+  else if (x === E - 7) { name = 'Niedziela Palmowa Męki Pańskiej'; color = RED; }
+  else if (x > E - 7) { name = ['', 'Wielki Poniedziałek', 'Wielki Wtorek', 'Wielka Środa', 'Wielki Czwartek', 'Wielki Piątek', 'Wielka Sobota'][wd]; if (wd === 5) color = RED; if (wd === 4) color = WHITE; }
+  else { const w = Math.floor((sun - lent1) / 7) + 1; name = sunday ? ROM(w) + ' Niedziela Wielkiego Postu' : WDF[wd] + ' ' + ROM(w) + ' tygodnia Wielkiego Postu'; }
+} else if (x <= pent) {
+  color = WHITE; privileged = true;
+  const w = Math.floor((sun - E) / 7) + 1;
+  if (x === E) name = 'Niedziela Zmartwychwstania Pańskiego';
+  else if (x < E + 7) name = WDF[wd] + ' w oktawie Wielkanocy';
+  else if (x === E + 7) name = 'II Niedziela Wielkanocna, czyli Miłosierdzia Bożego';
+  else if (x === E + 42) name = 'Uroczystość Wniebowstąpienia Pańskiego';
+  else if (x === pent) { name = 'Uroczystość Zesłania Ducha Świętego'; color = RED; }
+  else name = sunday ? ROM(w) + ' Niedziela Wielkanocna' : WDF[wd] + ' ' + ROM(w) + ' tygodnia wielkanocnego';
+} else {
+  const w = 35 - (adv - sun) / 7;
+  if (x === adv - 7) { name = 'Uroczystość Jezusa Chrystusa, Króla Wszechświata'; color = WHITE; }
+  else if (x === pent + 1) { name = 'Święto Najświętszej Maryi Panny, Matki Kościoła'; color = WHITE; }
+  else if (x === pent + 7) { name = 'Uroczystość Najświętszej Trójcy'; color = WHITE; }
+  else if (x === pent + 11) { name = 'Uroczystość Najświętszego Ciała i Krwi Chrystusa'; color = WHITE; }
+  else if (x === pent + 19) { name = 'Uroczystość Najświętszego Serca Pana Jezusa'; color = WHITE; }
+  else name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
+}
+const FIXED = {
+  '1-1': ['Uroczystość Świętej Bożej Rodzicielki Maryi', WHITE, 'S'], '1-6': ['Uroczystość Objawienia Pańskiego', WHITE, 'S'],
+  '2-2': ['Święto Ofiarowania Pańskiego', WHITE, 'L'], '2-22': ['Święto Katedry św. Piotra Apostoła', WHITE, 'F'],
+  '3-19': ['Uroczystość św. Józefa, Oblubieńca NMP', WHITE, 'S'], '3-25': ['Uroczystość Zwiastowania Pańskiego', WHITE, 'S'],
+  '5-3': ['Uroczystość NMP Królowej Polski', WHITE, 'S'], '6-29': ['Uroczystość św. Apostołów Piotra i Pawła', RED, 'S'],
+  '8-6': ['Święto Przemienienia Pańskiego', WHITE, 'L'], '8-15': ['Uroczystość Wniebowzięcia NMP', WHITE, 'S'],
+  '8-26': ['Uroczystość NMP Częstochowskiej', WHITE, 'S'], '9-14': ['Święto Podwyższenia Krzyża Świętego', RED, 'L'],
+  '11-1': ['Uroczystość Wszystkich Świętych', WHITE, 'S'], '11-2': ['Wspomnienie wszystkich wiernych zmarłych', VIOLET, 'S'],
+  '11-18': ['Bł. Karoliny Kózkówny, patronki parafii', RED, 'S'], '11-30': ['Święto św. Andrzeja, Apostoła', RED, 'F'],
+  '12-8': ['Uroczystość Niepokalanego Poczęcia NMP', WHITE, 'S'], '12-25': ['Uroczystość Narodzenia Pańskiego', WHITE, 'S'],
+  '12-26': ['Święto św. Szczepana, pierwszego męczennika', RED, 'F'], '12-27': ['Święto św. Jana, Apostoła i Ewangelisty', WHITE, 'F'],
+  '12-28': ['Święto świętych Młodzianków, męczenników', RED, 'F']
+};
+const fx = FIXED[M + '-' + D];
+const holyWeek = x >= E - 7 && x <= E + 7;
+if (fx && !holyWeek && !(sunday && privileged) && !(sunday && fx[2] === 'F')) { name = fx[0]; color = fx[1]; }
+const iso = Y + '-' + String(M).padStart(2, '0') + '-' + String(D).padStart(2, '0');
+const READ = {
+  '2026-11-23': ['Prawdziwie powiadam wam: ta uboga wdowa wrzuciła więcej niż wszyscy inni', 'Łk 21, 3', [['I czytanie', 'Ap 14, 1-3. 4b-5'], ['Psalm', 'Ps 24 (23)'], ['Ewangelia', 'Łk 21, 1-4']]],
+  '2026-11-25': ['Ale włos z głowy wam nie spadnie', 'Łk 21, 18', [['I czytanie', 'Ap 15, 1-4'], ['Ewangelia', 'Łk 21, 12-19']]],
+  '2026-11-26': ['…zbliża się wasze odkupienie', 'Łk 21, 28', [['I czytanie', 'Ap 18, 1-2. 21-23; 19, 1-3. 9a'], ['Ewangelia', 'Łk 21, 20-28']]],
+  '2026-11-27': ['Niebo i ziemia przeminą, ale moje słowa nie przeminą', 'Łk 21, 33', [['I czytanie', 'Ap 20, 1-4. 11 – 21, 2'], ['Ewangelia', 'Łk 21, 29-33']]],
+  '2026-11-28': ['Czuwajcie więc i módlcie się w każdym czasie', 'Łk 21, 36', [['I czytanie', 'Ap 22, 1-7'], ['Ewangelia', 'Łk 21, 34-36']]],
+  '2026-11-29': ['Uważajcie, czuwajcie, bo nie wiecie, kiedy czas ten nadejdzie', 'Mk 13, 33', [['I czytanie', 'Iz 63, 16b-17. 19b; 64, 2b-7'], ['II czytanie', '1 Kor 1, 3-9'], ['Ewangelia', 'Mk 13, 33-37']]],
+  '2026-11-30': ['Pójdźcie za Mną, a uczynię was rybakami ludzi', 'Mt 4, 19', [['I czytanie', 'Iz 49, 1-6'], ['Ewangelia', 'Mt 4, 18-22']]]
+};
+const r = READ[iso];
+const rows = r ? r[2].map((z, k) => ({ label: z[0], sig: z[1], border: k < r[2].length - 1 ? '1px solid #E5E5E5' : '0' })) : [];
+return {
+  dateLabel: WDF[wd] + ', ' + D + ' ' + GEN[M - 1] + ' ' + Y,
+  dayName: name, dayColor: color,
+  hasQuote: !!r, noQuote: !r,
+  quote: r ? '„' + r[0] + '”' : '', quoteRef: r ? r[1] : '',
+  rows, hasRows: rows.length > 0, sigLine: rows.map((z) => z.sig).join(' · '),
+  url: 'https://www.archidiecezjakatowicka.pl/slowo-na-dzisiaj?data=' + String(D).padStart(2, '0') + '-' + String(M).padStart(2, '0') + '-' + Y,
+  dayShort: D + ' ' + GEN[M - 1]
+};
+})();
+class Component extends DCLogic {
+renderVals() { return Object.assign({}, this._rv0(), { lit: LIT }); }
+_rv0() {
+return { accent: this.props.accent ?? '#BD4F38' };
+}
+}
+</script>
+</body>
+</html>
