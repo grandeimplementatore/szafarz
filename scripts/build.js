@@ -26,8 +26,8 @@ const PAGES = {
 };
 const url = (name) => (name === 'Main' ? '/' : '/' + name);
 
-const LOGOUT_D = ' · {{me.name}} · <a href="/logout" style="color: #FFFFFF; font-weight: 700">Wyloguj</a>';
-const LOGOUT_M = '<a href="/logout" style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #EEEEEE; color: #8C3524; text-decoration: none; font-size: 15px; font-weight: 700"><span style="flex: 1">Wyloguj ({{me.name}})</span></a>\n</nav>';
+const LOGOUT_D = ' · {{me.name}} · <a href="/konta" style="color: #FFFFFF; font-weight: 700">Konta</a> · <a href="/logout" style="color: #FFFFFF; font-weight: 700">Wyloguj</a>';
+const LOGOUT_M = '<a href="/konta" style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #EEEEEE; color: #222222; text-decoration: none; font-size: 15px; font-weight: 700"><span style="flex: 1">Konta i hasło</span></a>\n<a href="/logout" style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #EEEEEE; color: #8C3524; text-decoration: none; font-size: 15px; font-weight: 700"><span style="flex: 1">Wyloguj ({{me.name}})</span></a>\n</nav>';
 
 function replaceOnce(s, from, to, what) {
   if (!s.includes(from)) throw new Error('Nie znaleziono: ' + what);

@@ -2,99 +2,60 @@
 
 Aplikacja Wspólnoty Szafarzy Nadzwyczajnych Komunii Świętej – Parafia bł. Karoliny Kózkówny w Tychach.
 
-Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota. Każda w wersji na komputer i telefon – aplikacja sama wybiera wersję po szerokości ekranu.
-
-## Jak to działa
-
-- `server.js` – serwer Node.js (bez frameworków). Logowanie, strony, API danych.
-- `design/*.dc.html` – źródło wyglądu (pliki z projektu Claude Design).
-- `scripts/build.js` – buduje z nich gotowe strony do `public/` (robi to też Heroku przy wdrożeniu).
-- `static/runtime.js` – silnik stron w przeglądarce: rysuje widoki i zapisuje zmiany na serwerze.
-- `lib/store.js` – przechowywanie danych, `lib/auth.js` – konta i sesje.
-
-### Gdzie są dane
-
-Wszystkie wspólne dane (chorzy, plan wizyt, zmiany szafarzy, dziennik zmian) są w bazie **PostgreSQL**:
-
-- `szafarz_store` – jeden wiersz z dokumentem JSON i numerem wersji,
-- `szafarz_audit` – kto i kiedy zapisał zmiany.
-
-Tabele tworzą się same przy pierwszym uruchomieniu. Inne tabele w tej samej bazie nie są ruszane.
-
-Gdy dwie osoby zmienią dane w tym samym czasie, zapisze się zmiana pierwszej, a druga zobaczy komunikat i odświeżoną stronę – nic nie zostanie nadpisane bez wiedzy.
-
-## Uruchomienie lokalne
-
-Potrzebny jest PostgreSQL (lokalny albo baza z Heroku):
-
-```bash
-npm install
-DATABASE_URL="$(heroku config:get DATABASE_URL -a NAZWA-APLIKACJI)" SEED_DEMO=1 npm run dev
-# albo lokalna baza:  DATABASE_URL=postgres://localhost/szafarz DATABASE_SSL=false npm run dev
-```
-
-Otwórz http://localhost:3000 – bez zmiennej `USERS` działa konto testowe **test / test** (tylko poza produkcją). `SEED_DEMO=1` wpisuje 10 fikcyjnych chorych, ale tylko do pustej bazy (przy pierwszym uruchomieniu).
+Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota, Konta. Każda w wersji na komputer i telefon – aplikacja sama wybiera wersję po szerokości ekranu.
 
 ## Wdrożenie na Heroku
 
-```bash
-heroku login
-heroku create szafarz-karolina --region eu   # nazwa do wyboru; serwery w UE
-heroku addons:attach NAZWA-DODATKU-POSTGRES -a szafarz-karolina   # istniejąca baza → DATABASE_URL
-heroku config:set NODE_ENV=production
-heroku config:set SESSION_SECRET="$(node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))")"
-heroku config:set REVEAL_CODE=1234        # zmień na własny kod
-```
-
-Konta szafarzy: utwórz plik `users.local.json` (jest w `.gitignore` – **nie wrzucaj go do gita**):
-
-```json
-{
-  "pelka":  { "name": "Paweł Pełka",  "password": "długie-hasło-1" },
-  "pawera": { "name": "Marek Pawera", "password": "długie-hasło-2" }
-}
-```
+Jedyne, czego aplikacja potrzebuje, to **baza Heroku Postgres podłączona do aplikacji** (zmienna `DATABASE_URL` ustawia się sama).
 
 ```bash
-heroku config:set USERS="$(npm run -s users -- users.local.json)"
-git push heroku main
-heroku open
+heroku addons:attach aftech::DATABASE -a szafarz --as DATABASE   # albo: heroku addons:create heroku-postgresql:essential-0 -a szafarz
+git push heroku main          # albo w panelu: Deploy → GitHub → Deploy Branch
 ```
 
-Hasła są zapisywane tylko jako skróty (scrypt). Dodanie lub zmiana konta = edycja `users.local.json` i ponowne `heroku config:set USERS=...` (aplikacja sama się zrestartuje).
+Przy pierwszym starcie aplikacja sama zakłada w bazie wszystkie tabele i generuje klucz sesji.
 
-### Kopie zapasowe
+**Pierwsze wejście:** otwórz adres aplikacji – pojawi się ekran „Pierwsze uruchomienie”. Załóż konto administratora (zrób to od razu po wdrożeniu – ekran jest dostępny tylko dopóki nie ma żadnego konta).
 
-```bash
-heroku pg:backups:schedule DATABASE_URL --at '03:00 Europe/Warsaw'
-heroku pg:backups:capture                 # kopia teraz
-heroku pg:backups:download                # pobranie ostatniej kopii
-```
+**Kolejni szafarze:** administrator wchodzi w **Konta** (link na górnym pasku, na telefonie w menu ☰) i dodaje szafarza: imię i nazwisko, login, hasło startowe. Tam też ustawia nowe hasło, gdy ktoś zapomni, albo usuwa konto. Każdy może zmienić swoje hasło na tej samej stronie.
 
-## Zmienne środowiskowe
+## Gdzie są dane
+
+Wszystko w bazie PostgreSQL – tabele tworzą się same, innych tabel w bazie aplikacja nie rusza:
+
+| Tabela | Co zawiera |
+|---|---|
+| `szafarz_store` | wspólne dane: chorzy, plan wizyt, zmiany szafarzy, dziennik zmian (jeden dokument JSON z wersją) |
+| `szafarz_audit` | kto i kiedy zapisał zmiany |
+| `szafarz_users` | konta szafarzy (hasła tylko jako skróty scrypt) |
+| `szafarz_config` | klucz podpisujący sesje (losowy, generowany automatycznie) |
+
+Gdy dwie osoby zmienią dane w tym samym czasie, zapisze się zmiana pierwszej, a druga zobaczy komunikat i odświeżoną stronę.
+
+Kopie zapasowe bazy: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Warsaw" -a NAZWA-APLIKACJI-Z-BAZĄ`.
+
+## Ustawienia opcjonalne (Config Vars)
 
 | Zmienna | Opis |
 |---|---|
-| `NODE_ENV` | `production` na serwerze (wymusza HTTPS, bezpieczne ciasteczka, wymaga `SESSION_SECRET`) |
-| `SESSION_SECRET` | losowy ciąg min. 32 znaki – podpisuje sesje |
-| `USERS` | konta szafarzy (wynik `npm run users`) |
 | `REVEAL_CODE` | kod do odkrywania nazwisk chorych na ekranie (domyślnie 1234) |
 | `SESSION_DAYS` | ile dni trwa zalogowanie (domyślnie 14) |
-| `DATABASE_URL` | adres bazy PostgreSQL – ustawia go Heroku Postgres (wymagany) |
-| `DATABASE_SSL` | `false` tylko dla lokalnej bazy bez SSL |
-| `SEED_DEMO` | `1` = fikcyjni chorzy przy tworzeniu pustej bazy (tylko testy) |
+| `SEED_DEMO` | `1` = 10 fikcyjnych chorych przy tworzeniu pustej bazy (tylko testy) |
+
+Zmienne `SESSION_SECRET` i `USERS` nie są już używane – można je usunąć z Config Vars.
+
+## Jak to działa
+
+- `server.js` – serwer Node.js: logowanie, konta, strony, API danych.
+- `design/*.dc.html` – źródło wyglądu (pliki z projektu Claude Design); `scripts/build.js` buduje z nich strony do `public/` (Heroku robi to samo przy wdrożeniu).
+- `static/runtime.js` – silnik stron w przeglądarce: rysuje widoki i zapisuje zmiany na serwerze.
+- `lib/store.js` – baza danych, `lib/auth.js` – hasła i sesje.
+
+Uruchomienie lokalne bez bazy (dane w pamięci, znikają po zatrzymaniu): `DATABASE_URL=memory SEED_DEMO=1 npm run dev` → http://localhost:3000
 
 ## Bezpieczeństwo i RODO
 
-- Wszystkie strony i dane są dostępne dopiero po zalogowaniu. Ciasteczko sesji: `HttpOnly`, `Secure`, `SameSite=Lax`, podpisane HMAC.
+- Wszystkie strony i dane są dostępne dopiero po zalogowaniu. Ciasteczko sesji: `HttpOnly`, `Secure`, `SameSite=Lax`, podpisane HMAC. Zmiana hasła lub usunięcie konta wylogowuje tę osobę na wszystkich urządzeniach.
 - Po 10 nieudanych logowaniach z jednego adresu – 15 minut blokady.
-- Zapisy wymagają nagłówka aplikacji i zgodnego pochodzenia (ochrona przed CSRF).
-- Każdy zapis jest odnotowany (kto, kiedy, która wersja). Wpisy o zmianie szafarza mają podpis autora.
 - **Kod odkrywania nazwisk to tylko zasłona przed osobami patrzącymi na ekran** – właściwą ochroną jest logowanie.
-- Informacja, że ktoś przyjmuje Komunię w domu z powodu choroby, to dane o zdrowiu (art. 9 RODO). Przed wpisaniem prawdziwych danych uzgodnij z parafią i jej inspektorem ochrony danych: podstawę przetwarzania, kto ma konta, gdzie stoi serwer (aplikacja tworzona z `--region eu`) i jak długo trzymać dane.
-
-## Test w przeglądarce
-
-```bash
-BASE=http://localhost:3000 node scripts/e2e-check.js   # wymaga pakietu playwright
-```
+- Informacja, że ktoś przyjmuje Komunię w domu z powodu choroby, to dane o zdrowiu (art. 9 RODO). Przed wpisaniem prawdziwych danych uzgodnij z parafią i jej inspektorem ochrony danych: podstawę przetwarzania, kto ma konta, gdzie stoi serwer i jak długo trzymać dane. Jeśli baza jest współdzielona z inną aplikacją, ta aplikacja też ma dostęp do tabel Szafarza.

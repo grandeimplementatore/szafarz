@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Test całej aplikacji w przeglądarce (lokalnie): logowanie, wszystkie strony, zapisy na serwer.
-// Użycie: BASE=http://localhost:3100 node scripts/e2e-check.js  (wymaga pakietu playwright)
+// Użycie: DATABASE_URL=memory npm run dev, załóż konto test / test-haslo, potem:
+//         BASE=http://localhost:3000 node scripts/e2e-check.js  (wymaga pakietu playwright)
 'use strict';
 const { chromium } = require(process.env.PLAYWRIGHT || 'playwright');
 const BASE = process.env.BASE || 'http://localhost:3000';
@@ -20,7 +21,7 @@ const PHONE = ['/Telefon', '/KalendarzTelefon', '/PlannerTelefon', '/ChorzyTelef
     await page.route('**/*', (r) => (r.request().url().startsWith(BASE) ? r.continue() : r.abort()));
     await page.goto(BASE + '/');
     await page.fill('input[name=login]', 'test');
-    await page.fill('input[name=password]', 'test');
+    await page.fill('input[name=password]', 'test-haslo');
     await Promise.all([page.waitForNavigation(), page.click('button[type=submit]')]);
     return { ctx, page };
   }
