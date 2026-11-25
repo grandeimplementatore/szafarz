@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Test całej aplikacji w przeglądarce (lokalnie): logowanie, wszystkie strony, zapisy na serwer.
-// Użycie: DATABASE_URL=memory npm run dev, załóż konto test / test-haslo, potem:
+// Test całej aplikacji w przeglądarce (lokalnie): wszystkie strony i przekierowania telefon/komputer.
+// Użycie: DATABASE_URL=memory SEED_DEMO=1 npm run dev, potem:
 //         BASE=http://localhost:3000 node scripts/e2e-check.js  (wymaga pakietu playwright)
 'use strict';
 const { chromium } = require(process.env.PLAYWRIGHT || 'playwright');
@@ -19,10 +19,6 @@ const PHONE = ['/Telefon', '/KalendarzTelefon', '/PlannerTelefon', '/ChorzyTelef
     const page = await ctx.newPage();
     page.on('pageerror', (e) => problems.push(page.url() + ' JS: ' + e.message));
     await page.route('**/*', (r) => (r.request().url().startsWith(BASE) ? r.continue() : r.abort()));
-    await page.goto(BASE + '/');
-    await page.fill('input[name=login]', 'test');
-    await page.fill('input[name=password]', 'test-haslo');
-    await Promise.all([page.waitForNavigation(), page.click('button[type=submit]')]);
     return { ctx, page };
   }
   const { page: d } = await session({ width: 1280, height: 900 });

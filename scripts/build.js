@@ -26,8 +26,6 @@ const PAGES = {
 };
 const url = (name) => (name === 'Main' ? '/' : '/' + name);
 
-const LOGOUT_D = ' · {{me.name}} · <a href="/konta" style="color: #FFFFFF; font-weight: 700">Konta</a> · <a href="/logout" style="color: #FFFFFF; font-weight: 700">Wyloguj</a>';
-const LOGOUT_M = '<a href="/konta" style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #EEEEEE; color: #222222; text-decoration: none; font-size: 15px; font-weight: 700"><span style="flex: 1">Konta i hasło</span></a>\n<a href="/logout" style="display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 18px; border-bottom: 1px solid #EEEEEE; color: #8C3524; text-decoration: none; font-size: 15px; font-weight: 700"><span style="flex: 1">Wyloguj ({{me.name}})</span></a>\n</nav>';
 
 function replaceOnce(s, from, to, what) {
   if (!s.includes(from)) throw new Error('Nie znaleziono: ' + what);
@@ -61,10 +59,6 @@ function build(name) {
              .replace('height: 844px;', 'height: 100vh; height: 100dvh;')
              .replace('height: 1760px;', 'min-height: 100vh;');
   }
-  if (tpl.includes('<span>Szczęść Boże! · {{lit.dayName}}</span>')) {
-    tpl = tpl.replace('<span>Szczęść Boże! · {{lit.dayName}}</span>', '<span>Szczęść Boże! · {{lit.dayName}}' + LOGOUT_D + '</span>');
-  }
-  if (name === 'Telefon') tpl = replaceOnce(tpl, '</nav>\n', LOGOUT_M + '\n', 'menu telefonu');
 
   const opt = JSON.stringify({ mobile: mobile ? url(mobile) : null, desktop: desktop ? url(desktop) : null });
   return `<!doctype html>

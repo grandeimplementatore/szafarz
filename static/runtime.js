@@ -36,13 +36,11 @@
 
   function boot() {
     return fetch('/api/state', { credentials: 'same-origin', headers: { 'X-Requested-With': 'szafarz' } }).then(function (r) {
-      if (r.status === 401) { location.href = '/login?next=' + encodeURIComponent(location.pathname); throw new Error('auth'); }
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     }).then(function (j) {
       version = j.version;
       if (j.db) { j.db.focus = readFocus(); cache = JSON.stringify(j.db); }
-      SZ.user = j.user || { login: '', name: '' };
       SZ.revealCode = String((j.config && j.config.revealCode) || '');
     });
   }
@@ -57,7 +55,6 @@
         headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'szafarz' },
         body: JSON.stringify({ version: version, db: db })
       }).then(function (r) {
-        if (r.status === 401) { location.href = '/login?next=' + encodeURIComponent(location.pathname); return; }
         if (r.status === 409) {
           toast('W międzyczasie ktoś inny zmienił dane. Odświeżam stronę – wprowadź zmianę jeszcze raz.', 'error');
           setTimeout(function () { location.reload(); }, 2500);
@@ -165,7 +162,7 @@
     var keep = Array.prototype.map.call(scrollers(), function (el) { return [el.scrollTop, el.scrollLeft]; });
     var wy = window.scrollY;
 
-    var vals = Object.assign({}, comp.renderVals(), { me: SZ.user });
+    var vals = comp.renderVals();
     var frag = document.createDocumentFragment();
     tpl.content.childNodes.forEach(function (n) { expand(n, vals, frag); });
     root.replaceChildren(frag);
@@ -190,13 +187,11 @@
       comp = new Component();
       render();
     }).catch(function (e) {
-      if (String(e.message) === 'auth') return;
       root.innerHTML = '<p style="font:16px Lato,sans-serif;padding:24px">Nie udało się wczytać danych. Odśwież stronę za chwilę.</p>';
     });
   }
 
   var SZ = window.SZ = {
-    user: { login: '', name: '' },
     revealCode: '',
     getItem: function () { return cache; },
     setItem: function (k, v) { cache = v; save(v); },
