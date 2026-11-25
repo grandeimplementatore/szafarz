@@ -2,12 +2,11 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>Planner wizyt (telefon)</title>
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#A9442F">
+<title>Planner wizyt – Szafarz 3.0</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
 <style>
@@ -15,10 +14,13 @@ body{margin:0}
 a{color:#BD4F38}a:hover{color:#9A3E2B}
 input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outline-offset:2px}
 </style>
-</helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; display: flex; flex-direction: column; overflow: hidden">
+</head>
+<body>
+<template id="tpl">
+
+<div style="width: 100%; max-width: 640px; margin: 0 auto; height: 100vh; height: 100dvh; box-sizing: border-box; background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; display: flex; flex-direction: column; overflow: hidden">
 <header style="flex: none; background: {{accent}}; color: #FFFFFF; padding: 10px 12px; display: flex; align-items: center; gap: 8px">
-<a href="Telefon.dc.html" aria-label="Wróć do strony głównej" style="flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; border-radius: 6px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></a>
+<a href="/Telefon" aria-label="Wróć do strony głównej" style="flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; border-radius: 6px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></a>
 <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 22px; line-height: 1.1">Planner wizyt</span>
 <span style="font-size: 11px; opacity: .92">Najbliższa niedziela</span>
@@ -117,60 +119,33 @@ input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outli
 </div>
 </sc-for>
 </section>
-<div style="display: flex; justify-content: space-between; gap: 10px; padding: 6px 2px 10px; font-size: 13px; font-weight: 700"><a href="KalendarzTelefon.dc.html">‹ Harmonogram</a><a href="ChorzyTelefon.dc.html">Lista chorych ›</a></div>
+<div style="display: flex; justify-content: space-between; gap: 10px; padding: 6px 2px 10px; font-size: 13px; font-weight: 700"><a href="/KalendarzTelefon">‹ Harmonogram</a><a href="/ChorzyTelefon">Lista chorych ›</a></div>
 </div>
 </div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":390,"height":844}}'>
+</template>
+<div id="root"></div>
+<script src="/runtime.js"></script>
+<script>
 class Component extends DCLogic {
 renderVals() {
 const accent = this.props.accent ?? '#BD4F38';
 const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
 const KEY = 'szafarz-proto-v1';
-const OS = ['W', 'T2', 'U', 'NO'];
-const OSI = { W: 2, T2: 3, U: 4, NO: 5 };
-const T = [
-['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
-['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
-['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
-['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
-['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
-['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
-['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
-['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
-['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
-['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
-['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
-['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
-['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
-];
-const SICK0 = [{"id": "h1", "fn": "Helena", "ln": "Nowak", "street": "ul. Wieniawskiego", "no": "14", "flat": "3", "os": "W", "floor": "2", "note": "Domofon 3 – otwiera córka. Prosi o wizytę po godz. 10:00."}, {"id": "h2", "fn": "Stanisław", "ln": "Kowalczyk", "street": "ul. Wieniawskiego", "no": "27", "flat": "8", "os": "W", "floor": "4", "note": "Jest winda. Pan Stanisław słabo słyszy – mówić głośno i wyraźnie."}, {"id": "h3", "fn": "Janina", "ln": "Wójcik", "street": "ul. Tołstoja", "no": "5", "flat": "12", "os": "T2", "floor": "parter", "note": "Wejście od podwórza. W mieszkaniu pies – zadzwonić przed wizytą."}, {"id": "h4", "fn": "Józef", "ln": "Kamiński", "street": "ul. Tołstoja", "no": "18", "flat": "2", "os": "T2", "floor": "1", "note": "Przyjmuje Komunię w fotelu. Żona prosi o krótką modlitwę za rodzinę."}, {"id": "h5", "fn": "Zofia", "ln": "Lewandowska", "street": "ul. Uczniowska", "no": "9", "flat": "4", "os": "U", "floor": "3", "note": "Brak windy. Gdy nikt nie otwiera – klucz u sąsiadki spod nr 5."}, {"id": "h6", "fn": "Kazimierz", "ln": "Zieliński", "street": "ul. Uczniowska", "no": "21", "flat": "15", "os": "U", "floor": "7", "note": "Winda bywa nieczynna – zarezerwować więcej czasu."}, {"id": "h7", "fn": "Irena", "ln": "Szymańska", "street": "ul. Ustronna", "no": "3", "flat": "7", "os": "U", "floor": "parter", "note": "Furtka od strony ulicy, dzwonek przy bramie."}, {"id": "h8", "fn": "Tadeusz", "ln": "Woźniak", "street": "al. Piłsudskiego", "no": "30", "flat": "10", "os": "NO", "floor": "5", "note": "Prosi o telefon do syna dzień wcześniej."}, {"id": "h9", "fn": "Genowefa", "ln": "Dąbrowska", "street": "al. Piłsudskiego", "no": "44", "flat": "6", "os": "NO", "floor": "2", "note": "Lubi wspólnie odmówić dziesiątkę różańca po Komunii."}, {"id": "h10", "fn": "Władysław", "ln": "Mazur", "street": "al. Piłsudskiego", "no": "52", "flat": "1", "os": "NO", "floor": "1", "note": "Mieszka sam – zapytać, czy czegoś nie potrzebuje."}];
+const OS = SZ.ref.osiedla;
+const OSI = SZ.ref.osiedlaIdx;
+const T = SZ.ref.harmonogram;
+const SICK0 = [];
 const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
 const WDF = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
 const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
 const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
-const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== 2026 ? ' ' + d.y : ''); };
+const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== new Date().getFullYear() ? ' ' + d.y : ''); };
 const fmtLong = (iso) => { const d = parse(iso); return WDF[d.wd] + ', ' + d.d + ' ' + GEN[d.m - 1]; };
 const chorych = (n) => n + ' ' + (n === 1 ? 'chory' : 'chorych');
 const SUNDAYS = (() => { const sun = T.filter((r) => parse(r[0]).wd === 0).map((r) => r[0]); const up = sun.filter((iso) => iso >= TODAY); return up.length ? up.slice(0, 1) : sun.slice(-1); })();
 const seed = () => { const plan = {}; SUNDAYS.forEach((iso, k) => { plan[iso] = {}; OS.forEach((o) => { plan[iso][o] = k === 0 ? SICK0.filter((s) => s.os === o).map((s) => s.id) : []; }); }); return { sickOs: {}, edits: {}, removed: [], plan, focus: null }; };
-const load = () => { try { const raw = window.localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
-const save = (d) => { try { window.localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
+const load = () => { try { const raw = SZ.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
+const save = (d) => { try { SZ.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
 const st = this.state || {};
 const db = st.db || load() || seed();
 SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach((o) => { if (!db.plan[iso][o]) db.plan[iso][o] = []; }); });
@@ -182,7 +157,7 @@ const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso]
 const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
 
-const CODE = '1234';
+const CODE = SZ.revealCode;
 const unlocked = !!st.unlocked;
 const asking = !!st.asking;
 const code = st.code || '';
@@ -242,6 +217,7 @@ toggleOthers: () => this.setState({ others: !showOthers })
 
 }
 }
+SZ.mount(Component, {"mobile":null,"desktop":"/Planner"});
 </script>
 </body>
 </html>

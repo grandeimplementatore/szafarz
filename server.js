@@ -1,18 +1,21 @@
 'use strict';
-// Szafarz 3.0 – serwer aplikacji (Node.js + PostgreSQL). Aplikacja jest publiczna – bez logowania.
+// Szafarz 3.0 – serwer aplikacji (Node.js + PostgreSQL). Wszystkie dane są w bazie; aplikacja jest publiczna.
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { createStore } = require('./lib/store');
+const db = require('./lib/db');
 
 const PORT = Number(process.env.PORT || 3000);
 const PROD = process.env.NODE_ENV === 'production' || !!process.env.DYNO;
-const PUBLIC = path.join(__dirname, 'public');
+const VIEWS = path.join(__dirname, 'views');
+const STATIC = path.join(__dirname, 'static');
 const REVEAL_CODE = process.env.REVEAL_CODE || '1234';
 const MAX_BODY = 1024 * 1024;
 
-let store;
-try { store = createStore(); } catch (e) { console.error('[szafarz] BŁĄD KONFIGURACJI: ' + e.message); process.exit(1); }
+let pool;
+try { pool = db.createPool(); } catch (e) { console.error('[szafarz] BŁĄD KONFIGURACJI: ' + e.message); process.exit(1); }
+const q = (sql, p) => pool.query(sql, p);
+const clientIp = (req) => (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress;
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json' };
@@ -49,8 +52,8 @@ async function handle(req, res) {
   if (p === '/api/state') {
     if (req.headers['x-requested-with'] !== 'szafarz') return json(res, 403, { error: 'csrf' });
     if (req.method === 'GET') {
-      const s = await store.load();
-      return json(res, 200, { version: s.version, db: s.db, config: { revealCode: REVEAL_CODE } });
+      const [s, ref] = await Promise.all([db.loadState(q), db.loadRef(q)]);
+      return json(res, 200, { version: s.version, db: s.db, ref, config: { revealCode: REVEAL_CODE } });
     }
     if (req.method === 'PUT') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'origin' });
@@ -58,17 +61,17 @@ async function handle(req, res) {
       try { body = JSON.parse(await readBody(req)); } catch (e) { return json(res, 400, { error: 'json' }); }
       if (!body || typeof body.db !== 'object' || body.db === null || !Number.isInteger(body.version)) return json(res, 400, { error: 'format' });
       delete body.db.focus;
-      const r = await store.save(body.db, body.version, null);
+      const r = await db.saveState(pool, body.db, body.version, clientIp(req));
       return r.conflict ? json(res, 409, { error: 'conflict', version: r.version }) : json(res, 200, { version: r.version });
     }
     return json(res, 405, { error: 'method' });
   }
 
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Metoda niedozwolona');
-  if (p === '/') return serveFile(res, path.join(PUBLIC, 'Main.html'), 'no-store');
-  if (p === '/runtime.js') return serveFile(res, path.join(PUBLIC, 'runtime.js'), 'no-cache');
-  if (/^\/[A-Za-z]+$/.test(p) && p !== '/Main') return serveFile(res, path.join(PUBLIC, p.slice(1) + '.html'), 'no-store');
-  if (/^\/img\/[a-z0-9-]+\.(jpg|png|svg)$/.test(p)) return serveFile(res, path.join(PUBLIC, p), 'public, max-age=86400');
+  if (p === '/') return serveFile(res, path.join(VIEWS, 'Main.html'), 'no-store');
+  if (p === '/runtime.js') return serveFile(res, path.join(STATIC, 'runtime.js'), 'no-cache');
+  if (/^\/[A-Za-z]+$/.test(p) && p !== '/Main') return serveFile(res, path.join(VIEWS, p.slice(1) + '.html'), 'no-store');
+  if (/^\/img\/[a-z0-9-]+\.(jpg|png|svg)$/.test(p)) return serveFile(res, path.join(STATIC, p), 'public, max-age=86400');
   return send(res, 404, 'Nie ma takiej strony.');
 }
 
@@ -79,9 +82,8 @@ function serveFile(res, file, cache) {
   });
 }
 
-store.init().then(() => {
-  if (!fs.existsSync(path.join(PUBLIC, 'Main.html'))) console.warn('[szafarz] Brak public/ – uruchom najpierw: npm run build');
+db.migrate(pool).then(() => {
   http.createServer((req, res) => {
     handle(req, res).catch((e) => { console.error(e); if (!res.headersSent) send(res, 500, 'Błąd serwera'); });
-  }).listen(PORT, () => console.log(`[szafarz] działa na porcie ${PORT}; dane: ${store.kind}`));
+  }).listen(PORT, () => console.log(`[szafarz] działa na porcie ${PORT}; dane: PostgreSQL`));
 }).catch((e) => { console.error('[szafarz] Nie można połączyć się z bazą: ' + e.message); process.exit(1); });

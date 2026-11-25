@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Test całej aplikacji w przeglądarce (lokalnie): wszystkie strony i przekierowania telefon/komputer.
-// Użycie: DATABASE_URL=memory SEED_DEMO=1 npm run dev, potem:
+// Użycie: uruchom aplikację z lokalną bazą (DATABASE_URL=postgres://… DATABASE_SSL=false npm start), potem:
 //         BASE=http://localhost:3000 node scripts/e2e-check.js  (wymaga pakietu playwright)
 'use strict';
 const { chromium } = require(process.env.PLAYWRIGHT || 'playwright');

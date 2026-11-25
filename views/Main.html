@@ -2,12 +2,11 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>Wspólnota Szafarzy – strona główna</title>
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#A9442F">
+<title>Szafarz 3.0</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;family=Source+Serif+4:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
 <style>
@@ -17,7 +16,10 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 .btn:hover{filter:brightness(.9)}
 .tile:hover{box-shadow:0 10px 26px rgba(0,0,0,.10)}
 </style>
-</helmet>
+</head>
+<body>
+<template id="tpl">
+
 <div style="background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; min-height: 100vh">
 
 <div style="background: #A9442F; color: #FFFFFF; font-size: 13px">
@@ -38,22 +40,22 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 </span>
 </a>
 <nav class="nav" aria-label="Menu główne" style="display: flex; flex-wrap: wrap; gap: 4px">
-<a href="Kalendarz.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<a href="/Kalendarz" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>Harmonogram</a>
-<a href="Planner.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<a href="/Planner" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>Planner</a>
-<a href="Chorzy.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<a href="/Chorzy" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>Nasi Chorzy</a>
-<a href="Obrzed.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<a href="/Obrzed" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.6"></circle><path d="M6 9.5h12c0 3.8-2.7 6.3-6 6.3s-6-2.5-6-6.3z"></path><path d="M12 15.8V20M8.5 20.5h7"></path></svg>Obrzęd</a>
-<a href="Wspolnota.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<a href="/Wspolnota" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.6"></circle><path d="M15.6 14.3A5 5 0 0 1 21 19"></path></svg>Nasza Wspólnota</a>
 </nav>
 </div>
 </header>
 
 <section aria-label="Kościół bł. Karoliny Kózkówny" style="position: relative; height: 440px; overflow: hidden; background: #2B3643">
-<img src="/_blob/76d363a5a7d437f5b94ab76a50712418" alt="Kościół bł. Karoliny Kózkówny w Tychach z lotu ptaka" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%">
+<img src="/img/kosciol.jpg" alt="Kościół bł. Karoliny Kózkówny w Tychach z lotu ptaka" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%">
 <div style="position: absolute; inset: 0; background: rgba(20,24,30,.45); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #FFFFFF; padding: 0 24px 60px; gap: 12px">
 <h1 style="margin: 0; max-width: 900px; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: clamp(32px, 4.4vw, 54px); line-height: 1.1; text-shadow: 0 2px 14px rgba(0,0,0,.5)">Wspólnota Szafarzy Nadzwyczajnych Komunii&nbsp;Świętej</h1>
 <div style="font-family: 'Fondamento', Georgia, serif; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.2; text-shadow: 0 2px 10px rgba(0,0,0,.55)">Parafia Błogosławionej Karoliny Kózkówny w Tychach</div>
@@ -69,35 +71,35 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 <h2 id="posluga" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 34px; color: {{accent}}">Twoja posługa</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px">
 
-<a class="tile" href="Kalendarz.dc.html" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<a class="tile" href="/Kalendarz" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
 <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 17.5h2"></path></svg>
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Harmonogram</span>
 <span style="font-size: 14px; line-height: 1.5; color: #555555">Terminy odwiedzin chorych i przydział szafarzy do osiedli.</span>
 <span style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 120px; padding: 0 18px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700">Otwórz »</span>
 </a>
 
-<a class="tile" href="Planner.dc.html" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<a class="tile" href="/Planner" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
 <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Planner wizyt</span>
 <span style="font-size: 14px; line-height: 1.5; color: #555555">Zaplanuj, których chorych odwiedzić w wybranym terminie.</span>
 <span style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 120px; padding: 0 18px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700">Otwórz »</span>
 </a>
 
-<a class="tile" href="Chorzy.dc.html" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<a class="tile" href="/Chorzy" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
 <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path><path d="M12 17.5s-3.2-1.9-3.2-4a1.7 1.7 0 0 1 3.2-.8 1.7 1.7 0 0 1 3.2.8c0 2.1-3.2 4-3.2 4z"></path></svg>
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Nasi Chorzy</span>
 <span style="font-size: 14px; line-height: 1.5; color: #555555">Osoby przyjmujące Komunię w domu, według osiedli.</span>
 <span style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 120px; padding: 0 18px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700">Otwórz »</span>
 </a>
 
-<a class="tile" href="Obrzed.dc.html" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<a class="tile" href="/Obrzed" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
 <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.6"></circle><path d="M6 9.5h12c0 3.8-2.7 6.3-6 6.3s-6-2.5-6-6.3z"></path><path d="M12 15.8V20M8.5 20.5h7"></path></svg>
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Obrzęd Komunii&nbsp;Świętej</span>
 <span style="font-size: 14px; line-height: 1.5; color: #555555">Przebieg obrzędu i modlitwy przy Komunii chorych.</span>
 <span style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 120px; padding: 0 18px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700">Otwórz »</span>
 </a>
 
-<a class="tile" href="Wspolnota.dc.html" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<a class="tile" href="/Wspolnota" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
 <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.6"></circle><path d="M15.6 14.3A5 5 0 0 1 21 19"></path></svg>
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Nasza Wspólnota</span>
 <span style="font-size: 14px; line-height: 1.5; color: #555555">Szafarze parafii, kontakty, ogłoszenia i formacja.</span>
@@ -113,12 +115,12 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 <svg aria-hidden="true" width="50" height="50" viewBox="0 0 24 24" fill="#5D5D5D"><path d="M12 2.2 2.5 9.4l1.2 1.6L5 10v10.5h5v-5.2h4v5.2h5V10l1.3 1 1.2-1.6zM11.2 5.2h1.6v1.6h1.6v1.6h-1.6V10h-1.6V8.4H9.6V6.8h1.6z"></path></svg>
 <h2 id="wizyty" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 21px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F; text-align: center">Najbliższe wizyty</h2>
 <div style="text-align: center; display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 17px; font-weight: 900; color: #222222">Niedziela, 29 listopada</span>
-<span style="font-size: 13px; color: #5D5D5D">I Niedziela Adwentu · odwiedziny chorych</span>
+<span style="font-size: 17px; font-weight: 900; color: #222222">{{nextHead.date}}</span>
+<span style="font-size: 13px; color: #5D5D5D">{{nextHead.name}} · odwiedziny chorych</span>
 </div>
 <div style="align-self: stretch; display: flex; flex-direction: column; border-top: 1px solid #E5E5E5">
 <sc-for list="{{visitRows}}" as="r" hint-placeholder-count="4">
-<a href="Planner.dc.html" onClick="{{r.go}}" aria-label="Zaplanuj osiedle {{r.os}}: {{r.who}}, {{r.cnt}}" style="display: flex; align-items: center; gap: 14px; padding: 10px 2px; border-bottom: {{r.border}}; text-decoration: none">
+<a href="/Planner" onClick="{{r.go}}" aria-label="Zaplanuj osiedle {{r.os}}: {{r.who}}, {{r.cnt}}" style="display: flex; align-items: center; gap: 14px; padding: 10px 2px; border-bottom: {{r.border}}; text-decoration: none">
 <span style="flex: none; width: 44px; height: 44px; border-radius: 8px; background: #003C60; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900">{{r.os}}</span>
 <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 12px; color: #5D5D5D">{{r.sub}}</span><span style="display: inline-flex; align-items: center; font-size: 16px; font-weight: 700; color: #222222">{{r.who}}<sc-if value="{{r.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></span>
 <span aria-hidden="true" style="font-size: 18px; font-weight: 900; color: {{accent}}">›</span>
@@ -126,8 +128,8 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 </sc-for>
 </div>
 <div style="align-self: stretch; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<a class="btn" href="Planner.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; background: #003C60; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none">Planner</a>
-<a class="btn" href="Kalendarz.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none">Harmonogram</a>
+<a class="btn" href="/Planner" style="display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; background: #003C60; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none">Planner</a>
+<a class="btn" href="/Kalendarz" style="display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none">Harmonogram</a>
 </div>
 </section>
 <section aria-labelledby="slowo" style="background: #FFFFFF; padding: 28px 24px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 12px">
@@ -159,14 +161,16 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 <footer style="background: #003C60; color: #FFFFFF">
 <div style="max-width: 1200px; margin: 0 auto; padding: 28px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 14px; line-height: 1.6">
 <div style="display: flex; flex-direction: column"><span style="font-family: 'Fondamento', Georgia, serif; font-size: 19px">Wspólnota Szafarzy Nadzwyczajnych Komunii&nbsp;Świętej</span><span style="opacity: .85">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span></div>
-<div style="display: flex; flex-direction: column"><span style="font-weight: 700">Kancelaria parafialna</span><span style="opacity: .85">ul. ks. Tischnera 50, 43-100 Tychy · tel. 32 217 50 30</span></div>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 700">Kancelaria parafialna</span><span style="opacity: .85">{{ref.ust.kancelaria_adres}} · tel. {{ref.ust.kancelaria_telefon}}</span></div>
 </div>
 </footer>
 
 </div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":1280,"height":2100}}'>
-const LIT = (() => {
+</template>
+<div id="root"></div>
+<script src="/runtime.js"></script>
+<script>
+const LIT_MAKE = () => {
 const now = new Date();
 const Y = now.getFullYear(), M = now.getMonth() + 1, D = now.getDate();
 const dn = (y, m, d) => Math.round(Date.UTC(y, m - 1, d) / 864e5);
@@ -221,32 +225,12 @@ if (x >= adv && x < dn(Y, 12, 25)) {
   else if (x === pent + 19) { name = 'Uroczystość Najświętszego Serca Pana Jezusa'; color = WHITE; }
   else name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
 }
-const FIXED = {
-  '1-1': ['Uroczystość Świętej Bożej Rodzicielki Maryi', WHITE, 'S'], '1-6': ['Uroczystość Objawienia Pańskiego', WHITE, 'S'],
-  '2-2': ['Święto Ofiarowania Pańskiego', WHITE, 'L'], '2-22': ['Święto Katedry św. Piotra Apostoła', WHITE, 'F'],
-  '3-19': ['Uroczystość św. Józefa, Oblubieńca NMP', WHITE, 'S'], '3-25': ['Uroczystość Zwiastowania Pańskiego', WHITE, 'S'],
-  '5-3': ['Uroczystość NMP Królowej Polski', WHITE, 'S'], '6-29': ['Uroczystość św. Apostołów Piotra i Pawła', RED, 'S'],
-  '8-6': ['Święto Przemienienia Pańskiego', WHITE, 'L'], '8-15': ['Uroczystość Wniebowzięcia NMP', WHITE, 'S'],
-  '8-26': ['Uroczystość NMP Częstochowskiej', WHITE, 'S'], '9-14': ['Święto Podwyższenia Krzyża Świętego', RED, 'L'],
-  '11-1': ['Uroczystość Wszystkich Świętych', WHITE, 'S'], '11-2': ['Wspomnienie wszystkich wiernych zmarłych', VIOLET, 'S'],
-  '11-18': ['Bł. Karoliny Kózkówny, patronki parafii', RED, 'S'], '11-30': ['Święto św. Andrzeja, Apostoła', RED, 'F'],
-  '12-8': ['Uroczystość Niepokalanego Poczęcia NMP', WHITE, 'S'], '12-25': ['Uroczystość Narodzenia Pańskiego', WHITE, 'S'],
-  '12-26': ['Święto św. Szczepana, pierwszego męczennika', RED, 'F'], '12-27': ['Święto św. Jana, Apostoła i Ewangelisty', WHITE, 'F'],
-  '12-28': ['Święto świętych Młodzianków, męczenników', RED, 'F']
-};
+const FIXED = Object.fromEntries(SZ.ref.swieta.map((s) => [s.m + '-' + s.d, [s.nazwa, { bialy: WHITE, czerwony: RED, fioletowy: VIOLET, zielony: GREEN }[s.kolor] || WHITE, s.ranga]]));
 const fx = FIXED[M + '-' + D];
 const holyWeek = x >= E - 7 && x <= E + 7;
 if (fx && !holyWeek && !(sunday && privileged) && !(sunday && fx[2] === 'F')) { name = fx[0]; color = fx[1]; }
 const iso = Y + '-' + String(M).padStart(2, '0') + '-' + String(D).padStart(2, '0');
-const READ = {
-  '2026-11-23': ['Prawdziwie powiadam wam: ta uboga wdowa wrzuciła więcej niż wszyscy inni', 'Łk 21, 3', [['I czytanie', 'Ap 14, 1-3. 4b-5'], ['Psalm', 'Ps 24 (23)'], ['Ewangelia', 'Łk 21, 1-4']]],
-  '2026-11-25': ['Ale włos z głowy wam nie spadnie', 'Łk 21, 18', [['I czytanie', 'Ap 15, 1-4'], ['Ewangelia', 'Łk 21, 12-19']]],
-  '2026-11-26': ['…zbliża się wasze odkupienie', 'Łk 21, 28', [['I czytanie', 'Ap 18, 1-2. 21-23; 19, 1-3. 9a'], ['Ewangelia', 'Łk 21, 20-28']]],
-  '2026-11-27': ['Niebo i ziemia przeminą, ale moje słowa nie przeminą', 'Łk 21, 33', [['I czytanie', 'Ap 20, 1-4. 11 – 21, 2'], ['Ewangelia', 'Łk 21, 29-33']]],
-  '2026-11-28': ['Czuwajcie więc i módlcie się w każdym czasie', 'Łk 21, 36', [['I czytanie', 'Ap 22, 1-7'], ['Ewangelia', 'Łk 21, 34-36']]],
-  '2026-11-29': ['Uważajcie, czuwajcie, bo nie wiecie, kiedy czas ten nadejdzie', 'Mk 13, 33', [['I czytanie', 'Iz 63, 16b-17. 19b; 64, 2b-7'], ['II czytanie', '1 Kor 1, 3-9'], ['Ewangelia', 'Mk 13, 33-37']]],
-  '2026-11-30': ['Pójdźcie za Mną, a uczynię was rybakami ludzi', 'Mt 4, 19', [['I czytanie', 'Iz 49, 1-6'], ['Ewangelia', 'Mt 4, 18-22']]]
-};
+const READ = SZ.ref.slowo;
 const r = READ[iso];
 const rows = r ? r[2].map((z, k) => ({ label: z[0], sig: z[1], border: k < r[2].length - 1 ? '1px solid #E5E5E5' : '0' })) : [];
 return {
@@ -258,58 +242,29 @@ return {
   url: 'https://www.archidiecezjakatowicka.pl/slowo-na-dzisiaj?data=' + String(D).padStart(2, '0') + '-' + String(M).padStart(2, '0') + '-' + Y,
   dayShort: D + ' ' + GEN[M - 1]
 };
-})();
+};
 class Component extends DCLogic {
-renderVals() { return Object.assign({}, this._rv0(), { lit: LIT }); }
+renderVals() { return Object.assign({}, this._rv0(), { lit: LIT_MAKE() }); }
 _rv0() {
 const accent = this.props.accent ?? '#BD4F38';
 const S = (() => {
 const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
 const KEY = 'szafarz-proto-v1';
-const OS = ['W', 'T2', 'U', 'NO'];
-const OSI = { W: 2, T2: 3, U: 4, NO: 5 };
-const T = [
-['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
-['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
-['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
-['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
-['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
-['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
-['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
-['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
-['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
-['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
-['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
-['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
-['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
-];
-const SICK0 = [{"id": "h1", "fn": "Helena", "ln": "Nowak", "street": "ul. Wieniawskiego", "no": "14", "flat": "3", "os": "W", "floor": "2", "note": "Domofon 3 – otwiera córka. Prosi o wizytę po godz. 10:00."}, {"id": "h2", "fn": "Stanisław", "ln": "Kowalczyk", "street": "ul. Wieniawskiego", "no": "27", "flat": "8", "os": "W", "floor": "4", "note": "Jest winda. Pan Stanisław słabo słyszy – mówić głośno i wyraźnie."}, {"id": "h3", "fn": "Janina", "ln": "Wójcik", "street": "ul. Tołstoja", "no": "5", "flat": "12", "os": "T2", "floor": "parter", "note": "Wejście od podwórza. W mieszkaniu pies – zadzwonić przed wizytą."}, {"id": "h4", "fn": "Józef", "ln": "Kamiński", "street": "ul. Tołstoja", "no": "18", "flat": "2", "os": "T2", "floor": "1", "note": "Przyjmuje Komunię w fotelu. Żona prosi o krótką modlitwę za rodzinę."}, {"id": "h5", "fn": "Zofia", "ln": "Lewandowska", "street": "ul. Uczniowska", "no": "9", "flat": "4", "os": "U", "floor": "3", "note": "Brak windy. Gdy nikt nie otwiera – klucz u sąsiadki spod nr 5."}, {"id": "h6", "fn": "Kazimierz", "ln": "Zieliński", "street": "ul. Uczniowska", "no": "21", "flat": "15", "os": "U", "floor": "7", "note": "Winda bywa nieczynna – zarezerwować więcej czasu."}, {"id": "h7", "fn": "Irena", "ln": "Szymańska", "street": "ul. Ustronna", "no": "3", "flat": "7", "os": "U", "floor": "parter", "note": "Furtka od strony ulicy, dzwonek przy bramie."}, {"id": "h8", "fn": "Tadeusz", "ln": "Woźniak", "street": "al. Piłsudskiego", "no": "30", "flat": "10", "os": "NO", "floor": "5", "note": "Prosi o telefon do syna dzień wcześniej."}, {"id": "h9", "fn": "Genowefa", "ln": "Dąbrowska", "street": "al. Piłsudskiego", "no": "44", "flat": "6", "os": "NO", "floor": "2", "note": "Lubi wspólnie odmówić dziesiątkę różańca po Komunii."}, {"id": "h10", "fn": "Władysław", "ln": "Mazur", "street": "al. Piłsudskiego", "no": "52", "flat": "1", "os": "NO", "floor": "1", "note": "Mieszka sam – zapytać, czy czegoś nie potrzebuje."}];
+const OS = SZ.ref.osiedla;
+const OSI = SZ.ref.osiedlaIdx;
+const T = SZ.ref.harmonogram;
+const SICK0 = [];
 const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
 const WDF = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
 const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
 const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
-const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== 2026 ? ' ' + d.y : ''); };
+const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== new Date().getFullYear() ? ' ' + d.y : ''); };
 const fmtLong = (iso) => { const d = parse(iso); return WDF[d.wd] + ', ' + d.d + ' ' + GEN[d.m - 1]; };
 const chorych = (n) => n + ' ' + (n === 1 ? 'chory' : 'chorych');
 const SUNDAYS = (() => { const sun = T.filter((r) => parse(r[0]).wd === 0).map((r) => r[0]); const up = sun.filter((iso) => iso >= TODAY); return up.length ? up.slice(0, 1) : sun.slice(-1); })();
 const seed = () => { const plan = {}; SUNDAYS.forEach((iso, k) => { plan[iso] = {}; OS.forEach((o) => { plan[iso][o] = k === 0 ? SICK0.filter((s) => s.os === o).map((s) => s.id) : []; }); }); return { sickOs: {}, edits: {}, removed: [], plan, focus: null }; };
-const load = () => { try { const raw = window.localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
-const save = (d) => { try { window.localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
+const load = () => { try { const raw = SZ.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
+const save = (d) => { try { SZ.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
 const st = this.state || {};
 const db = st.db || load() || seed();
 SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach((o) => { if (!db.plan[iso][o]) db.plan[iso][o] = []; }); });
@@ -323,10 +278,12 @@ const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } })
 return { db, SUNDAYS, plannedCount, plannedWhere, goPlan, homeOs, commit, whoOn, fmt, fmtLong, chorych, OS, SICK };
 })();
 const nextIso = S.SUNDAYS[0];
+const nextHead = { date: nextIso ? S.fmtLong(nextIso) : '', name: ((SZ.ref.harmonogram.find((r) => r[0] === nextIso) || [])[1] || '') };
 const visitRows = S.OS.map((o, k) => { const n = S.plannedCount(nextIso, o); const f = S.db.plan[nextIso][o].filter((id) => S.homeOs(id) !== o).length; return { os: o, who: S.whoOn(nextIso, o), cnt: S.chorych(n), sub: 'Osiedle ' + o + ' · ' + S.chorych(n) + (f ? ' (w tym ' + f + ' spoza)' : ''), border: k < 3 ? '1px solid #E5E5E5' : '0', changed: !!((S.db.overrides || {})[nextIso] && S.db.overrides[nextIso][o]), go: () => S.goPlan(nextIso, o) }; });
-return { accent, visitRows };
+return { accent, nextHead, visitRows };
 }
 }
+SZ.mount(Component, {"mobile":"/Telefon","desktop":null});
 </script>
 </body>
 </html>

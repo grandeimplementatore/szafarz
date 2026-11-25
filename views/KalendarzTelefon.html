@@ -2,12 +2,11 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>Harmonogram (telefon)</title>
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#A9442F">
+<title>Harmonogram – Szafarz 3.0</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet">
 <style>
@@ -15,11 +14,14 @@ body{margin:0}
 a{color:#BD4F38}a:hover{color:#9A3E2B}
 select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outline-offset:2px}
 </style>
-</helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; display: flex; flex-direction: column; overflow: hidden">
+</head>
+<body>
+<template id="tpl">
+
+<div style="width: 100%; max-width: 640px; margin: 0 auto; height: 100vh; height: 100dvh; box-sizing: border-box; background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; display: flex; flex-direction: column; overflow: hidden">
 
 <header style="flex: none; background: {{accent}}; color: #FFFFFF; padding: 10px 12px; display: flex; align-items: center; gap: 8px">
-<a href="Telefon.dc.html" aria-label="Wróć do strony głównej" style="flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; border-radius: 6px">
+<a href="/Telefon" aria-label="Wróć do strony głównej" style="flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; border-radius: 6px">
 <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
 </a>
 <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
@@ -35,9 +37,9 @@ select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outl
 <div style="display: flex; gap: 8px; align-items: flex-end">
 <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
 <label for="dzien-m" style="font-size: 12px; font-weight: 700; color: #3F3F3F">Dzień</label>
-<select id="dzien-m" value="{{day}}" onChange="{{onDay}}" style="min-height: 44px; width: 100%; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; background: #FFFFFF; font-family: inherit; font-size: 15px; color: #222222">
-<sc-for list="{{dayOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.value}}">{{o.label}}</option></sc-for>
-</select>
+<sc-select id="dzien-m" value="{{day}}" onChange="{{onDay}}" style="min-height: 44px; width: 100%; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; background: #FFFFFF; font-family: inherit; font-size: 15px; color: #222222">
+<sc-for list="{{dayOptions}}" as="o" hint-placeholder-count="3"><sc-option value="{{o.value}}">{{o.label}}</sc-option></sc-for>
+</sc-select>
 </div>
 <button type="button" onClick="{{reset}}" aria-label="Wyczyść filtry" style="flex: none; width: 44px; height: 44px; border: 1px solid #BDBDBD; border-radius: 4px; background: #FFFFFF; color: #333333; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
@@ -94,7 +96,7 @@ select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outl
 <sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4">
 <div aria-label="{{c.aria}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 10px; border-radius: 6px; background: {{c.bg}}; color: {{c.fg}}; box-shadow: {{c.ring}}">
 <span style="flex: none; font-size: 12px; font-weight: 900; color: {{c.lbl}}; width: 22px">{{c.os}}</span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2"><span style="font-size: 15px; font-weight: {{c.fw}}"><sc-if value="{{c.isEditing}}" hint-placeholder-val="{{ false }}"><span style="display: flex; flex-direction: column; gap: 4px; width: 100%"><label for="{{c.selId}}" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Wybierz szafarza</label><select id="{{c.selId}}" value="{{c.name}}" onChange="{{c.onSel}}" style="min-height: 40px; width: 100%; padding: 0 6px; border: 2px solid #E08A1E; border-radius: 4px; background: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; color: #222222"><sc-for list="{{c.options}}" as="x" hint-placeholder-count="10"><option value="{{x.v}}">{{x.label}}</option></sc-for></select><button type="button" onClick="{{c.cancel}}" style="border: 0; background: transparent; color: #555555; font-family: inherit; font-size: 12px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0">Anuluj</button></span></sc-if><sc-if value="{{c.showLink}}" hint-placeholder-val="{{ true }}"><span style="display: inline-flex; align-items: baseline; justify-content: center; max-width: 100%"><button type="button" onClick="{{c.pick}}" title="Zmień szafarza" aria-label="Zmień szafarza: {{c.name}}" style="border: 0; background: transparent; color: inherit; font-family: inherit; font-size: 15px; font-weight: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; padding: 0">{{c.name}}</button><sc-if value="{{c.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></sc-if><sc-if value="{{c.showPlain}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: baseline"><span>{{c.name}}</span><sc-if value="{{c.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></sc-if></span><sc-if value="{{c.link}}" hint-placeholder-val="{{ false }}"><a href="PlannerTelefon.dc.html" onClick="{{c.go}}" style="font-size: 12px; font-weight: 900; color: inherit; text-decoration: underline">{{c.cnt}} ›</a></sc-if></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2"><span style="font-size: 15px; font-weight: {{c.fw}}"><sc-if value="{{c.isEditing}}" hint-placeholder-val="{{ false }}"><span style="display: flex; flex-direction: column; gap: 4px; width: 100%"><label for="{{c.selId}}" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Wybierz szafarza</label><sc-select id="{{c.selId}}" value="{{c.name}}" onChange="{{c.onSel}}" style="min-height: 40px; width: 100%; padding: 0 6px; border: 2px solid #E08A1E; border-radius: 4px; background: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; color: #222222"><sc-for list="{{c.options}}" as="x" hint-placeholder-count="10"><sc-option value="{{x.v}}">{{x.label}}</sc-option></sc-for></sc-select><button type="button" onClick="{{c.cancel}}" style="border: 0; background: transparent; color: #555555; font-family: inherit; font-size: 12px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0">Anuluj</button></span></sc-if><sc-if value="{{c.showLink}}" hint-placeholder-val="{{ true }}"><span style="display: inline-flex; align-items: baseline; justify-content: center; max-width: 100%"><button type="button" onClick="{{c.pick}}" title="Zmień szafarza" aria-label="Zmień szafarza: {{c.name}}" style="border: 0; background: transparent; color: inherit; font-family: inherit; font-size: 15px; font-weight: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; padding: 0">{{c.name}}</button><sc-if value="{{c.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></sc-if><sc-if value="{{c.showPlain}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: baseline"><span>{{c.name}}</span><sc-if value="{{c.changed}}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="Zmieniono szafarza" title="Zmieniono szafarza (zmiana w harmonogramie)" style="flex: none; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: #FBE1BE; border: 1px solid #E8A24A; color: #A85600; font-size: 11px; font-weight: 900; line-height: 1">!</span></sc-if></span></sc-if></span><sc-if value="{{c.link}}" hint-placeholder-val="{{ false }}"><a href="/PlannerTelefon" onClick="{{c.go}}" style="font-size: 12px; font-weight: 900; color: inherit; text-decoration: underline">{{c.cnt}} ›</a></sc-if></span>
 </div>
 </sc-for>
 </div>
@@ -122,63 +124,36 @@ select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outl
 </ol>
 <sc-if value="{{hasMoreLog}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{toggleLog}}" style="align-self: flex-start; min-height: 36px; padding: 0; border: 0; background: transparent; color: #BD4F38; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">{{logToggleLabel}}</button></sc-if>
 </section>
-<p style="margin: 6px 0 0; font-size: 11px; color: #5D5D5D; text-align: center">26.12 i 6.01 – tylko posługa na Mszy · 25.03 – do ustalenia</p>
+<p style="margin: 6px 0 0; font-size: 11px; color: #5D5D5D; text-align: center">{{ref.uwagiKrotko}}</p>
 </div>
 </div>
 
 </div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#BD4F38","options":["#BD4F38","#A9442F","#003C60","#1F63AE"]},"$preview":{"width":390,"height":844}}'>
+</template>
+<div id="root"></div>
+<script src="/runtime.js"></script>
+<script>
 class Component extends DCLogic {
 renderVals() {
 const accent = this.props.accent ?? '#BD4F38';
 const S = (() => {
 const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
 const KEY = 'szafarz-proto-v1';
-const OS = ['W', 'T2', 'U', 'NO'];
-const OSI = { W: 2, T2: 3, U: 4, NO: 5 };
-const T = [
-['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
-['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
-['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
-['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
-['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
-['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
-['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
-['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
-['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
-['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
-['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
-['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
-['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
-];
-const SICK0 = [{"id": "h1", "fn": "Helena", "ln": "Nowak", "street": "ul. Wieniawskiego", "no": "14", "flat": "3", "os": "W", "floor": "2", "note": "Domofon 3 – otwiera córka. Prosi o wizytę po godz. 10:00."}, {"id": "h2", "fn": "Stanisław", "ln": "Kowalczyk", "street": "ul. Wieniawskiego", "no": "27", "flat": "8", "os": "W", "floor": "4", "note": "Jest winda. Pan Stanisław słabo słyszy – mówić głośno i wyraźnie."}, {"id": "h3", "fn": "Janina", "ln": "Wójcik", "street": "ul. Tołstoja", "no": "5", "flat": "12", "os": "T2", "floor": "parter", "note": "Wejście od podwórza. W mieszkaniu pies – zadzwonić przed wizytą."}, {"id": "h4", "fn": "Józef", "ln": "Kamiński", "street": "ul. Tołstoja", "no": "18", "flat": "2", "os": "T2", "floor": "1", "note": "Przyjmuje Komunię w fotelu. Żona prosi o krótką modlitwę za rodzinę."}, {"id": "h5", "fn": "Zofia", "ln": "Lewandowska", "street": "ul. Uczniowska", "no": "9", "flat": "4", "os": "U", "floor": "3", "note": "Brak windy. Gdy nikt nie otwiera – klucz u sąsiadki spod nr 5."}, {"id": "h6", "fn": "Kazimierz", "ln": "Zieliński", "street": "ul. Uczniowska", "no": "21", "flat": "15", "os": "U", "floor": "7", "note": "Winda bywa nieczynna – zarezerwować więcej czasu."}, {"id": "h7", "fn": "Irena", "ln": "Szymańska", "street": "ul. Ustronna", "no": "3", "flat": "7", "os": "U", "floor": "parter", "note": "Furtka od strony ulicy, dzwonek przy bramie."}, {"id": "h8", "fn": "Tadeusz", "ln": "Woźniak", "street": "al. Piłsudskiego", "no": "30", "flat": "10", "os": "NO", "floor": "5", "note": "Prosi o telefon do syna dzień wcześniej."}, {"id": "h9", "fn": "Genowefa", "ln": "Dąbrowska", "street": "al. Piłsudskiego", "no": "44", "flat": "6", "os": "NO", "floor": "2", "note": "Lubi wspólnie odmówić dziesiątkę różańca po Komunii."}, {"id": "h10", "fn": "Władysław", "ln": "Mazur", "street": "al. Piłsudskiego", "no": "52", "flat": "1", "os": "NO", "floor": "1", "note": "Mieszka sam – zapytać, czy czegoś nie potrzebuje."}];
+const OS = SZ.ref.osiedla;
+const OSI = SZ.ref.osiedlaIdx;
+const T = SZ.ref.harmonogram;
+const SICK0 = [];
 const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
 const WDF = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
 const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
 const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
-const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== 2026 ? ' ' + d.y : ''); };
+const fmt = (iso) => { const d = parse(iso); return WD[d.wd] + ' ' + d.d + ' ' + GEN[d.m - 1] + (d.y !== new Date().getFullYear() ? ' ' + d.y : ''); };
 const fmtLong = (iso) => { const d = parse(iso); return WDF[d.wd] + ', ' + d.d + ' ' + GEN[d.m - 1]; };
 const chorych = (n) => n + ' ' + (n === 1 ? 'chory' : 'chorych');
 const SUNDAYS = (() => { const sun = T.filter((r) => parse(r[0]).wd === 0).map((r) => r[0]); const up = sun.filter((iso) => iso >= TODAY); return up.length ? up.slice(0, 1) : sun.slice(-1); })();
 const seed = () => { const plan = {}; SUNDAYS.forEach((iso, k) => { plan[iso] = {}; OS.forEach((o) => { plan[iso][o] = k === 0 ? SICK0.filter((s) => s.os === o).map((s) => s.id) : []; }); }); return { sickOs: {}, edits: {}, removed: [], plan, focus: null }; };
-const load = () => { try { const raw = window.localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
-const save = (d) => { try { window.localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
+const load = () => { try { const raw = SZ.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } };
+const save = (d) => { try { SZ.setItem(KEY, JSON.stringify(d)); } catch (e) {} };
 const st = this.state || {};
 const db = st.db || load() || seed();
 SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach((o) => { if (!db.plan[iso][o]) db.plan[iso][o] = []; }); });
@@ -192,45 +167,16 @@ const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } })
 return { db, SUNDAYS, plannedCount, plannedWhere, goPlan, homeOs, commit, whoOn, fmt, fmtLong, chorych, OS, SICK };
 })();
 const TODAY = (() => { const n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); })();
-const OS = ['W', 'T2', 'U', 'NO'];
-const T = [
-['2026-11-15','XXXIII Niedziela zwykła','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2026-11-22','Jezusa Chrystusa Króla Wszechświata','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2026-11-29','I Niedziela Adwentu','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2026-12-06','II Niedziela Adwentu','Klimontko','Matlak','Pełka','Mosio'],
-['2026-12-13','III Niedziela Adwentu','Matlak','Pełka','Mosio','Klimek'],
-['2026-12-20','IV Niedziela Adwentu','Pełka','Mosio','Klimek','Pawera'],
-['2026-12-25','Narodzenie Pańskie','Mosio','Klimek','Pawera','Piecuch'],
-['2026-12-27','Świętej Rodziny','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-01-03','II Niedziela po Narodzeniu Pańskim','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-01-10','Chrzest Pański','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-01-17','II Niedziela zwykła','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-01-24','III Niedziela zwykła','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-01-31','IV Niedziela zwykła','Klimontko','Matlak','Pełka','Mosio'],
-['2027-02-07','V Niedziela zwykła','Matlak','Pełka','Mosio','Klimek'],
-['2027-02-14','I Niedziela Wielkiego Postu','Pełka','Mosio','Klimek','Pawera'],
-['2027-02-21','II Niedziela Wielkiego Postu','Mosio','Klimek','Pawera','Piecuch'],
-['2027-02-28','III Niedziela Wielkiego Postu','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-03-07','IV Niedziela Wielkiego Postu','Pawera','Piecuch','Kępiński','Stawiszyński'],
-['2027-03-14','V Niedziela Wielkiego Postu','Piecuch','Kępiński','Stawiszyński','Klimontko'],
-['2027-03-21','Niedziela Palmowa','Kępiński','Stawiszyński','Klimontko','Matlak'],
-['2027-03-25','Wielki Czwartek – do ustalenia','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-03-28','Zmartwychwstanie Pańskie','Stawiszyński','Klimontko','Matlak','Pełka'],
-['2027-04-04','II Niedziela Wielkanocna','Klimontko','Matlak','Pełka','Mosio'],
-['2027-04-11','III Niedziela Wielkanocna','Matlak','Pełka','Mosio','Klimek'],
-['2027-04-18','IV Niedziela Wielkanocna','Pełka','Mosio','Klimek','Pawera'],
-['2027-04-25','V Niedziela Wielkanocna','Mosio','Klimek','Pawera','Piecuch'],
-['2027-05-02','VI Niedziela Wielkanocna','Klimek','Pawera','Piecuch','Kępiński'],
-['2027-05-09','Wniebowstąpienie Pańskie','Pawera','Piecuch','Kępiński','Stawiszyński']
-];
+const OS = SZ.ref.osiedla;
+const T = SZ.ref.harmonogram;
 const WD = ['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'];
 const MON = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
 const GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
 const parse = (iso) => { const p = iso.split('-').map(Number); return { y: p[0], m: p[1], d: p[2], wd: new Date(Date.UTC(p[0], p[1] - 1, p[2])).getUTCDay() }; };
 const OVR = S.db.overrides || {};
-const baseOf = (iso, o) => { const r = T.find((x) => x[0] === iso); return r ? r[{ W: 2, T2: 3, U: 4, NO: 5 }[o]] : ''; };
-const terms = T.map((r) => ({ iso: r[0], name: r[1], who: Object.assign({ W: r[2], T2: r[3], U: r[4], NO: r[5] }, OVR[r[0]] || {}) }));
-const ALLSZ = ['Kępiński','Klimek','Klimontko','Leszczyna','Matlak','Mosio','Pawera','Pełka','Piecuch','Stawiszyński'];
+const baseOf = (iso, o) => { const r = T.find((x) => x[0] === iso); return r ? r[SZ.ref.osiedlaIdx[o]] : ''; };
+const terms = T.map((r) => ({ iso: r[0], name: r[1], who: Object.assign(Object.fromEntries(OS.map((o) => [o, r[SZ.ref.osiedlaIdx[o]]])), OVR[r[0]] || {}) }));
+const ALLSZ = SZ.ref.szafarze;
 const editKey = (this.state || {}).edit || null;
 const setWho = (iso, o, from, to) => {
 if (!to || to === from) { this.setState({ edit: null }); return; }
@@ -317,7 +263,7 @@ const people = [chip('Wszyscy', null)].concat(names.map((nm) => chip(nm, nm)));
 const osTiles = OS.map((o) => { const on = o === osf; return { os: o, cnt: S.chorych(S.SICK.filter((x) => S.homeOs(x.id) === o).length), selected: on ? 'true' : 'false', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#222222', sub: on ? 'rgba(255,255,255,.9)' : '#5D5D5D', border: on ? accent : '#DDDDDD', pick: () => this.setState({ osf: on ? null : o }) }; });
 
 
-const dayOptions = [{ value: 'upcoming', label: 'Nadchodzące terminy' }, { value: 'all', label: 'Wszystkie terminy (15.11.2026 – 9.05.2027)' }].concat(terms.map((t) => {
+const dayOptions = [{ value: 'upcoming', label: 'Nadchodzące terminy' }, { value: 'all', label: 'Wszystkie terminy (' + SZ.ref.zakres.krotko + ')' }].concat(terms.map((t) => {
 const d = parse(t.iso);
 const dd = (d.d < 10 ? '0' : '') + d.d + '.' + (d.m < 10 ? '0' : '') + d.m + '.' + d.y;
 return { value: t.iso, label: WD[d.wd] + ' ' + dd + ' · ' + t.name };
@@ -356,6 +302,7 @@ reset: () => this.setState({ day: 'upcoming', person: null, osf: null })
 };
 }
 }
+SZ.mount(Component, {"mobile":null,"desktop":"/Kalendarz"});
 </script>
 </body>
 </html>

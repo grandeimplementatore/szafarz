@@ -2,46 +2,61 @@
 
 Aplikacja Wspólnoty Szafarzy Nadzwyczajnych Komunii Świętej – Parafia bł. Karoliny Kózkówny w Tychach.
 
-Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota. Każda w wersji na komputer i telefon – aplikacja sama wybiera wersję po szerokości ekranu. Aplikacja jest publiczna (bez logowania).
+Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota – w wersji na komputer i telefon. Aplikacja jest publiczna (bez logowania).
+
+## Zasada: wszystkie dane w bazie
+
+Kod aplikacji nie zawiera danych. Wszystko, co strony pokazują i co użytkownicy wprowadzają, jest w bazie PostgreSQL:
+
+| Tabela | Zawartość |
+|---|---|
+| `sz_terminy`, `sz_przydzialy` | harmonogram: terminy posługi i szafarz przydzielony do każdego osiedla (planowy i aktualny) |
+| `sz_zmiany_szafarzy` | historia zamian szafarzy („Zmiany w harmonogramie”) |
+| `sz_uwagi_harmonogramu` | uwagi do harmonogramu |
+| `sz_szafarze`, `sz_osiedla` | słowniki szafarzy i osiedli |
+| `sz_chorzy`, `sz_wizyty` | chorzy i zaplanowane wizyty |
+| `sz_dziennik` | dziennik wszystkich akcji zapisujących dane (co, kiedy, z jakiego adresu) |
+| `sz_obrzedy`, `sz_obrzedy_kroki` | teksty obrzędów (zwykły, skrócony, wiatyk) |
+| `sz_slowo_na_dzis`, `sz_swieta_stale` | „Słowo na dziś” i stałe święta do nazwy dnia liturgicznego |
+| `sz_ustawienia` | treści wspólnoty: opis, spotkania, opiekun, lider, dane kancelarii |
+| `sz_wersja`, `sz_migracje` | wersja danych (ochrona przed nadpisaniem przy równoczesnych zmianach) i lista wykonanych migracji |
+
+Struktura bazy powstaje automatycznie przy starcie aplikacji z plików w `db/migracje/` – każdy plik jest wykonywany dokładnie raz:
+
+- `001_schemat.sql` – tabele,
+- `002_dane_poczatkowe.sql` – jednorazowy import danych startowych (harmonogram 15.11.2026–9.05.2027 z pliku XLS, szafarze, obrzędy, czytania, opis wspólnoty),
+- `003_dane_z_poprzedniej_wersji.js` – przeniesienie danych zapisanych przez poprzednią wersję aplikacji (tabela `szafarz_store`).
+
+Nowy harmonogram, zmiana opiekuna, nowe czytania itp. – to zmiany w bazie (np. `heroku pg:psql`), bez zmian w kodzie.
 
 ## Wdrożenie na Heroku
 
-Jedyne, czego aplikacja potrzebuje, to **baza Heroku Postgres podłączona do aplikacji** (zmienna `DATABASE_URL` ustawia się sama).
+Aplikacja potrzebuje tylko bazy Heroku Postgres podłączonej jako `DATABASE_URL`:
 
 ```bash
 heroku addons:attach aftech::DATABASE -a szafarz --as DATABASE
 git push heroku main          # albo w panelu: Deploy → GitHub → Deploy Branch
 ```
 
-Przy pierwszym starcie aplikacja sama zakłada w bazie tabele.
+Opcjonalnie: `REVEAL_CODE` – kod do odkrywania nazwisk chorych (domyślnie 1234).
 
-## Gdzie są dane
+Po przeniesieniu danych tabele poprzedniej wersji nie są już używane i można je usunąć:
 
-| Tabela | Co zawiera |
-|---|---|
-| `szafarz_store` | wspólne dane: chorzy, plan wizyt, zmiany szafarzy, dziennik zmian (jeden dokument JSON z wersją) |
-| `szafarz_audit` | kiedy zapisano zmiany |
+```sql
+DROP TABLE IF EXISTS szafarz_store, szafarz_audit, szafarz_users, szafarz_config;
+```
 
-Innych tabel w bazie aplikacja nie rusza. Gdy dwie osoby zmienią dane w tym samym czasie, zapisze się zmiana pierwszej, a druga zobaczy komunikat i odświeżoną stronę.
+Kopie zapasowe: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Warsaw" -a NAZWA-APLIKACJI-Z-BAZĄ`.
 
-Kopie zapasowe bazy: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Warsaw" -a NAZWA-APLIKACJI-Z-BAZĄ`.
+## Budowa
 
-## Ustawienia opcjonalne (Config Vars)
+- `server.js` – serwer: strony z `views/`, pliki z `static/`, API `/api/state` (odczyt wszystkich danych i zapis zmian).
+- `lib/db.js` – migracje, odczyt danych i zapis zmian (każda zmiana trafia do właściwej tabeli i do dziennika).
+- `views/*.html` – widoki stron (układ i logika interfejsu, bez danych).
+- `static/runtime.js` – silnik widoków w przeglądarce.
 
-| Zmienna | Opis |
-|---|---|
-| `REVEAL_CODE` | kod do odkrywania nazwisk chorych na ekranie (domyślnie 1234) |
-| `SEED_DEMO` | `1` = 10 fikcyjnych chorych przy tworzeniu pustej bazy (tylko testy) |
-
-## Jak to działa
-
-- `server.js` – serwer Node.js: strony i API danych (`/api/state`).
-- `design/*.dc.html` – źródło wyglądu (pliki z projektu Claude Design); `scripts/build.js` buduje z nich strony do `public/` (Heroku robi to samo przy wdrożeniu).
-- `static/runtime.js` – silnik stron w przeglądarce: rysuje widoki i zapisuje zmiany na serwerze.
-- `lib/store.js` – baza danych.
-
-Uruchomienie lokalne bez bazy (dane w pamięci, znikają po zatrzymaniu): `DATABASE_URL=memory SEED_DEMO=1 npm run dev` → http://localhost:3000
+Lokalnie: `DATABASE_URL=postgres://localhost/szafarz DATABASE_SSL=false npm start` → http://localhost:3000
 
 ## Uwaga: dane są publiczne
 
-Aplikacja nie ma logowania. Każdy, kto zna adres strony, może odczytać i zmienić wszystkie dane – także imiona, nazwiska, adresy i uwagi o chorych (rozmycie nazwisk i kod odkrywania działają tylko na ekranie; pełne dane są w odpowiedzi `/api/state`). Informacja, że ktoś przyjmuje Komunię w domu z powodu choroby, to dane o zdrowiu (art. 9 RODO) – przed wpisaniem prawdziwych danych uzgodnij to z parafią i jej inspektorem ochrony danych.
+Aplikacja nie ma logowania. Każdy, kto zna adres strony, może odczytać i zmienić wszystkie dane – także imiona, nazwiska, adresy i uwagi o chorych (kod odkrywania nazwisk działa tylko na ekranie). Informacja, że ktoś przyjmuje Komunię w domu z powodu choroby, to dane o zdrowiu (art. 9 RODO) – przed wpisaniem prawdziwych danych uzgodnij to z parafią.

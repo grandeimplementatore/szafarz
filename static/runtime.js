@@ -1,6 +1,6 @@
 /* Szafarz 3.0 – lekki silnik stron.
- * Rozwija szablony stron (wstawki {{...}}, <sc-for>, <sc-if>), podpina zdarzenia,
- * a dane wspólnoty pobiera z serwera (/api/state) i tam je zapisuje.
+ * Rozwija szablony stron (wstawki {{...}}, <sc-for>, <sc-if>), podpina zdarzenia.
+ * Wszystkie dane (harmonogram, chorzy, plan, treści) pobiera z bazy przez /api/state i tam zapisuje zmiany.
  */
 (function () {
   'use strict';
@@ -42,6 +42,7 @@
       version = j.version;
       if (j.db) { j.db.focus = readFocus(); cache = JSON.stringify(j.db); }
       SZ.revealCode = String((j.config && j.config.revealCode) || '');
+      SZ.ref = j.ref || {};
     });
   }
 
@@ -162,7 +163,7 @@
     var keep = Array.prototype.map.call(scrollers(), function (el) { return [el.scrollTop, el.scrollLeft]; });
     var wy = window.scrollY;
 
-    var vals = comp.renderVals();
+    var vals = Object.assign({ ref: SZ.ref }, comp.renderVals());
     var frag = document.createDocumentFragment();
     tpl.content.childNodes.forEach(function (n) { expand(n, vals, frag); });
     root.replaceChildren(frag);
@@ -193,6 +194,7 @@
 
   var SZ = window.SZ = {
     revealCode: '',
+    ref: {},
     getItem: function () { return cache; },
     setItem: function (k, v) { cache = v; save(v); },
     mount: mount
