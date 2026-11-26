@@ -18,7 +18,7 @@ const q = (sql, p) => pool.query(sql, p);
 const clientIp = (req) => (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress;
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json' };
+  '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json', '.webmanifest': 'application/manifest+json; charset=utf-8' };
 
 // ---------- pomocnicze ----------
 function security(res) {
@@ -69,6 +69,8 @@ async function handle(req, res) {
 
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Metoda niedozwolona');
   if (p === '/') return serveFile(res, path.join(VIEWS, 'Main.html'), 'no-store');
+  if (p === '/favicon.ico') return serveFile(res, path.join(STATIC, 'img', 'icon-192.png'), 'public, max-age=86400');
+  if (p === '/manifest.webmanifest') return serveFile(res, path.join(STATIC, 'manifest.webmanifest'), 'public, max-age=86400');
   if (p === '/runtime.js') return serveFile(res, path.join(STATIC, 'runtime.js'), 'no-cache');
   if (/^\/[A-Za-z]+$/.test(p) && p !== '/Main') return serveFile(res, path.join(VIEWS, p.slice(1) + '.html'), 'no-store');
   if (/^\/img\/[a-z0-9-]+\.(jpg|png|svg)$/.test(p)) return serveFile(res, path.join(STATIC, p), 'public, max-age=86400');

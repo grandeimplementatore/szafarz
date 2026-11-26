@@ -1,1 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#A9442F"/><g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4v6M13 6.5h6"/><path d="M9 28V18a7 7 0 0 1 14 0v10"/><path d="M13 28v-6a3 3 0 0 1 6 0v6"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9573F"/>
+      <stop offset="1" stop-color="#9E3D2A"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBDC8E"/>
+      <stop offset="1" stop-color="#E0A845"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFF3CF" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#FFF3CF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="158" r="132" fill="url(#glow)"/>
+  <g stroke="#FFE7A8" stroke-width="6" stroke-linecap="round" opacity=".75">
+    <path d="M256 40v26M256 250v0M154 70l15 21M358 70l-15 21M118 150h26M394 150h-26M137 214l22-12M375 214l-22-12M200 50l7 24M312 50l-7 24"/>
+  </g>
+  <circle cx="256" cy="150" r="66" fill="#FFF8EA"/>
+  <circle cx="256" cy="150" r="54" fill="none" stroke="#E8CF9C" stroke-width="4"/>
+  <path d="M256 112v76M224 140h64" stroke="#D6A94F" stroke-width="9" stroke-linecap="round"/>
+  <path d="M146 232h220c0 78-44 124-110 124s-110-46-110-124z" fill="url(#gold)"/>
+  <path d="M146 232h220" stroke="#C98E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M184 262c8 36 30 60 60 68" fill="none" stroke="#FFF0C2" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+  <rect x="242" y="352" width="28" height="70" rx="8" fill="url(#gold)"/>
+  <ellipse cx="256" cy="384" rx="26" ry="14" fill="#E9B858"/>
+  <path d="M176 452c14-30 52-38 80-38s66 8 80 38z" fill="url(#gold)"/>
+  <rect x="168" y="448" width="176" height="14" rx="7" fill="#C98E2E"/>
+</svg>
