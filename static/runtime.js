@@ -64,6 +64,7 @@
       version = j.version;
       if (j.db) { j.db.focus = readFocus(); cache = JSON.stringify(j.db); }
       SZ.revealCode = String((j.config && j.config.revealCode) || '');
+      SZ.nazwiskaUkryte = !!(j.config && j.config.nazwiskaUkryte);
       SZ.ref = Object.assign({}, window.SZ_TRESCI || {}, j.ref || {}, { slowo: all[1] });
     });
   }
@@ -216,6 +217,7 @@
 
   var SZ = window.SZ = {
     revealCode: '',
+    nazwiskaUkryte: false,
     ref: {},
     getItem: function () { return cache; },
     setItem: function (k, v) { cache = v; save(v); },

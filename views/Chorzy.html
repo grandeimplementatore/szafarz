@@ -69,10 +69,10 @@ input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outli
 
 <div style="flex: 999 1 600px; min-width: 0; background: #FFFFFF; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
 <nav aria-label="Ścieżka" style="font-size: 13px; color: #5D5D5D"><a href="/">Strona główna</a> › Nasi Chorzy</nav>
-<div style="display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; background: #F3F6F9; border: 1px solid #D5DEE7; font-size: 14px; line-height: 1.5">
+<sc-if value="{{allLocked}}" hint-placeholder-val="{{ true }}"><div style="display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; background: #F3F6F9; border: 1px solid #D5DEE7; font-size: 14px; line-height: 1.5">
 <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#003C60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
 <span>Imiona i nazwiska chorych są ukryte. Aby zobaczyć wszystkie, kliknij „Odkryj nazwiska” i wpisz kod dostępu.</span>
-</div>
+</div></sc-if>
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px">
 <div role="group" aria-label="Filtr osiedla" style="display: flex; flex-wrap: wrap; gap: 8px">
 <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
@@ -337,6 +337,8 @@ const CODE = SZ.revealCode;
 const mask = (s) => s.split(' ').map((w) => 'X' + 'x'.repeat(Math.max(2, w.length - 1))).join(' ');
 const osSel = st.osf || 'all';
 const revealed = st.revealed || {};
+// czy nazwiska są odkryte: najpierw wybór na tej stronie, a domyślnie ustawienie z „Ustawień” (sz_atrybuty)
+const allOn = st.all === undefined ? !SZ.nazwiskaUkryte : !!st.all;
 const asking = st.asking || null;
 const code = st.code || '';
 const err = !!st.err;
@@ -364,7 +366,7 @@ const field = (k) => (e) => this.setState({ form: Object.assign({}, form, { [k]:
 const list = SICK.filter((s) => osSel === 'all' || homeOs(s.id) === osSel);
 const people = list.map((s) => {
 const o = homeOs(s.id);
-const shown = !!revealed[s.id] || !!st.all;
+const shown = !!revealed[s.id] || allOn;
 const isAsking = asking === s.id;
 const isEditing = editing === s.id;
 const dest = s.street + ' ' + s.no + ', 43-100 Tychy';
@@ -423,7 +425,7 @@ onAddOpen: () => this.setState({ adding: true, added: null, nf: { os: osSel !== 
 nfFn: nf.fn || '', nfLn: nf.ln || '', nfStreet: nf.street || '', nfNo: nf.no || '', nfFlat: nf.flat || '', nfFloor: nf.floor || '', nfNote: nf.note || '', onNfFloor: nfield('floor'), onNfNote: nfield('note'), nfOs: nf.os || (osSel !== 'all' ? osSel : OS[0]),
 onNfFn: nfield('fn'), onNfLn: nfield('ln'), onNfStreet: nfield('street'), onNfNo: nfield('no'), onNfFlat: nfield('flat'), onNfOs: nfield('os'),
 nfOsOptions: OS.map((x) => ({ v: x, label: 'Osiedle ' + x })),
-allLocked: !st.all, allUnlocked: !!st.all, askAll, codeAll: askAll ? code : '', errAll: askAll && err,
+allLocked: !allOn, allUnlocked: allOn, namesState: allOn ? 'dane widoczne' : 'dane ukryte', askAll, codeAll: askAll ? code : '', errAll: askAll && err,
 onRevealAll: () => this.setState({ asking: '__all', code: '', err: false }), onHideAll: () => this.setState({ all: false, revealed: {} }),
 onCodeAll: (e) => this.setState({ code: e.target.value, err: false }), onCancelAll: () => this.setState({ asking: null, code: '', err: false }),
 onSubmitAll: subAll, onKeyAll: (e) => { if (e && e.key === 'Enter') subAll(); }, listCount: String(people.length),

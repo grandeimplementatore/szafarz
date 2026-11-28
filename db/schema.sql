@@ -1,6 +1,6 @@
 -- Schemat bazy aplikacji Szafarz 3.0 (wykonywany przy każdym wdrożeniu – tworzy tylko brakujące tabele).
 -- W bazie są wyłącznie: osiedla, szafarze, harmonogram (terminy i przydziały z zamianami),
--- historia zmian harmonogramu, chorzy oraz zaplanowane wizyty.
+-- historia zmian harmonogramu, chorzy, zaplanowane wizyty oraz atrybuty (ustawienia aplikacji).
 
 CREATE TABLE IF NOT EXISTS sz_osiedla (
   kod       text PRIMARY KEY,
@@ -64,3 +64,12 @@ CREATE TABLE IF NOT EXISTS sz_wizyty (
   zaplanowano  timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY (data, chory_id)
 );
+
+-- Atrybuty aplikacji ustawiane w „Ustawieniach”.
+CREATE TABLE IF NOT EXISTS sz_atrybuty (
+  klucz      text PRIMARY KEY,
+  wartosc    text NOT NULL,
+  zmieniono  timestamptz NOT NULL DEFAULT now()
+);
+-- Czy nazwiska chorych są domyślnie ukryte (domyślnie: nie – nazwiska odkryte).
+INSERT INTO sz_atrybuty (klucz, wartosc) VALUES ('nazwiska_ukryte', 'false') ON CONFLICT (klucz) DO NOTHING;

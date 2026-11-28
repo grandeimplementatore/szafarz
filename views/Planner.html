@@ -305,7 +305,7 @@ const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o]
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
 
 const CODE = SZ.revealCode;
-const unlocked = !!st.unlocked;
+const unlocked = st.unlocked === undefined ? !SZ.nazwiskaUkryte : !!st.unlocked;   // domyślnie wg ustawienia z „Ustawień”
 const asking = !!st.asking;
 const code = st.code || '';
 const err = !!st.err;

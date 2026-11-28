@@ -1,6 +1,6 @@
 'use strict';
 // Szafarz 3.0 – serwer aplikacji (Node.js + PostgreSQL). Aplikacja jest publiczna.
-// Baza: harmonogram, szafarze, osiedla, chorzy, wizyty i log zmian harmonogramu. Słowo na dziś – z API Archidiecezji.
+// Baza: harmonogram, szafarze, osiedla, chorzy, wizyty, log zmian harmonogramu i atrybuty aplikacji. Słowo na dziś – z API Archidiecezji.
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -71,7 +71,8 @@ async function handle(req, res) {
         'POST osiedla': () => ust.dodajOsiedle(pool, body), 'DELETE osiedla/:x': () => ust.usunOsiedle(pool, parts[1]),
         'POST terminy': () => ust.dodajTermin(pool, body), 'DELETE terminy/:x': () => ust.usunTermin(pool, parts[1]),
         'PUT szafarze/:x': () => ust.zmienSzafarza(pool, parts[1], body), 'PUT osiedla/:x': () => ust.zmienOsiedle(pool, parts[1], body),
-        'PUT terminy/:x': () => ust.zmienTermin(pool, parts[1], body)
+        'PUT terminy/:x': () => ust.zmienTermin(pool, parts[1], body),
+        'PUT atrybuty/:x': () => ust.zmienAtrybut(pool, parts[1], body)
       };
       if (!ops[route]) return json(res, 404, { error: 'Nie ma takiej operacji.' });
       return json(res, 200, { message: await ops[route]() });
@@ -84,8 +85,8 @@ async function handle(req, res) {
   if (p === '/api/state') {
     if (req.headers['x-requested-with'] !== 'szafarz') return json(res, 403, { error: 'csrf' });
     if (req.method === 'GET') {
-      const [s, ref] = await Promise.all([db.loadState(q), db.loadRef(q)]);
-      return json(res, 200, { version: s.version, db: s.db, ref, config: { revealCode: REVEAL_CODE } });
+      const [s, ref, atr] = await Promise.all([db.loadState(q), db.loadRef(q), db.loadAtrybuty(q)]);
+      return json(res, 200, { version: s.version, db: s.db, ref, config: { revealCode: REVEAL_CODE, nazwiskaUkryte: atr.nazwiska_ukryte === 'true' } });
     }
     if (req.method === 'PUT') {
       if (!sameOrigin(req)) return json(res, 403, { error: 'origin' });

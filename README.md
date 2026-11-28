@@ -16,6 +16,7 @@ Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komuni
 | `sz_osiedla` | lista osiedli |
 | `sz_chorzy` | chorzy z atrybutami (adres, piętro, uwagi, osiedle) |
 | `sz_wizyty` | zaplanowane wizyty |
+| `sz_atrybuty` | ustawienia aplikacji, np. `nazwiska_ukryte` – czy nazwiska chorych są domyślnie ukryte (domyślnie `false`) |
 
 **Kod** – stałe treści: `static/tresci.js` (opis wspólnoty, spotkania, opiekun, dane kancelarii, uwagi do harmonogramu, stałe święta, teksty obrzędów) oraz cały interfejs w `views/`.
 
@@ -23,13 +24,13 @@ Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komuni
 
 ## Ustawienia
 
-Strona **Ustawienia** (kafelek na stronie głównej, na telefonie także w menu ☰) pozwala dodawać, zmieniać („Zmień”) i usuwać:
+Strona **Ustawienia** (kafelek na stronie głównej, na telefonie także w menu ☰) ma przełącznik **„Domyślnie ukrywaj nazwiska chorych”** (zapisywany w `sz_atrybuty`; od niego zależy, czy na liście chorych i w Plannerze nazwiska są na starcie rozmyte) oraz pozwala dodawać, zmieniać („Zmień”) i usuwać:
 
 - **szafarzy** – zmiana nazwiska i imienia; usunąć można tylko szafarza bez przydziałów od dziś; jeśli był w minionych terminach, znika z list, a jego nazwisko zostaje w historii,
 - **osiedla** – zmiana nazwy i kodu (zmiana kodu przenosi chorych, wizyty, przydziały i historię); usunąć można tylko osiedle bez chorych; nowe osiedle pojawia się we wszystkich terminach bez szafarza („brak”) – przypisuje się go w Harmonogramie,
 - **terminy harmonogramu** – zmiana daty (razem z wizytami i przydziałami), nazwy i szafarzy (każda zmiana szafarza trafia do logu zmian harmonogramu); nowy termin wymaga nazwy dnia i szafarza dla każdego osiedla; usunięcie terminu usuwa też zaplanowane na ten dzień wizyty.
 
-API: `GET /api/ustawienia`, `POST /api/ustawienia/{szafarze|osiedla|terminy}`, `PUT` i `DELETE` na `/api/ustawienia/szafarze/:id`, `/osiedla/:kod`, `/terminy/:data`.
+API: `GET /api/ustawienia`, `PUT /api/ustawienia/atrybuty/nazwiska_ukryte` (`{"wartosc": true|false}`), `POST /api/ustawienia/{szafarze|osiedla|terminy}`, `PUT` i `DELETE` na `/api/ustawienia/szafarze/:id`, `/osiedla/:kod`, `/terminy/:data`.
 
 ## Operacje na bazie przy wdrożeniu
 

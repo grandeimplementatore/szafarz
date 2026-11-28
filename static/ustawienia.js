@@ -129,7 +129,10 @@
         fNazw: f.nazw || '', fImie: f.imie || '', onNazw: set('nazw'), onImie: set('imie'), addSz: addSz, keySz: enter(addSz),
         fKod: f.kod || '', fONazwa: f.onazwa || '', onKod: set('kod'), onONazwa: set('onazwa'), addOs: addOs, keyOs: enter(addOs),
         fTData: f.tdata || '', fTNazwa: f.tnazwa || '', onTData: set('tdata'), onTNazwa: set('tnazwa'), addT: addT, keyT: enter(addT),
-        selects: selects
+        selects: selects,
+        nazwUkryte: d.atrybuty && d.atrybuty.nazwiska_ukryte ? 'true' : 'false',
+        ukryteStan: d.atrybuty && d.atrybuty.nazwiska_ukryte ? 'Teraz: nazwiska domyślnie ukryte.' : 'Teraz: nazwiska domyślnie widoczne.',
+        toggleUkryte: function (ev) { self.call('PUT', 'atrybuty/nazwiska_ukryte', { wartosc: !!(ev && ev.target && ev.target.checked) }); }
       };
     }
   }

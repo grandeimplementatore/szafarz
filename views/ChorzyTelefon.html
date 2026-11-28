@@ -29,7 +29,7 @@ input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outli
 </a>
 <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
 <span style="font-family: 'Fondamento', Georgia, serif; font-size: 22px; line-height: 1.1">Nasi Chorzy</span>
-<span style="font-size: 11px; opacity: .92">Łącznie {{total}} osób · dane ukryte</span>
+<span style="font-size: 11px; opacity: .92">Łącznie {{total}} osób · {{namesState}}</span>
 </div>
 </header>
 <div style="flex: none; background: #FFFFFF; padding: 10px 12px; border-bottom: 1px solid #DDDDDD">
@@ -206,6 +206,8 @@ const CODE = SZ.revealCode;
 const mask = (s) => s.split(' ').map((w) => 'X' + 'x'.repeat(Math.max(2, w.length - 1))).join(' ');
 const osSel = st.osf || 'all';
 const revealed = st.revealed || {};
+// czy nazwiska są odkryte: najpierw wybór na tej stronie, a domyślnie ustawienie z „Ustawień” (sz_atrybuty)
+const allOn = st.all === undefined ? !SZ.nazwiskaUkryte : !!st.all;
 const asking = st.asking || null;
 const code = st.code || '';
 const err = !!st.err;
@@ -233,7 +235,7 @@ const field = (k) => (e) => this.setState({ form: Object.assign({}, form, { [k]:
 const list = SICK.filter((s) => osSel === 'all' || homeOs(s.id) === osSel);
 const people = list.map((s) => {
 const o = homeOs(s.id);
-const shown = !!revealed[s.id] || !!st.all;
+const shown = !!revealed[s.id] || allOn;
 const isAsking = asking === s.id;
 const isEditing = editing === s.id;
 const dest = s.street + ' ' + s.no + ', 43-100 Tychy';
@@ -292,7 +294,7 @@ onAddOpen: () => this.setState({ adding: true, added: null, nf: { os: osSel !== 
 nfFn: nf.fn || '', nfLn: nf.ln || '', nfStreet: nf.street || '', nfNo: nf.no || '', nfFlat: nf.flat || '', nfFloor: nf.floor || '', nfNote: nf.note || '', onNfFloor: nfield('floor'), onNfNote: nfield('note'), nfOs: nf.os || (osSel !== 'all' ? osSel : OS[0]),
 onNfFn: nfield('fn'), onNfLn: nfield('ln'), onNfStreet: nfield('street'), onNfNo: nfield('no'), onNfFlat: nfield('flat'), onNfOs: nfield('os'),
 nfOsOptions: OS.map((x) => ({ v: x, label: 'Osiedle ' + x })),
-allLocked: !st.all, allUnlocked: !!st.all, askAll, codeAll: askAll ? code : '', errAll: askAll && err,
+allLocked: !allOn, allUnlocked: allOn, namesState: allOn ? 'dane widoczne' : 'dane ukryte', askAll, codeAll: askAll ? code : '', errAll: askAll && err,
 onRevealAll: () => this.setState({ asking: '__all', code: '', err: false }), onHideAll: () => this.setState({ all: false, revealed: {} }),
 onCodeAll: (e) => this.setState({ code: e.target.value, err: false }), onCancelAll: () => this.setState({ asking: null, code: '', err: false }),
 onSubmitAll: subAll, onKeyAll: (e) => { if (e && e.key === 'Enter') subAll(); }, listCount: String(people.length),
