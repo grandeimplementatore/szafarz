@@ -109,6 +109,12 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 <span style="font-size: 14px; line-height: 1.5; color: #555555">Szafarze parafii, kontakty, ogłoszenia i formacja.</span>
 <span style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 120px; padding: 0 18px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700">Otwórz »</span>
 </a>
+<a class="tile" href="/Ustawienia" style="box-sizing: border-box; padding: 26px 22px; background: #FFFFFF; border: 1px solid #DDDDDD; text-decoration: none; color: #333333; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"></path><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: #3F3F3F">Ustawienia</span>
+<span style="font-size: 14px; line-height: 1.5; color: #555555">Lista szafarzy, osiedla i terminy harmonogramu.</span>
+<span style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 120px; padding: 0 18px; background: {{accent}}; color: #FFFFFF; font-size: 14px; font-weight: 700">Otwórz »</span>
+</a>
 
 </div>
 </section>
@@ -276,7 +282,7 @@ SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach(
 const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
 const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
 const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
-const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? (r[OSI[o]] || 'brak szafarza') : ''; };
 const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
 const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));

@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const db = require('./lib/db');
 const slowo = require('./lib/slowo');
+const ust = require('./lib/ustawienia');
 
 const PORT = Number(process.env.PORT || 3000);
 const PROD = process.env.NODE_ENV === 'production' || !!process.env.DYNO;
@@ -56,6 +57,28 @@ async function handle(req, res) {
     return json(res, 200, await slowo.pobierz(iso));
   }
 
+  if (p.startsWith('/api/ustawienia')) {
+    if (req.headers['x-requested-with'] !== 'szafarz') return json(res, 403, { error: 'csrf' });
+    if (req.method !== 'GET' && !sameOrigin(req)) return json(res, 403, { error: 'origin' });
+    const parts = p.split('/').slice(3).map(decodeURIComponent);           // ['szafarze', '12'] itd.
+    try {
+      if (req.method === 'GET' && !parts.length) return json(res, 200, await ust.lista(q));
+      let body = {};
+      if (req.method === 'POST') { try { body = JSON.parse(await readBody(req) || '{}'); } catch (e) { return json(res, 400, { error: 'Nieprawidłowe dane.' }); } }
+      const route = req.method + ' ' + parts[0] + (parts.length > 1 ? '/:x' : '');
+      const ops = {
+        'POST szafarze': () => ust.dodajSzafarza(pool, body), 'DELETE szafarze/:x': () => ust.usunSzafarza(pool, parts[1]),
+        'POST osiedla': () => ust.dodajOsiedle(pool, body), 'DELETE osiedla/:x': () => ust.usunOsiedle(pool, parts[1]),
+        'POST terminy': () => ust.dodajTermin(pool, body), 'DELETE terminy/:x': () => ust.usunTermin(pool, parts[1])
+      };
+      if (!ops[route]) return json(res, 404, { error: 'Nie ma takiej operacji.' });
+      return json(res, 200, { message: await ops[route]() });
+    } catch (e) {
+      if (e instanceof ust.Blad) return json(res, e.status, { error: e.message });
+      throw e;
+    }
+  }
+
   if (p === '/api/state') {
     if (req.headers['x-requested-with'] !== 'szafarz') return json(res, 403, { error: 'csrf' });
     if (req.method === 'GET') {
@@ -78,6 +101,7 @@ async function handle(req, res) {
   if (p === '/') return serveFile(res, path.join(VIEWS, 'Main.html'), 'no-store');
   if (p === '/favicon.ico') return serveFile(res, path.join(STATIC, 'img', 'icon-192.png'), 'public, max-age=86400');
   if (p === '/manifest.webmanifest') return serveFile(res, path.join(STATIC, 'manifest.webmanifest'), 'public, max-age=86400');
+  if (p === '/ustawienia.js') return serveFile(res, path.join(STATIC, 'ustawienia.js'), 'no-cache');
   if (p === '/tresci.js') return serveFile(res, path.join(STATIC, 'tresci.js'), 'no-cache');
   if (p === '/runtime.js') return serveFile(res, path.join(STATIC, 'runtime.js'), 'no-cache');
   if (/^\/[A-Za-z]+$/.test(p) && p !== '/Main') return serveFile(res, path.join(VIEWS, p.slice(1) + '.html'), 'no-store');

@@ -24,10 +24,13 @@ CREATE TABLE IF NOT EXISTS sz_terminy (
 CREATE TABLE IF NOT EXISTS sz_przydzialy (
   data                date    NOT NULL REFERENCES sz_terminy (data) ON DELETE CASCADE,
   osiedle             text    NOT NULL REFERENCES sz_osiedla (kod),
-  szafarz_planowy_id  integer NOT NULL REFERENCES sz_szafarze (id),
+  szafarz_planowy_id  integer REFERENCES sz_szafarze (id),          -- pusty dla osiedla dodanego później
   szafarz_id          integer REFERENCES sz_szafarze (id),
   PRIMARY KEY (data, osiedle)
 );
+
+-- Wcześniejsze wersje wymagały szafarza planowego – osiedle dodane w Ustawieniach może go nie mieć.
+ALTER TABLE sz_przydzialy ALTER COLUMN szafarz_planowy_id DROP NOT NULL;
 
 -- Log zmian harmonogramu (zamiany szafarzy).
 CREATE TABLE IF NOT EXISTS sz_zmiany_szafarzy (

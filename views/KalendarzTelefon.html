@@ -51,7 +51,7 @@ select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outl
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <span style="font-size: 12px; font-weight: 700; color: #3F3F3F">Osiedle</span>
-<div role="group" aria-label="Filtr osiedla" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<div role="group" aria-label="Filtr osiedla" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 6px">
 <sc-for list="{{osTiles}}" as="c" hint-placeholder-count="4">
 <button type="button" aria-pressed="{{c.selected}}" onClick="{{c.pick}}" aria-label="Osiedle {{c.os}}, {{c.cnt}}" style="min-height: 56px; padding: 4px; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
 <span style="font-size: 17px; font-weight: 900; line-height: 1">{{c.os}}</span>
@@ -165,7 +165,7 @@ SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach(
 const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
 const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
 const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
-const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? (r[OSI[o]] || 'brak szafarza') : ''; };
 const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
 const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
@@ -228,7 +228,7 @@ const dim = person && n !== person;
 return {
 os: o,
 lbl: mine ? '#FFFFFF' : '#003C60',
-name: n,
+name: n || 'brak',
 changed: !!(OVR[t.iso] && OVR[t.iso][o]),
 ring: (OVR[t.iso] && OVR[t.iso][o]) ? 'inset 0 0 0 2px #E08A1E' : 'none',
 editable: !past,
@@ -258,7 +258,7 @@ const scope = day === 'upcoming' ? 'nadchodzące' : day === 'all' ? 'cały harmo
 const resultText = 'Pokazano ' + n + ' ' + word + ' (' + scope + (person ? ', szafarz: ' + person : '') + ').';
 
 const names = [];
-terms.forEach((t) => OS.forEach((o) => { if (names.indexOf(t.who[o]) < 0) names.push(t.who[o]); }));
+terms.forEach((t) => OS.forEach((o) => { if (t.who[o] && names.indexOf(t.who[o]) < 0) names.push(t.who[o]); }));
 names.sort((a, b) => a.localeCompare(b, 'pl'));
 const chip = (label, value) => {
 const on = value === person;

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#A9442F">
+<title>Ustawienia – Szafarz 3.0</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Szafarz">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fondamento&amp;family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;family=Source+Serif+4:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F0F0F0}
+a{color:#BD4F38}a:hover{color:#9A3E2B}
+.nav a:hover{background:rgba(0,0,0,.12)}
+.btn:hover{filter:brightness(.9)}
+</style>
+</head>
+<body>
+<template id="tpl">
+
+<div style="background: #F0F0F0; font-family: 'Lato', system-ui, sans-serif; color: #333333; min-height: 100vh">
+
+<div style="background: #A9442F; color: #FFFFFF; font-size: 13px">
+<div style="max-width: 1200px; margin: 0 auto; padding: 8px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px">
+<span style="font-weight: 700">{{lit.dateLabel}}</span>
+<span>Szczęść Boże! · {{lit.dayName}}</span>
+</div>
+</div>
+
+<header style="background: {{accent}}; color: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px">
+<a href="/" style="flex: 1 1 auto; display: flex; align-items: center; gap: 14px; color: #FFFFFF; text-decoration: none">
+<svg aria-hidden="true" width="46" height="52" viewBox="0 0 24 27" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 1v5M9.8 3.2h4.4"></path><path d="M4 26V14a8 8 0 0 1 16 0v12"></path><path d="M9 26v-6a3 3 0 0 1 6 0v6"></path><path d="M2 26h20"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.15; white-space: nowrap">Wspólnota Szafarzy Nadzwyczajnych Komunii&nbsp;Świętej</span>
+<span style="font-family: 'Fondamento', Georgia, serif; font-size: 16px; line-height: 1.2">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span>
+<span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .9">Archidiecezja Katowicka</span>
+</span>
+</a>
+<nav class="nav" aria-label="Menu główne" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="/Kalendarz" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>Harmonogram</a>
+<a href="/Planner" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>Planner</a>
+<a href="/Chorzy" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"></path><path d="M5 9.5V20h14V9.5"></path></svg>Nasi Chorzy</a>
+<a href="/Obrzed" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.6"></circle><path d="M6 9.5h12c0 3.8-2.7 6.3-6 6.3s-6-2.5-6-6.3z"></path><path d="M12 15.8V20M8.5 20.5h7"></path></svg>Obrzęd</a>
+<a href="/Wspolnota" style="display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; padding: 8px 10px; border-radius: 6px; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.6"></circle><path d="M15.6 14.3A5 5 0 0 1 21 19"></path></svg>Nasza Wspólnota</a>
+</nav>
+</div>
+</header>
+
+<section aria-labelledby="tytul" style="position: relative; height: 190px; overflow: hidden; background: #2B3643">
+<img src="/img/kosciol.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 60%">
+<div style="position: absolute; inset: 0; background: rgba(20,24,30,.55); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #FFFFFF; padding: 0 20px 40px; gap: 6px">
+<h1 id="tytul" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4.4vw, 50px); line-height: 1.05; text-shadow: 0 2px 12px rgba(0,0,0,.5)">Ustawienia</h1>
+<div style="font-size: 15px; text-shadow: 0 1px 6px rgba(0,0,0,.6)">Szafarze, osiedla i terminy harmonogramu</div>
+</div>
+</section>
+
+<main style="max-width: 1200px; margin: -40px auto 0; padding: 0 20px 48px; box-sizing: border-box; position: relative">
+<div style="background: #FFFFFF; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+<nav aria-label="Ścieżka" style="font-size: 13px; color: #5D5D5D"><a href="/">Strona główna</a> › Ustawienia</nav>
+<div style="display: flex; flex-direction: column; gap: 20px">
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 15px; color: #555555">Wczytywanie…</p></sc-if>
+<sc-if value="{{msg}}" hint-placeholder-val="{{ false }}"><div role="status" style="padding: 10px 12px; background: #EEF6F1; border: 1px solid #BFDCCB; font-size: 14px; font-weight: 700; color: #1F5E3A">{{msg}}</div></sc-if>
+<sc-if value="{{err}}" hint-placeholder-val="{{ false }}"><div role="alert" style="padding: 10px 12px; background: #FFF6F3; border: 1px solid #F1D6CE; font-size: 14px; font-weight: 700; color: #8C3524">{{err}}</div></sc-if>
+<sc-if value="{{ready}}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; align-items: start">
+
+<section aria-labelledby="h-sz" style="background: #FFFFFF; border: 1px solid #DDDDDD; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+<h2 id="h-sz" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">Szafarze ({{szCount}})</h2>
+<ul style="margin: 0; padding: 0; list-style: none">
+<sc-for list="{{szafarze}}" as="s" hint-placeholder-count="4"><li style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 10px 0; border-bottom: 1px solid #EEEEEE"><span style="flex: 1 1 160px; display: flex; flex-direction: column"><span style="font-size: 16px; font-weight: 900; color: #222222">{{s.label}}</span><span style="font-size: 13px; color: #5D5D5D">{{s.info}}</span></span>
+<sc-if value="{{s.notConfirm}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{s.ask}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #E3B5AE; background: #FFFFFF; color: #B3261E; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Usuń</button></sc-if>
+<sc-if value="{{s.confirm}}" hint-placeholder-val="{{ false }}"><div role="alertdialog" aria-label="Potwierdź usunięcie" style="flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; background: #FFF6F3; border: 1px solid #F1D6CE"><span style="flex: 1 1 220px; font-size: 14px; font-weight: 700; color: #8C3524">{{s.question}}</span><sc-if value="{{s.canYes}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{s.yes}}" style="min-height: 36px; padding: 0 12px; border: 0; background: #B3261E; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 900; cursor: pointer">Tak, usuń</button></sc-if><button type="button" onClick="{{s.no}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Anuluj</button></div></sc-if></li></sc-for>
+</ul>
+<div role="group" aria-label="Dodaj szafarza" style="display: flex; flex-direction: column; gap: 10px; padding: 14px; background: #F7F7F7">
+<span style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Dodaj szafarza</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F">Nazwisko *<input id="ust-sz-nazw" value="{{fNazw}}" onChange="{{onNazw}}" onKeyDown="{{keySz}}" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F">Imię<input id="ust-sz-imie" value="{{fImie}}" onChange="{{onImie}}" onKeyDown="{{keySz}}" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"></label>
+</div>
+<button type="button" onClick="{{addSz}}" style="min-height: 44px; padding: 0 18px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Dodaj szafarza</button>
+</div>
+</section>
+
+<section aria-labelledby="h-os" style="background: #FFFFFF; border: 1px solid #DDDDDD; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+<h2 id="h-os" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">Osiedla ({{osCount}})</h2>
+<ul style="margin: 0; padding: 0; list-style: none">
+<sc-for list="{{osiedla}}" as="o" hint-placeholder-count="4"><li style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 10px 0; border-bottom: 1px solid #EEEEEE"><span aria-hidden="true" style="flex: none; min-width: 44px; height: 36px; padding: 0 6px; box-sizing: border-box; background: #003C60; color: #FFFFFF; font-size: 15px; font-weight: 900; display: flex; align-items: center; justify-content: center">{{o.kod}}</span><span style="flex: 1 1 140px; display: flex; flex-direction: column"><span style="font-size: 16px; font-weight: 900; color: #222222">{{o.nazwa}}</span><span style="font-size: 13px; color: #5D5D5D">{{o.info}}</span></span>
+<sc-if value="{{o.notConfirm}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{o.ask}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #E3B5AE; background: #FFFFFF; color: #B3261E; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Usuń</button></sc-if>
+<sc-if value="{{o.confirm}}" hint-placeholder-val="{{ false }}"><div role="alertdialog" aria-label="Potwierdź usunięcie" style="flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; background: #FFF6F3; border: 1px solid #F1D6CE"><span style="flex: 1 1 220px; font-size: 14px; font-weight: 700; color: #8C3524">{{o.question}}</span><sc-if value="{{o.canYes}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{o.yes}}" style="min-height: 36px; padding: 0 12px; border: 0; background: #B3261E; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 900; cursor: pointer">Tak, usuń</button></sc-if><button type="button" onClick="{{o.no}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Anuluj</button></div></sc-if></li></sc-for>
+</ul>
+<div role="group" aria-label="Dodaj osiedle" style="display: flex; flex-direction: column; gap: 10px; padding: 14px; background: #F7F7F7">
+<span style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Dodaj osiedle</span>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 8px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F">Kod *<input id="ust-os-kod" value="{{fKod}}" onChange="{{onKod}}" onKeyDown="{{keyOs}}" placeholder="np. P" maxLength="4" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F">Nazwa<input id="ust-os-nazwa" value="{{fONazwa}}" onChange="{{onONazwa}}" onKeyDown="{{keyOs}}" placeholder="np. Osiedle P" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"></label>
+</div>
+<button type="button" onClick="{{addOs}}" style="min-height: 44px; padding: 0 18px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Dodaj osiedle</button>
+</div>
+</section>
+</div>
+
+<section aria-labelledby="h-t" style="background: #FFFFFF; border: 1px solid #DDDDDD; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px">
+<h2 id="h-t" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">Harmonogram wizyt ({{tCount}})</h2>
+<sc-if value="{{hasPast}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{togglePast}}" style="border: 0; background: transparent; color: {{accent}}; font-family: inherit; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0">{{pastToggle}}</button></sc-if>
+</div>
+<div role="group" aria-label="Dodaj termin" style="display: flex; flex-direction: column; gap: 10px; padding: 14px; background: #F7F7F7">
+<span style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Dodaj termin</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F">Data *<input id="ust-t-data" type="date" value="{{fTData}}" onChange="{{onTData}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F; grid-column: span 2">Nazwa dnia *<input id="ust-t-nazwa" value="{{fTNazwa}}" onChange="{{onTNazwa}}" onKeyDown="{{keyT}}" placeholder="np. II Niedziela Adwentu" autoComplete="off" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"></label>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px">
+<sc-for list="{{selects}}" as="x" hint-placeholder-count="4"><label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: #3F3F3F">Osiedle {{x.os}} *<sc-select id="{{x.id}}" value="{{x.value}}" onChange="{{x.onChange}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: inherit; font-size: 15px; color: #222222; width: 100%; box-sizing: border-box; background: #FFFFFF"><sc-option value="">— wybierz —</sc-option><sc-for list="{{x.options}}" as="n" hint-placeholder-count="3"><sc-option value="{{n}}">{{n}}</sc-option></sc-for></sc-select></label></sc-for>
+</div>
+<button type="button" onClick="{{addT}}" style="min-height: 44px; padding: 0 18px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Dodaj termin</button>
+</div>
+<sc-if value="{{noTerms}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 14px; border: 1px dashed #C9C9C9; text-align: center; font-size: 14px; color: #555555">Brak nadchodzących terminów.</p></sc-if>
+<ul style="margin: 0; padding: 0; list-style: none">
+<sc-for list="{{terminy}}" as="t" hint-placeholder-count="5"><li style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 10px 0; border-bottom: 1px solid #EEEEEE; opacity: {{t.op}}"><span style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 900; color: #222222">{{t.date}} <span style="font-weight: 400; color: #555555">· {{t.nazwa}}</span></span><span style="font-size: 13px; color: #333333">{{t.who}}</span></span>
+<sc-if value="{{t.notConfirm}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{t.ask}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #E3B5AE; background: #FFFFFF; color: #B3261E; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Usuń</button></sc-if>
+<sc-if value="{{t.confirm}}" hint-placeholder-val="{{ false }}"><div role="alertdialog" aria-label="Potwierdź usunięcie" style="flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; background: #FFF6F3; border: 1px solid #F1D6CE"><span style="flex: 1 1 220px; font-size: 14px; font-weight: 700; color: #8C3524">{{t.question}}</span><sc-if value="{{t.canYes}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{t.yes}}" style="min-height: 36px; padding: 0 12px; border: 0; background: #B3261E; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 900; cursor: pointer">Tak, usuń</button></sc-if><button type="button" onClick="{{t.no}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Anuluj</button></div></sc-if></li></sc-for>
+</ul>
+</section>
+</sc-if>
+</div>
+</div>
+</main>
+
+<footer style="background: #003C60; color: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 28px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 14px; line-height: 1.6">
+<div style="display: flex; flex-direction: column"><span style="font-family: 'Fondamento', Georgia, serif; font-size: 19px">Wspólnota Szafarzy Nadzwyczajnych Komunii&nbsp;Świętej</span><span style="opacity: .85">Parafia Błogosławionej Karoliny Kózkówny w Tychach</span></div>
+<div style="display: flex; flex-direction: column"><span style="font-weight: 700">Kancelaria parafialna</span><span style="opacity: .85">{{ref.ust.kancelaria_adres}} · tel. {{ref.ust.kancelaria_telefon}}</span></div>
+</div>
+</footer>
+
+</div>
+</template>
+<div id="root"></div>
+<script src="/tresci.js"></script>
+<script src="/runtime.js"></script>
+<script src="/ustawienia.js"></script>
+<script>
+const LIT_MAKE = () => {
+const now = new Date();
+const Y = now.getFullYear(), M = now.getMonth() + 1, D = now.getDate();
+const dn = (y, m, d) => Math.round(Date.UTC(y, m - 1, d) / 864e5);
+const wdOf = (x) => new Date(x * 864e5).getUTCDay();
+const x = dn(Y, M, D), wd = wdOf(x);
+const WDF = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+const GEN = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+const ROM = (n) => { const v = [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let r = ''; v.forEach(([k, s]) => { while (n >= k) { r += s; n -= k; } }); return r; };
+const easter = (y) => { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451); const mo = Math.floor((h + l - 7 * m + 114) / 31), da = ((h + l - 7 * m + 114) % 31) + 1; return dn(y, mo, da); };
+const advent1 = (y) => { const c = dn(y, 12, 25); const w = wdOf(c); return c - (w === 0 ? 7 : w) - 21; };
+const E = easter(Y), ash = E - 46, pent = E + 49, adv = advent1(Y);
+const ep = dn(Y, 1, 6), bapt = ep + (7 - wdOf(ep));
+const sun = x - wd;
+const GREEN = '#2E7D4F', VIOLET = '#6B3FA0', WHITE = '#C9A227', RED = '#B3261E';
+let name = '', color = GREEN, sunday = wd === 0, privileged = false;
+if (x >= adv && x < dn(Y, 12, 25)) {
+  const w = Math.floor((sun - adv) / 7) + 1; color = VIOLET; privileged = true;
+  name = sunday ? ROM(w) + ' Niedziela Adwentu' : WDF[wd] + ' ' + ROM(w) + ' tygodnia Adwentu';
+} else if (x >= dn(Y, 12, 25) || x <= bapt) {
+  color = WHITE;
+  const hf = (() => { for (let k = dn(Y, 12, 26); k <= dn(Y, 12, 31); k++) if (wdOf(k) === 0) return k; return dn(Y, 12, 30); })();
+  if (x === bapt) name = 'Święto Chrztu Pańskiego';
+  else if (x >= dn(Y, 12, 25) && x === hf) name = 'Święto Świętej Rodziny: Jezusa, Maryi i Józefa';
+  else if (x > dn(Y, 12, 25)) name = WDF[wd] + ' w oktawie Narodzenia Pańskiego';
+  else name = sunday ? 'II Niedziela po Narodzeniu Pańskim' : WDF[wd] + ' okresu Narodzenia Pańskiego';
+} else if (x < ash) {
+  const w = Math.floor((sun - bapt) / 7) + 1;
+  name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
+} else if (x < E) {
+  color = VIOLET; privileged = true;
+  const lent1 = ash + 4;
+  if (x === ash) name = 'Środa Popielcowa';
+  else if (x < lent1) name = WDF[wd] + ' po Popielcu';
+  else if (x === E - 7) { name = 'Niedziela Palmowa Męki Pańskiej'; color = RED; }
+  else if (x > E - 7) { name = ['', 'Wielki Poniedziałek', 'Wielki Wtorek', 'Wielka Środa', 'Wielki Czwartek', 'Wielki Piątek', 'Wielka Sobota'][wd]; if (wd === 5) color = RED; if (wd === 4) color = WHITE; }
+  else { const w = Math.floor((sun - lent1) / 7) + 1; name = sunday ? ROM(w) + ' Niedziela Wielkiego Postu' : WDF[wd] + ' ' + ROM(w) + ' tygodnia Wielkiego Postu'; }
+} else if (x <= pent) {
+  color = WHITE; privileged = true;
+  const w = Math.floor((sun - E) / 7) + 1;
+  if (x === E) name = 'Niedziela Zmartwychwstania Pańskiego';
+  else if (x < E + 7) name = WDF[wd] + ' w oktawie Wielkanocy';
+  else if (x === E + 7) name = 'II Niedziela Wielkanocna, czyli Miłosierdzia Bożego';
+  else if (x === E + 42) name = 'Uroczystość Wniebowstąpienia Pańskiego';
+  else if (x === pent) { name = 'Uroczystość Zesłania Ducha Świętego'; color = RED; }
+  else name = sunday ? ROM(w) + ' Niedziela Wielkanocna' : WDF[wd] + ' ' + ROM(w) + ' tygodnia wielkanocnego';
+} else {
+  const w = 35 - (adv - sun) / 7;
+  if (x === adv - 7) { name = 'Uroczystość Jezusa Chrystusa, Króla Wszechświata'; color = WHITE; }
+  else if (x === pent + 1) { name = 'Święto Najświętszej Maryi Panny, Matki Kościoła'; color = WHITE; }
+  else if (x === pent + 7) { name = 'Uroczystość Najświętszej Trójcy'; color = WHITE; }
+  else if (x === pent + 11) { name = 'Uroczystość Najświętszego Ciała i Krwi Chrystusa'; color = WHITE; }
+  else if (x === pent + 19) { name = 'Uroczystość Najświętszego Serca Pana Jezusa'; color = WHITE; }
+  else name = sunday ? ROM(w) + ' Niedziela zwykła' : WDF[wd] + ' ' + ROM(w) + ' tygodnia zwykłego';
+}
+const FIXED = Object.fromEntries(SZ.ref.swieta.map((s) => [s.m + '-' + s.d, [s.nazwa, { bialy: WHITE, czerwony: RED, fioletowy: VIOLET, zielony: GREEN }[s.kolor] || WHITE, s.ranga]]));
+const fx = FIXED[M + '-' + D];
+const holyWeek = x >= E - 7 && x <= E + 7;
+if (fx && !holyWeek && !(sunday && privileged) && !(sunday && fx[2] === 'F')) { name = fx[0]; color = fx[1]; }
+const iso = Y + '-' + String(M).padStart(2, '0') + '-' + String(D).padStart(2, '0');
+const READ = SZ.ref.slowo;
+const r = READ[iso];
+const rows = r ? r[2].map((z, k) => ({ label: z[0], sig: z[1], border: k < r[2].length - 1 ? '1px solid #E5E5E5' : '0' })) : [];
+return {
+  dateLabel: WDF[wd] + ', ' + D + ' ' + GEN[M - 1] + ' ' + Y,
+  dayName: name, dayColor: color,
+  hasQuote: !!r, noQuote: !r,
+  quote: r ? '„' + r[0] + '”' : '', quoteRef: r ? r[1] : '',
+  rows, hasRows: rows.length > 0, sigLine: rows.map((z) => z.sig).join(' · '),
+  url: 'https://www.archidiecezjakatowicka.pl/slowo-na-dzisiaj?data=' + String(D).padStart(2, '0') + '-' + String(M).padStart(2, '0') + '-' + Y,
+  dayShort: D + ' ' + GEN[M - 1]
+};
+};
+SZ.mount(Ustawienia, {"mobile":"/UstawieniaTelefon","desktop":null});
+</script>
+</body>
+</html>

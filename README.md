@@ -2,7 +2,7 @@
 
 Aplikacja Wspólnoty Szafarzy Nadzwyczajnych Komunii Świętej – Parafia bł. Karoliny Kózkówny w Tychach.
 
-Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota – w wersji na komputer i telefon. Aplikacja jest publiczna (bez logowania).
+Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota, Ustawienia – w wersji na komputer i telefon. Aplikacja jest publiczna (bez logowania).
 
 ## Gdzie są dane
 
@@ -21,14 +21,25 @@ Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komuni
 
 **API** – „Słowo na dziś” serwer pobiera na bieżąco ze strony Archidiecezji Katowickiej (`/api/slowo`, krótko trzymane w pamięci). Gdy strona nie odpowiada, aplikacja pokazuje datę, dzień liturgiczny i link do czytań.
 
+## Ustawienia
+
+Strona **Ustawienia** (kafelek na stronie głównej, na telefonie także w menu ☰) pozwala dodawać i usuwać:
+
+- **szafarzy** – usunąć można tylko szafarza bez przydziałów od dziś; jeśli był w minionych terminach, znika z list, a jego nazwisko zostaje w historii,
+- **osiedla** – usunąć można tylko osiedle bez chorych; nowe osiedle pojawia się we wszystkich terminach bez szafarza („brak”) – przypisuje się go w Harmonogramie,
+- **terminy harmonogramu** – nowy termin wymaga nazwy dnia i szafarza dla każdego osiedla; usunięcie terminu usuwa też zaplanowane na ten dzień wizyty.
+
+API: `GET /api/ustawienia`, `POST /api/ustawienia/{szafarze|osiedla|terminy}`, `DELETE /api/ustawienia/szafarze/:id`, `/osiedla/:kod`, `/terminy/:data`.
+
 ## Operacje na bazie przy wdrożeniu
 
 `Procfile` ma fazę `release: node db/deploy.js` – Heroku wykonuje ją przy każdym wdrożeniu, zanim uruchomi nową wersję. Skrypt w jednej transakcji:
 
 1. tworzy brakujące tabele (`db/schema.sql`),
 2. w pustej bazie wczytuje dane startowe – osiedla, szafarzy i harmonogram 15.11.2026–9.05.2027 z pliku XLS (`db/dane-startowe.sql`),
-3. jeśli nie ma jeszcze żadnych chorych, a istnieje tabela pierwszej wersji `szafarz_store`, przenosi z niej chorych, wizyty i zmiany,
-4. usuwa tabele, których aplikacja już nie używa: `sz_dziennik`, `sz_migracje`, `sz_obrzedy`, `sz_obrzedy_kroki`, `sz_slowo_na_dzis`, `sz_swieta_stale`, `sz_ustawienia`, `sz_uwagi_harmonogramu`, `sz_wersja`, `szafarz_audit`, `szafarz_config`, `szafarz_store`, `szafarz_users`.
+3. pozwala na osiedla bez przypisanego szafarza (`szafarz_planowy_id` może być pusty),
+4. jeśli nie ma jeszcze żadnych chorych, a istnieje tabela pierwszej wersji `szafarz_store`, przenosi z niej chorych, wizyty i zmiany,
+5. usuwa tabele, których aplikacja już nie używa: `sz_dziennik`, `sz_migracje`, `sz_obrzedy`, `sz_obrzedy_kroki`, `sz_slowo_na_dzis`, `sz_swieta_stale`, `sz_ustawienia`, `sz_uwagi_harmonogramu`, `sz_wersja`, `szafarz_audit`, `szafarz_config`, `szafarz_store`, `szafarz_users`.
 
 Przy błędzie transakcja jest wycofywana, baza zostaje bez zmian, a Heroku nie uruchamia nowej wersji. Skrypt można bezpiecznie wykonywać wielokrotnie. Ręcznie: `npm run db` (z ustawionym `DATABASE_URL`).
 
@@ -50,6 +61,7 @@ Kopie zapasowe: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Wars
 - `server.js` – serwer: strony z `views/`, pliki z `static/`, API `/api/state` (dane z bazy i zapis zmian) i `/api/slowo`.
 - `lib/db.js` – odczyt i zapis danych w bazie (z ochroną przed nadpisaniem cudzych zmian przy równoczesnym zapisie).
 - `lib/slowo.js` – pobieranie „Słowa na dziś”.
+- `lib/ustawienia.js`, `static/ustawienia.js` – strona Ustawienia (serwer i widok).
 - `db/` – schemat, dane startowe i operacje wykonywane przy wdrożeniu.
 - `views/*.html` – widoki stron, `static/runtime.js` – silnik widoków w przeglądarce.
 

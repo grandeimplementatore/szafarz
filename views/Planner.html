@@ -86,7 +86,7 @@ input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outli
 
 <section aria-labelledby="krok2" style="display: flex; flex-direction: column; gap: 10px">
 <h2 id="krok2" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 26px; color: {{accent}}">2. Wybierz osiedle</h2>
-<div class="pl-os" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+<div class="pl-os" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px">
 <sc-for list="{{osCards}}" as="c" hint-placeholder-count="4">
 <button type="button" aria-pressed="{{c.selected}}" onClick="{{c.pick}}" style="text-align: left; min-height: 96px; padding: 12px 14px; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 3px">
 <span style="font-size: 26px; font-weight: 900; line-height: 1">{{c.os}}</span>
@@ -299,7 +299,7 @@ SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach(
 const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
 const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
 const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
-const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? (r[OSI[o]] || 'brak szafarza') : ''; };
 const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
 const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
@@ -311,7 +311,7 @@ const code = st.code || '';
 const err = !!st.err;
 const focus = db.focus && SUNDAYS.indexOf(db.focus.iso) >= 0 ? db.focus : null;
 const selIso = st.iso || (focus ? focus.iso : SUNDAYS[0]);
-const selOs = st.os || (focus ? focus.os : 'W');
+const selOs = (st.os && OS.indexOf(st.os) >= 0) ? st.os : (focus && OS.indexOf(focus.os) >= 0 ? focus.os : OS[0]);
 const showOthers = !!st.others;
 const plan = db.plan[selIso];
 const byId = (id) => SICK.find((s) => s.id === id);

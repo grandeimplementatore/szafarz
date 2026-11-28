@@ -33,7 +33,7 @@ input:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outli
 </div>
 </header>
 <div style="flex: none; background: #FFFFFF; padding: 10px 12px; border-bottom: 1px solid #DDDDDD">
-<div role="group" aria-label="Filtr osiedla" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<div role="group" aria-label="Filtr osiedla" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 6px">
 <sc-for list="{{osTiles}}" as="c" hint-placeholder-count="4">
 <button type="button" aria-pressed="{{c.selected}}" onClick="{{c.pick}}" aria-label="Osiedle {{c.os}}, {{c.cnt}}" style="min-height: 56px; padding: 4px; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-family: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
 <span style="font-size: 17px; font-weight: 900; line-height: 1">{{c.os}}</span>
@@ -198,7 +198,7 @@ SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach(
 const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
 const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
 const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
-const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? (r[OSI[o]] || 'brak szafarza') : ''; };
 const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
 const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
@@ -223,7 +223,7 @@ const nf = st.nf || {};
 const nfield = (k) => (e) => this.setState({ nf: Object.assign({}, nf, { [k]: e.target.value }), addErr: false });
 const addOpen = !!st.adding;
 const onAddSave = () => {
-const v = { fn: (nf.fn || '').trim(), ln: (nf.ln || '').trim(), street: (nf.street || '').trim(), no: (nf.no || '').trim(), flat: (nf.flat || '').trim(), floor: (nf.floor || '').trim(), note: (nf.note || '').trim(), os: nf.os || (osSel !== 'all' ? osSel : 'W') };
+const v = { fn: (nf.fn || '').trim(), ln: (nf.ln || '').trim(), street: (nf.street || '').trim(), no: (nf.no || '').trim(), flat: (nf.flat || '').trim(), floor: (nf.floor || '').trim(), note: (nf.note || '').trim(), os: nf.os || (osSel !== 'all' ? osSel : OS[0]) };
 if (!v.fn || !v.ln || !v.street || !v.no) { this.setState({ addErr: true }); return; }
 v.id = 'n' + Date.now();
 commit({ added: (db.added || []).concat([v]) });
@@ -288,8 +288,8 @@ const bars = OS.map((o) => ({ os: o, count: String(counts[o]), w: Math.round(cou
 const askAll = asking === '__all';
 const subAll = () => { if (String(code).trim() === CODE) this.setState({ all: true, asking: null, code: '', err: false }); else this.setState({ err: true }); };
 return { isAdding: addOpen, notAdding: !addOpen, addErr: !!st.addErr, justAdded: !!st.added && !addOpen, justAddedText: 'Dodano chorego do listy. Możesz go teraz zaplanować w Plannerze.',
-onAddOpen: () => this.setState({ adding: true, added: null, nf: { os: osSel !== 'all' ? osSel : 'W' }, addErr: false }), onAddCancel: () => this.setState({ adding: false, nf: {}, addErr: false }), onAddSave,
-nfFn: nf.fn || '', nfLn: nf.ln || '', nfStreet: nf.street || '', nfNo: nf.no || '', nfFlat: nf.flat || '', nfFloor: nf.floor || '', nfNote: nf.note || '', onNfFloor: nfield('floor'), onNfNote: nfield('note'), nfOs: nf.os || (osSel !== 'all' ? osSel : 'W'),
+onAddOpen: () => this.setState({ adding: true, added: null, nf: { os: osSel !== 'all' ? osSel : OS[0] }, addErr: false }), onAddCancel: () => this.setState({ adding: false, nf: {}, addErr: false }), onAddSave,
+nfFn: nf.fn || '', nfLn: nf.ln || '', nfStreet: nf.street || '', nfNo: nf.no || '', nfFlat: nf.flat || '', nfFloor: nf.floor || '', nfNote: nf.note || '', onNfFloor: nfield('floor'), onNfNote: nfield('note'), nfOs: nf.os || (osSel !== 'all' ? osSel : OS[0]),
 onNfFn: nfield('fn'), onNfLn: nfield('ln'), onNfStreet: nfield('street'), onNfNo: nfield('no'), onNfFlat: nfield('flat'), onNfOs: nfield('os'),
 nfOsOptions: OS.map((x) => ({ v: x, label: 'Osiedle ' + x })),
 allLocked: !st.all, allUnlocked: !!st.all, askAll, codeAll: askAll ? code : '', errAll: askAll && err,

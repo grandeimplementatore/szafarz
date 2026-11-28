@@ -104,19 +104,16 @@ select:focus,button:focus-visible,a:focus-visible{outline:3px solid #F2B8A9;outl
 </div>
 
 <div role="table" aria-label="Przydział szafarzy do osiedli" style="display: flex; flex-direction: column">
-<div role="row" class="khead" style="display: grid; grid-template-columns: minmax(104px, 1.5fr) repeat(4, minmax(0, 1fr)); gap: 8px; padding: 0 0 10px; border-bottom: 2px solid #333333">
+<div role="row" class="khead" style="display: grid; grid-template-columns: minmax(104px, 1.5fr) repeat({{ref.osiedlaN}}, minmax(0, 1fr)); gap: 8px; padding: 0 0 10px; border-bottom: 2px solid #333333">
 <span role="columnheader" style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F">Termin</span>
-<span role="columnheader" style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F; text-align: center">Os. W</span>
-<span role="columnheader" style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F; text-align: center">Os. T2</span>
-<span role="columnheader" style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F; text-align: center">Os. U</span>
-<span role="columnheader" style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F; text-align: center">Os. NO</span>
+<sc-for list="{{ref.osiedla}}" as="o" hint-placeholder-count="4"><span role="columnheader" style="font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #3F3F3F; text-align: center">Os. {{o}}</span></sc-for>
 </div>
 
 <sc-for list="{{months}}" as="m" hint-placeholder-count="2">
 <div role="rowgroup" style="display: flex; flex-direction: column">
 <div style="font-family: 'Fondamento', Georgia, serif; font-size: 24px; color: {{accent}}; padding: 18px 0 8px">{{m.label}}</div>
 <sc-for list="{{m.rows}}" as="r" hint-placeholder-count="4">
-<div role="row" class="krow" style="display: grid; grid-template-columns: minmax(104px, 1.5fr) repeat(4, minmax(0, 1fr)); gap: 8px; align-items: center; padding: 8px 0 8px 10px; border-bottom: 1px solid #E5E5E5; border-left: 4px solid {{r.edge}}; opacity: {{r.op}}">
+<div role="row" class="krow" style="display: grid; grid-template-columns: minmax(104px, 1.5fr) repeat({{ref.osiedlaN}}, minmax(0, 1fr)); gap: 8px; align-items: center; padding: 8px 0 8px 10px; border-bottom: 1px solid #E5E5E5; border-left: 4px solid {{r.edge}}; opacity: {{r.op}}">
 <div role="rowheader" style="display: flex; align-items: center; gap: 12px; min-width: 0">
 <span style="flex: none; font-size: 26px; font-weight: 900; color: #222222; width: 34px; text-align: right">{{r.dayNum}}</span>
 <span style="display: flex; flex-direction: column; min-width: 0">
@@ -312,7 +309,7 @@ SUNDAYS.forEach((iso) => { if (!db.plan[iso]) { db.plan[iso] = {}; } OS.forEach(
 const SICK = SICK0.concat(db.added || []).filter((s) => (db.removed || []).indexOf(s.id) < 0).map((s) => Object.assign({}, s, (db.edits || {})[s.id] || {}));
 const commit = (patch) => { const nd = Object.assign({}, db, patch); save(nd); this.setState({ db: nd }); };
 const homeOs = (id) => db.sickOs[id] || (SICK.find((s) => s.id === id) || {}).os;
-const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? r[OSI[o]] : ''; };
+const whoOn = (iso, o) => { const ov = (db.overrides || {})[iso]; if (ov && ov[o]) return ov[o]; const r = T.find((x) => x[0] === iso); return r ? (r[OSI[o]] || 'brak szafarza') : ''; };
 const plannedCount = (iso, o) => (db.plan[iso] && db.plan[iso][o] ? db.plan[iso][o].length : 0);
 const plannedWhere = (iso, id) => (db.plan[iso] ? OS.find((o) => db.plan[iso][o].indexOf(id) >= 0) || null : null);
 const goPlan = (iso, o) => save(Object.assign({}, db, { focus: { iso, os: o } }));
@@ -370,7 +367,7 @@ const n = t.who[o];
 const mine = person && n === person;
 const dim = person && n !== person;
 return {
-name: n,
+name: n || 'brak',
 changed: !!(OVR[t.iso] && OVR[t.iso][o]),
 ring: (OVR[t.iso] && OVR[t.iso][o]) ? 'inset 0 0 0 2px #E08A1E' : 'none',
 editable: !past,
@@ -400,7 +397,7 @@ const scope = day === 'upcoming' ? 'nadchodzące' : day === 'all' ? 'cały harmo
 const resultText = 'Pokazano ' + n + ' ' + word + ' (' + scope + (person ? ', szafarz: ' + person : '') + ').';
 
 const names = [];
-terms.forEach((t) => OS.forEach((o) => { if (names.indexOf(t.who[o]) < 0) names.push(t.who[o]); }));
+terms.forEach((t) => OS.forEach((o) => { if (t.who[o] && names.indexOf(t.who[o]) < 0) names.push(t.who[o]); }));
 names.sort((a, b) => a.localeCompare(b, 'pl'));
 const chip = (label, value) => {
 const on = value === person;
