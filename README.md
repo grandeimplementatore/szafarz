@@ -4,34 +4,37 @@ Aplikacja Wspólnoty Szafarzy Nadzwyczajnych Komunii Świętej – Parafia bł. 
 
 Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komunii Świętej (także krok po kroku), Nasza Wspólnota – w wersji na komputer i telefon. Aplikacja jest publiczna (bez logowania).
 
-## Zasada: wszystkie dane w bazie
+## Gdzie są dane
 
-Kod aplikacji nie zawiera danych. Wszystko, co strony pokazują i co użytkownicy wprowadzają, jest w bazie PostgreSQL:
+**Baza PostgreSQL** – tylko dane, które się zmieniają:
 
 | Tabela | Zawartość |
 |---|---|
-| `sz_terminy`, `sz_przydzialy` | harmonogram: terminy posługi i szafarz przydzielony do każdego osiedla (planowy i aktualny) |
-| `sz_zmiany_szafarzy` | historia zamian szafarzy („Zmiany w harmonogramie”) |
-| `sz_uwagi_harmonogramu` | uwagi do harmonogramu |
-| `sz_szafarze`, `sz_osiedla` | słowniki szafarzy i osiedli |
-| `sz_chorzy`, `sz_wizyty` | chorzy i zaplanowane wizyty |
-| `sz_dziennik` | dziennik wszystkich akcji zapisujących dane (co, kiedy, z jakiego adresu) |
-| `sz_obrzedy`, `sz_obrzedy_kroki` | teksty obrzędów (zwykły, skrócony, wiatyk) |
-| `sz_slowo_na_dzis`, `sz_swieta_stale` | „Słowo na dziś” i stałe święta do nazwy dnia liturgicznego |
-| `sz_ustawienia` | treści wspólnoty: opis, spotkania, opiekun, lider, dane kancelarii |
-| `sz_wersja`, `sz_migracje` | wersja danych (ochrona przed nadpisaniem przy równoczesnych zmianach) i lista wykonanych migracji |
+| `sz_terminy`, `sz_przydzialy` | harmonogram wizyt: terminy i szafarz każdego osiedla (planowy i aktualny po zamianie) |
+| `sz_zmiany_szafarzy` | log zmian harmonogramu (kto, na kogo, kiedy) |
+| `sz_szafarze` | lista szafarzy |
+| `sz_osiedla` | lista osiedli |
+| `sz_chorzy` | chorzy z atrybutami (adres, piętro, uwagi, osiedle) |
+| `sz_wizyty` | zaplanowane wizyty |
 
-Struktura bazy powstaje automatycznie przy starcie aplikacji z plików w `db/migracje/` – każdy plik jest wykonywany dokładnie raz:
+**Kod** – stałe treści: `static/tresci.js` (opis wspólnoty, spotkania, opiekun, dane kancelarii, uwagi do harmonogramu, stałe święta, teksty obrzędów) oraz cały interfejs w `views/`.
 
-- `001_schemat.sql` – tabele,
-- `002_dane_poczatkowe.sql` – jednorazowy import danych startowych (harmonogram 15.11.2026–9.05.2027 z pliku XLS, szafarze, obrzędy, czytania, opis wspólnoty),
-- `003_dane_z_poprzedniej_wersji.js` – przeniesienie danych zapisanych przez poprzednią wersję aplikacji (tabela `szafarz_store`).
+**API** – „Słowo na dziś” serwer pobiera na bieżąco ze strony Archidiecezji Katowickiej (`/api/slowo`, krótko trzymane w pamięci). Gdy strona nie odpowiada, aplikacja pokazuje datę, dzień liturgiczny i link do czytań.
 
-Nowy harmonogram, zmiana opiekuna, nowe czytania itp. – to zmiany w bazie (np. `heroku pg:psql`), bez zmian w kodzie.
+## Operacje na bazie przy wdrożeniu
+
+`Procfile` ma fazę `release: node db/deploy.js` – Heroku wykonuje ją przy każdym wdrożeniu, zanim uruchomi nową wersję. Skrypt w jednej transakcji:
+
+1. tworzy brakujące tabele (`db/schema.sql`),
+2. w pustej bazie wczytuje dane startowe – osiedla, szafarzy i harmonogram 15.11.2026–9.05.2027 z pliku XLS (`db/dane-startowe.sql`),
+3. jeśli nie ma jeszcze żadnych chorych, a istnieje tabela pierwszej wersji `szafarz_store`, przenosi z niej chorych, wizyty i zmiany,
+4. usuwa tabele, których aplikacja już nie używa: `sz_dziennik`, `sz_migracje`, `sz_obrzedy`, `sz_obrzedy_kroki`, `sz_slowo_na_dzis`, `sz_swieta_stale`, `sz_ustawienia`, `sz_uwagi_harmonogramu`, `sz_wersja`, `szafarz_audit`, `szafarz_config`, `szafarz_store`, `szafarz_users`.
+
+Przy błędzie transakcja jest wycofywana, baza zostaje bez zmian, a Heroku nie uruchamia nowej wersji. Skrypt można bezpiecznie wykonywać wielokrotnie. Ręcznie: `npm run db` (z ustawionym `DATABASE_URL`).
 
 ## Wdrożenie na Heroku
 
-Aplikacja potrzebuje tylko bazy Heroku Postgres podłączonej jako `DATABASE_URL`:
+Aplikacja potrzebuje bazy Heroku Postgres podłączonej jako `DATABASE_URL`:
 
 ```bash
 heroku addons:attach aftech::DATABASE -a szafarz --as DATABASE
@@ -40,22 +43,17 @@ git push heroku main          # albo w panelu: Deploy → GitHub → Deploy Bran
 
 Opcjonalnie: `REVEAL_CODE` – kod do odkrywania nazwisk chorych (domyślnie 1234).
 
-Po przeniesieniu danych tabele poprzedniej wersji nie są już używane i można je usunąć:
-
-```sql
-DROP TABLE IF EXISTS szafarz_store, szafarz_audit, szafarz_users, szafarz_config;
-```
-
 Kopie zapasowe: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Warsaw" -a NAZWA-APLIKACJI-Z-BAZĄ`.
 
 ## Budowa
 
-- `server.js` – serwer: strony z `views/`, pliki z `static/`, API `/api/state` (odczyt wszystkich danych i zapis zmian).
-- `lib/db.js` – migracje, odczyt danych i zapis zmian (każda zmiana trafia do właściwej tabeli i do dziennika).
-- `views/*.html` – widoki stron (układ i logika interfejsu, bez danych).
-- `static/runtime.js` – silnik widoków w przeglądarce.
+- `server.js` – serwer: strony z `views/`, pliki z `static/`, API `/api/state` (dane z bazy i zapis zmian) i `/api/slowo`.
+- `lib/db.js` – odczyt i zapis danych w bazie (z ochroną przed nadpisaniem cudzych zmian przy równoczesnym zapisie).
+- `lib/slowo.js` – pobieranie „Słowa na dziś”.
+- `db/` – schemat, dane startowe i operacje wykonywane przy wdrożeniu.
+- `views/*.html` – widoki stron, `static/runtime.js` – silnik widoków w przeglądarce.
 
-Lokalnie: `DATABASE_URL=postgres://localhost/szafarz DATABASE_SSL=false npm start` → http://localhost:3000
+Lokalnie: `DATABASE_URL=postgres://localhost/szafarz DATABASE_SSL=false npm run db && npm start` → http://localhost:3000
 
 ## Uwaga: dane są publiczne
 

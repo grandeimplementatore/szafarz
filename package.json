@@ -5,7 +5,8 @@
   "description": "Aplikacja Wspólnoty Szafarzy Nadzwyczajnych Komunii Świętej – Parafia bł. Karoliny Kózkówny w Tychach",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "db": "node db/deploy.js"
   },
   "engines": {
     "node": "22.x"

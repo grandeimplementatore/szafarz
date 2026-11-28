@@ -1,6 +1,7 @@
 /* Szafarz 3.0 – lekki silnik stron.
  * Rozwija szablony stron (wstawki {{...}}, <sc-for>, <sc-if>), podpina zdarzenia.
- * Wszystkie dane (harmonogram, chorzy, plan, treści) pobiera z bazy przez /api/state i tam zapisuje zmiany.
+ * Dane z bazy (harmonogram, szafarze, osiedla, chorzy, wizyty, zmiany) pobiera przez /api/state i tam zapisuje zmiany;
+ * stałe treści są w /tresci.js, a „Słowo na dziś” przychodzi z /api/slowo.
  */
 (function () {
   'use strict';
@@ -34,15 +35,36 @@
     try { window.sessionStorage.setItem(FOCUS_KEY, JSON.stringify(f || null)); } catch (e) {}
   }
 
+  function today() {
+    var n = new Date();
+    return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
+  }
+
+  // „Słowo na dziś” z API – nie blokuje strony dłużej niż kilka sekund.
+  function slowo() {
+    var iso = today();
+    var req = fetch('/api/slowo?data=' + iso, { headers: { 'X-Requested-With': 'szafarz' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+    var limit = new Promise(function (res) { setTimeout(function () { res(null); }, 4000); });
+    return Promise.race([req, limit]).then(function (s) {
+      var out = {};
+      if (s && s.rows && s.rows.length) out[iso] = [s.quote || '', s.ref || '', s.rows];
+      return out;
+    });
+  }
+
   function boot() {
-    return fetch('/api/state', { credentials: 'same-origin', headers: { 'X-Requested-With': 'szafarz' } }).then(function (r) {
+    var state = fetch('/api/state', { credentials: 'same-origin', headers: { 'X-Requested-With': 'szafarz' } }).then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
-    }).then(function (j) {
+    });
+    return Promise.all([state, slowo()]).then(function (all) {
+      var j = all[0];
       version = j.version;
       if (j.db) { j.db.focus = readFocus(); cache = JSON.stringify(j.db); }
       SZ.revealCode = String((j.config && j.config.revealCode) || '');
-      SZ.ref = j.ref || {};
+      SZ.ref = Object.assign({}, window.SZ_TRESCI || {}, j.ref || {}, { slowo: all[1] });
     });
   }
 

@@ -1,9 +1,11 @@
 'use strict';
-// Szafarz 3.0 – serwer aplikacji (Node.js + PostgreSQL). Wszystkie dane są w bazie; aplikacja jest publiczna.
+// Szafarz 3.0 – serwer aplikacji (Node.js + PostgreSQL). Aplikacja jest publiczna.
+// Baza: harmonogram, szafarze, osiedla, chorzy, wizyty i log zmian harmonogramu. Słowo na dziś – z API Archidiecezji.
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const db = require('./lib/db');
+const slowo = require('./lib/slowo');
 
 const PORT = Number(process.env.PORT || 3000);
 const PROD = process.env.NODE_ENV === 'production' || !!process.env.DYNO;
@@ -15,7 +17,6 @@ const MAX_BODY = 1024 * 1024;
 let pool;
 try { pool = db.createPool(); } catch (e) { console.error('[szafarz] BŁĄD KONFIGURACJI: ' + e.message); process.exit(1); }
 const q = (sql, p) => pool.query(sql, p);
-const clientIp = (req) => (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress;
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json', '.webmanifest': 'application/manifest+json; charset=utf-8' };
@@ -49,6 +50,12 @@ async function handle(req, res) {
 
   if (p === '/healthz') return send(res, 200, 'ok');
 
+  if (p === '/api/slowo') {
+    const iso = new URL(req.url, 'http://x').searchParams.get('data') || '';
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return json(res, 400, { error: 'data' });
+    return json(res, 200, await slowo.pobierz(iso));
+  }
+
   if (p === '/api/state') {
     if (req.headers['x-requested-with'] !== 'szafarz') return json(res, 403, { error: 'csrf' });
     if (req.method === 'GET') {
@@ -59,9 +66,9 @@ async function handle(req, res) {
       if (!sameOrigin(req)) return json(res, 403, { error: 'origin' });
       let body;
       try { body = JSON.parse(await readBody(req)); } catch (e) { return json(res, 400, { error: 'json' }); }
-      if (!body || typeof body.db !== 'object' || body.db === null || !Number.isInteger(body.version)) return json(res, 400, { error: 'format' });
+      if (!body || typeof body.db !== 'object' || body.db === null || typeof body.version !== 'string') return json(res, 400, { error: 'format' });
       delete body.db.focus;
-      const r = await db.saveState(pool, body.db, body.version, clientIp(req));
+      const r = await db.saveState(pool, body.db, body.version);
       return r.conflict ? json(res, 409, { error: 'conflict', version: r.version }) : json(res, 200, { version: r.version });
     }
     return json(res, 405, { error: 'method' });
@@ -71,6 +78,7 @@ async function handle(req, res) {
   if (p === '/') return serveFile(res, path.join(VIEWS, 'Main.html'), 'no-store');
   if (p === '/favicon.ico') return serveFile(res, path.join(STATIC, 'img', 'icon-192.png'), 'public, max-age=86400');
   if (p === '/manifest.webmanifest') return serveFile(res, path.join(STATIC, 'manifest.webmanifest'), 'public, max-age=86400');
+  if (p === '/tresci.js') return serveFile(res, path.join(STATIC, 'tresci.js'), 'no-cache');
   if (p === '/runtime.js') return serveFile(res, path.join(STATIC, 'runtime.js'), 'no-cache');
   if (/^\/[A-Za-z]+$/.test(p) && p !== '/Main') return serveFile(res, path.join(VIEWS, p.slice(1) + '.html'), 'no-store');
   if (/^\/img\/[a-z0-9-]+\.(jpg|png|svg)$/.test(p)) return serveFile(res, path.join(STATIC, p), 'public, max-age=86400');
@@ -84,8 +92,8 @@ function serveFile(res, file, cache) {
   });
 }
 
-db.migrate(pool).then(() => {
+pool.query('SELECT 1 FROM sz_terminy LIMIT 1').then(() => {
   http.createServer((req, res) => {
     handle(req, res).catch((e) => { console.error(e); if (!res.headersSent) send(res, 500, 'Błąd serwera'); });
   }).listen(PORT, () => console.log(`[szafarz] działa na porcie ${PORT}; dane: PostgreSQL`));
-}).catch((e) => { console.error('[szafarz] Nie można połączyć się z bazą: ' + e.message); process.exit(1); });
+}).catch((e) => { console.error('[szafarz] Baza niegotowa (' + e.message + '). Uruchom: npm run db'); process.exit(1); });
