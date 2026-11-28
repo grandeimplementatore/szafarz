@@ -24,6 +24,8 @@ Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komuni
 
 ## Ustawienia
 
+**Wejście chronione hasłem** ze zmiennej środowiskowej `SETTING_ENTRY` (Heroku → Settings → Config Vars). Po podaniu hasła wejście jest ważne 8 godzin (podpisane ciasteczko; zmiana `SETTING_ENTRY` unieważnia wszystkie wejścia). Link „Wyjdź z ustawień” kończy je od razu. Po 10 błędnych próbach z jednego adresu – 15 minut blokady. Bez ustawionej zmiennej Ustawienia są niedostępne. Hasło chroni zarówno strony, jak i API `/api/ustawienia`; reszta aplikacji pozostaje publiczna.
+
 Strona **Ustawienia** (kafelek na stronie głównej, na telefonie także w menu ☰) ma przełącznik **„Domyślnie ukrywaj nazwiska chorych”** (zapisywany w `sz_atrybuty`; od niego zależy, czy na liście chorych i w Plannerze nazwiska są na starcie rozmyte) oraz pozwala dodawać, zmieniać („Zmień”) i usuwać:
 
 - **szafarzy** – zmiana nazwiska i imienia; usunąć można tylko szafarza bez przydziałów od dziś; jeśli był w minionych terminach, znika z list, a jego nazwisko zostaje w historii,
@@ -53,6 +55,8 @@ heroku addons:attach aftech::DATABASE -a szafarz --as DATABASE
 git push heroku main          # albo w panelu: Deploy → GitHub → Deploy Branch
 ```
 
+Wymagane do Ustawień: `SETTING_ENTRY` – hasło do strony Ustawienia.
+
 Opcjonalnie: `REVEAL_CODE` – kod do odkrywania nazwisk chorych (domyślnie 1234).
 
 Kopie zapasowe: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Warsaw" -a NAZWA-APLIKACJI-Z-BAZĄ`.
@@ -62,7 +66,7 @@ Kopie zapasowe: `heroku pg:backups:schedule DATABASE_URL --at "03:00 Europe/Wars
 - `server.js` – serwer: strony z `views/`, pliki z `static/`, API `/api/state` (dane z bazy i zapis zmian) i `/api/slowo`.
 - `lib/db.js` – odczyt i zapis danych w bazie (z ochroną przed nadpisaniem cudzych zmian przy równoczesnym zapisie).
 - `lib/slowo.js` – pobieranie „Słowa na dziś”.
-- `lib/ustawienia.js`, `static/ustawienia.js` – strona Ustawienia (serwer i widok).
+- `lib/ustawienia.js`, `static/ustawienia.js` – strona Ustawienia (serwer i widok); `lib/wejscie.js` – hasło do Ustawień.
 - `db/` – schemat, dane startowe i operacje wykonywane przy wdrożeniu.
 - `views/*.html` – widoki stron, `static/runtime.js` – silnik widoków w przeglądarce.
 

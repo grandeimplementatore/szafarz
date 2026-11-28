@@ -7,6 +7,7 @@ const path = require('path');
 const db = require('./lib/db');
 const slowo = require('./lib/slowo');
 const ust = require('./lib/ustawienia');
+const wejscie = require('./lib/wejscie');
 
 const PORT = Number(process.env.PORT || 3000);
 const PROD = process.env.NODE_ENV === 'production' || !!process.env.DYNO;
@@ -41,6 +42,7 @@ function readBody(req) {
   });
 }
 function sameOrigin(req) { const o = req.headers.origin; return !o || new URL(o).host === req.headers.host; }
+function clientIp(req) { return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress; }
 
 
 // ---------- obsługa żądań ----------
@@ -57,8 +59,31 @@ async function handle(req, res) {
     return json(res, 200, await slowo.pobierz(iso));
   }
 
+  // ---- Ustawienia: wejście na hasło (zmienna SETTING_ENTRY) ----
+  const STRONY_UST = { '/Ustawienia': false, '/UstawieniaTelefon': true };
+  if (p === '/ustawienia/wejscie' && req.method === 'POST') {
+    if (!sameOrigin(req)) return send(res, 403, 'Niedozwolone');
+    const f = new URLSearchParams(await readBody(req));
+    const dalej = f.get('dalej') in STRONY_UST ? f.get('dalej') : '/Ustawienia';
+    const ip = clientIp(req);
+    const html = (msg, st) => send(res, st, wejscie.stronaHasla(msg, dalej, STRONY_UST[dalej]), { 'Content-Type': TYPES['.html'], 'Cache-Control': 'no-store' });
+    if (!wejscie.wlaczone()) return html('Ustawienia są niedostępne – nie ustawiono hasła (zmienna SETTING_ENTRY).', 503);
+    if (wejscie.zaDuzoProb(ip)) return html('Zbyt wiele błędnych prób. Spróbuj ponownie za 15 minut.', 429);
+    if (!wejscie.sprawdzHaslo(f.get('haslo'))) { wejscie.blednaProba(ip); return html('Nieprawidłowe hasło.', 401); }
+    wejscie.udanaProba(ip);
+    return send(res, 303, '', { Location: dalej, 'Set-Cookie': wejscie.ciasteczko(wejscie.token(), wejscie.GODZIN * 3600, PROD), 'Cache-Control': 'no-store' });
+  }
+  if (p === '/ustawienia/wyjscie') {
+    return send(res, 303, '', { Location: '/', 'Set-Cookie': wejscie.ciasteczko('', 0, PROD), 'Cache-Control': 'no-store' });
+  }
+  if (p in STRONY_UST && !wejscie.zalogowany(req)) {
+    const msg = wejscie.wlaczone() ? '' : 'Ustawienia są niedostępne – nie ustawiono hasła (zmienna SETTING_ENTRY).';
+    return send(res, wejscie.wlaczone() ? 200 : 503, wejscie.stronaHasla(msg, p, STRONY_UST[p]), { 'Content-Type': TYPES['.html'], 'Cache-Control': 'no-store' });
+  }
+
   if (p.startsWith('/api/ustawienia')) {
     if (req.headers['x-requested-with'] !== 'szafarz') return json(res, 403, { error: 'csrf' });
+    if (!wejscie.zalogowany(req)) return json(res, 401, { error: 'Wejście do ustawień wygasło – podaj hasło ponownie.' });
     if (req.method !== 'GET' && !sameOrigin(req)) return json(res, 403, { error: 'origin' });
     const parts = p.split('/').slice(3).map(decodeURIComponent);           // ['szafarze', '12'] itd.
     try {

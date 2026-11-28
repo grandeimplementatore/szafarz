@@ -20,7 +20,7 @@
       var self = this;
       this._loading = true;
       fetch('/api/ustawienia', { headers: H })
-        .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+        .then(function (r) { if (r.status === 401) { location.reload(); throw new Error('auth'); } if (!r.ok) throw new Error(); return r.json(); })
         .then(function (d) { self._loading = false; self.setState({ data: d }); })
         .catch(function () { self._loading = false; self.setState({ err: 'Nie udało się wczytać ustawień. Odśwież stronę.' }); });
     }
@@ -29,7 +29,7 @@
       var self = this;
       this.setState({ busy: true });
       fetch('/api/ustawienia/' + path, { method: method, headers: H, body: body ? JSON.stringify(body) : undefined })
-        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (r) { if (r.status === 401) { location.reload(); return new Promise(function () {}); } return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (x) {
           if (!x.ok) { self.setState({ busy: false, err: x.j.error || 'Nie udało się zapisać zmiany.', msg: null, confirm: null }); pokaz(); return; }
           var patch = { busy: false, msg: x.j.message, err: null, confirm: null };
