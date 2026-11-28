@@ -17,6 +17,7 @@ Strony: Strona główna, Harmonogram, Planner wizyt, Nasi Chorzy, Obrzęd Komuni
 | `sz_chorzy` | chorzy z atrybutami (adres, piętro, uwagi, osiedle) |
 | `sz_wizyty` | zaplanowane wizyty |
 | `sz_atrybuty` | ustawienia aplikacji, np. `nazwiska_ukryte` – czy nazwiska chorych są domyślnie ukryte (domyślnie `false`) |
+| `sz_logs` | log interakcji: każdy zapis do bazy oraz odkrycie/ukrycie nazwisk chorych – opis czynności (`opis`), co zmieniono na jaką wartość (`zmiana`), czas (`czas`), IP zmieniającego (`adres_ip`) |
 
 **Kod** – stałe treści: `static/tresci.js` (opis wspólnoty, spotkania, opiekun, dane kancelarii, uwagi do harmonogramu, stałe święta, teksty obrzędów) oraz cały interfejs w `views/`.
 
@@ -32,7 +33,9 @@ Strona **Ustawienia** (kafelek na stronie głównej, na telefonie także w menu 
 - **osiedla** – zmiana nazwy i kodu (zmiana kodu przenosi chorych, wizyty, przydziały i historię); usunąć można tylko osiedle bez chorych; nowe osiedle pojawia się we wszystkich terminach bez szafarza („brak”) – przypisuje się go w Harmonogramie,
 - **terminy harmonogramu** – zmiana daty (razem z wizytami i przydziałami), nazwy i szafarzy (każda zmiana szafarza trafia do logu zmian harmonogramu); nowy termin wymaga nazwy dnia i szafarza dla każdego osiedla; usunięcie terminu usuwa też zaplanowane na ten dzień wizyty.
 
-API: `GET /api/ustawienia`, `PUT /api/ustawienia/atrybuty/nazwiska_ukryte` (`{"wartosc": true|false}`), `POST /api/ustawienia/{szafarze|osiedla|terminy}`, `PUT` i `DELETE` na `/api/ustawienia/szafarze/:id`, `/osiedla/:kod`, `/terminy/:data`.
+**Log zmian** (na dole Ustawień, tylko do odczytu) pokazuje 100 najnowszych wpisów z `sz_logs` – czas, czynność, zmianę (np. `nazwisko: „Mosio” → „Mosiołek”`) i IP – a przycisk „Doczytaj kolejne 100” wczytuje starsze. Wpis powstaje przy każdym zapisie danych: chorzy (dodanie, zmiana pól ze starą i nową wartością, usunięcie), wizyty (zaplanowanie, przeniesienie, usunięcie), zamiany szafarzy w harmonogramie oraz wszystkie zmiany z Ustawień. Logowane jest też odkrycie i ukrycie nazwisk chorych (na liście chorych i w Plannerze), choć nie zmienia danych. IP pochodzi z nagłówka `X-Forwarded-For` (Heroku), a gdy go brak – z połączenia.
+
+API: `GET /api/ustawienia`, `PUT /api/ustawienia/atrybuty/nazwiska_ukryte` (`{"wartosc": true|false}`), `POST /api/ustawienia/{szafarze|osiedla|terminy}`, `PUT` i `DELETE` na `/api/ustawienia/szafarze/:id`, `/osiedla/:kod`, `/terminy/:data`, `GET /api/ustawienia/logi?przed=<id>` (100 wpisów starszych niż `id` + `wiecej`). Zdarzenia nazwisk: `POST /api/zdarzenie` (`{"nazwiska": "odkryte"|"ukryte", "strona": …}`, publiczne, z limitem 60/min na adres).
 
 ## Operacje na bazie przy wdrożeniu
 

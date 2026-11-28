@@ -42,6 +42,9 @@ function readBody(req) {
   });
 }
 function sameOrigin(req) { const o = req.headers.origin; return !o || new URL(o).host === req.headers.host; }
+// prosty limit zdarzeń z jednego adresu (60 na minutę)
+const zdarzenia = new Map();
+function zaCzesto(ip) { const t = Date.now(), a = (zdarzenia.get(ip) || []).filter((x) => t - x < 60e3); a.push(t); zdarzenia.set(ip, a); return a.length > 60; }
 function clientIp(req) { return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress; }
 
 
@@ -91,13 +94,18 @@ async function handle(req, res) {
       let body = {};
       if (req.method === 'POST' || req.method === 'PUT') { try { body = JSON.parse(await readBody(req) || '{}'); } catch (e) { return json(res, 400, { error: 'Nieprawidłowe dane.' }); } }
       const route = req.method + ' ' + parts[0] + (parts.length > 1 ? '/:x' : '');
+      const ip = clientIp(req);
+      if (req.method === 'GET' && parts[0] === 'logi') {
+        const u = new URL(req.url, 'http://x');
+        return json(res, 200, await db.loadLogi(q, u.searchParams.get('przed'), u.searchParams.get('limit') || 100));
+      }
       const ops = {
-        'POST szafarze': () => ust.dodajSzafarza(pool, body), 'DELETE szafarze/:x': () => ust.usunSzafarza(pool, parts[1]),
-        'POST osiedla': () => ust.dodajOsiedle(pool, body), 'DELETE osiedla/:x': () => ust.usunOsiedle(pool, parts[1]),
-        'POST terminy': () => ust.dodajTermin(pool, body), 'DELETE terminy/:x': () => ust.usunTermin(pool, parts[1]),
-        'PUT szafarze/:x': () => ust.zmienSzafarza(pool, parts[1], body), 'PUT osiedla/:x': () => ust.zmienOsiedle(pool, parts[1], body),
-        'PUT terminy/:x': () => ust.zmienTermin(pool, parts[1], body),
-        'PUT atrybuty/:x': () => ust.zmienAtrybut(pool, parts[1], body)
+        'POST szafarze': () => ust.dodajSzafarza(pool, body, ip), 'DELETE szafarze/:x': () => ust.usunSzafarza(pool, parts[1], ip),
+        'POST osiedla': () => ust.dodajOsiedle(pool, body, ip), 'DELETE osiedla/:x': () => ust.usunOsiedle(pool, parts[1], ip),
+        'POST terminy': () => ust.dodajTermin(pool, body, ip), 'DELETE terminy/:x': () => ust.usunTermin(pool, parts[1], ip),
+        'PUT szafarze/:x': () => ust.zmienSzafarza(pool, parts[1], body, ip), 'PUT osiedla/:x': () => ust.zmienOsiedle(pool, parts[1], body, ip),
+        'PUT terminy/:x': () => ust.zmienTermin(pool, parts[1], body, ip),
+        'PUT atrybuty/:x': () => ust.zmienAtrybut(pool, parts[1], body, ip)
       };
       if (!ops[route]) return json(res, 404, { error: 'Nie ma takiej operacji.' });
       return json(res, 200, { message: await ops[route]() });
@@ -105,6 +113,27 @@ async function handle(req, res) {
       if (e instanceof ust.Blad) return json(res, e.status, { error: e.message });
       throw e;
     }
+  }
+
+  // Zdarzenia bez zapisu danych, które też trafiają do logu: odkrycie i ukrycie nazwisk chorych.
+  if (p === '/api/zdarzenie' && req.method === 'POST') {
+    if (req.headers['x-requested-with'] !== 'szafarz' || !sameOrigin(req)) return json(res, 403, { error: 'csrf' });
+    let b; try { b = JSON.parse(await readBody(req)); } catch (e) { return json(res, 400, { error: 'json' }); }
+    const STRONY = { Chorzy: 'Nasi Chorzy', ChorzyTelefon: 'Nasi Chorzy (telefon)', Planner: 'Planner', PlannerTelefon: 'Planner (telefon)' };
+    if (!b || !['odkryte', 'ukryte'].includes(b.nazwiska) || !STRONY[b.strona]) return json(res, 400, { error: 'format' });
+    const ip = clientIp(req);
+    if (zaCzesto(ip)) return json(res, 429, { error: 'limit' });
+    const kier = b.nazwiska === 'odkryte' ? 'ukryte → widoczne' : 'widoczne → ukryte';
+    if (b.chory != null) {   // jeden chory
+      if (typeof b.chory !== 'string' || !/^[A-Za-z0-9_-]{1,40}$/.test(b.chory)) return json(res, 400, { error: 'format' });
+      const c = (await q('SELECT imie, nazwisko, osiedle FROM sz_chorzy WHERE id = $1', [b.chory])).rows[0];
+      if (!c) return json(res, 404, { error: 'brak' });
+      await db.log({ query: q }, b.nazwiska === 'odkryte' ? 'Odkryto nazwisko chorego' : 'Ukryto nazwisko chorego',
+        'strona: ' + STRONY[b.strona] + ', ' + c.imie + ' ' + c.nazwisko + ' (osiedle ' + c.osiedle + ') [id ' + b.chory + '], nazwisko: ' + kier, ip);
+    } else {
+      await db.log({ query: q }, b.nazwiska === 'odkryte' ? 'Odkryto nazwiska chorych' : 'Ukryto nazwiska chorych', 'strona: ' + STRONY[b.strona] + ', nazwiska: ' + kier, ip);
+    }
+    return json(res, 200, { ok: true });
   }
 
   if (p === '/api/state') {
@@ -119,7 +148,7 @@ async function handle(req, res) {
       try { body = JSON.parse(await readBody(req)); } catch (e) { return json(res, 400, { error: 'json' }); }
       if (!body || typeof body.db !== 'object' || body.db === null || typeof body.version !== 'string') return json(res, 400, { error: 'format' });
       delete body.db.focus;
-      const r = await db.saveState(pool, body.db, body.version);
+      const r = await db.saveState(pool, body.db, body.version, clientIp(req));
       return r.conflict ? json(res, 409, { error: 'conflict', version: r.version }) : json(res, 200, { version: r.version });
     }
     return json(res, 405, { error: 'method' });

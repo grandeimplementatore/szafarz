@@ -126,6 +126,17 @@ a{color:#BD4F38}a:hover{color:#9A3E2B}
 <div style="display: flex; gap: 8px"><button type="button" onClick="{{t.save}}" style="min-height: 36px; min-width: 72px; padding: 0 12px; font-family: inherit; font-size: 13px; cursor: pointer; border: 0; background: {{accent}}; color: #FFFFFF; font-weight: 900">Zapisz</button><button type="button" onClick="{{t.cancelEdit}}" style="min-height: 36px; min-width: 72px; padding: 0 12px; font-family: inherit; font-size: 13px; cursor: pointer; border: 1px solid #BDBDBD; background: #FFFFFF; color: #333333; font-weight: 700">Anuluj</button></div></div></sc-if></li></sc-for>
 </ul>
 </section>
+
+<section aria-labelledby="h-log" style="background: #FFFFFF; border: 1px solid #DDDDDD; padding: 14px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<h2 id="h-log" style="margin: 0; font-family: 'Fondamento', Georgia, serif; font-weight: 400; font-size: 22px; color: {{accent}}">Log zmian</h2>
+<p style="margin: 0; font-size: 14px; color: #444444">Każdy zapis danych w aplikacji oraz odkrycie i ukrycie nazwisk chorych. Tylko do odczytu. {{logiInfo}}</p>
+<sc-if value="{{logiErr}}" hint-placeholder-val="{{ false }}"><div role="alert" style="padding: 10px 12px; background: #FFF6F3; border: 1px solid #F1D6CE; font-size: 14px; font-weight: 700; color: #8C3524">{{logiErr}}</div></sc-if>
+<ol aria-label="Wpisy logu" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+<sc-for list="{{logi}}" as="l" hint-placeholder-count="4"><li style="padding: 10px 0; border-bottom: 1px solid #EEEEEE; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #5D5D5D">{{l.czas}} · IP {{l.ip}}</span><span style="font-size: 15px; font-weight: 900; color: #222222">{{l.opis}}</span><span style="font-size: 13px; color: #333333; overflow-wrap: anywhere">{{l.zmiana}}</span></li></sc-for>
+</ol>
+<sc-if value="{{logiLoading}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #555555">Wczytywanie…</p></sc-if>
+<sc-if value="{{logiWiecej}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{loadMoreLogs}}" style="min-height: 44px; padding: 0 18px; border: 0; background: {{accent}}; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer">Doczytaj kolejne 100</button></sc-if>
+</section>
 </sc-if>
 </div>
 </div>

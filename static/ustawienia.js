@@ -16,9 +16,21 @@
   var pokaz = function () { setTimeout(function () { var el = document.querySelector('#root [role=alert], #root [role=status]'); if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, 60); };
 
   class Ustawienia extends DCLogic {
+    // log interakcji (sz_logs): najnowsze 100 wpisów, potem doczytywanie po 100
+    loadLogs(more) {
+      var self = this, st = this.state || {};
+      var przed = more && st.logi && st.logi.length ? st.logi[st.logi.length - 1].id : '';
+      this.setState({ logiLoading: true });
+      fetch('/api/ustawienia/logi?limit=100' + (przed ? '&przed=' + przed : ''), { headers: H })
+        .then(function (r) { if (r.status === 401) { location.reload(); throw new Error('auth'); } if (!r.ok) throw new Error(); return r.json(); })
+        .then(function (j) { self.setState({ logi: (more ? (self.state.logi || []) : []).concat(j.logi), logiWiecej: j.wiecej, logiLoading: false, logiErr: null }); })
+        .catch(function () { self.setState({ logiLoading: false, logiErr: 'Nie udało się wczytać logu.' }); });
+    }
+
     load() {
       var self = this;
       this._loading = true;
+      if (!this._logsAsked) { this._logsAsked = true; this.loadLogs(false); }
       fetch('/api/ustawienia', { headers: H })
         .then(function (r) { if (r.status === 401) { location.reload(); throw new Error('auth'); } if (!r.ok) throw new Error(); return r.json(); })
         .then(function (d) { self._loading = false; self.setState({ data: d }); })
@@ -37,6 +49,7 @@
           if (reset) patch.f = Object.assign({}, self.state.f || {}, reset);
           self.setState(patch);
           self.load();
+          self.loadLogs(false);
           pokaz();
         })
         .catch(function () { self.setState({ busy: false, err: 'Brak połączenia z serwerem. Spróbuj ponownie.', msg: null }); });
@@ -130,6 +143,14 @@
         fKod: f.kod || '', fONazwa: f.onazwa || '', onKod: set('kod'), onONazwa: set('onazwa'), addOs: addOs, keyOs: enter(addOs),
         fTData: f.tdata || '', fTNazwa: f.tnazwa || '', onTData: set('tdata'), onTNazwa: set('tnazwa'), addT: addT, keyT: enter(addT),
         selects: selects,
+        logi: (st.logi || []).map(function (l) {
+          var t = new Date(l.czas), z = function (x) { return (x < 10 ? '0' : '') + x; };
+          return { czas: z(t.getDate()) + '.' + z(t.getMonth() + 1) + '.' + t.getFullYear() + ' ' + z(t.getHours()) + ':' + z(t.getMinutes()) + ':' + z(t.getSeconds()),
+            opis: l.opis, zmiana: l.zmiana || '—', ip: l.adres_ip || '—' };
+        }),
+        logiInfo: st.logi ? (st.logi.length ? 'Wyświetlono ' + st.logi.length + ' najnowszych wpisów.' : 'Log jest pusty.') : 'Wczytywanie logu…',
+        logiWiecej: !!st.logiWiecej && !st.logiLoading, logiLoading: !!st.logiLoading, logiErr: st.logiErr || null,
+        loadMoreLogs: function () { self.loadLogs(true); },
         nazwUkryte: d.atrybuty && d.atrybuty.nazwiska_ukryte ? 'true' : 'false',
         ukryteStan: d.atrybuty && d.atrybuty.nazwiska_ukryte ? 'Teraz: nazwiska domyślnie ukryte.' : 'Teraz: nazwiska domyślnie widoczne.',
         toggleUkryte: function (ev) { self.call('PUT', 'atrybuty/nazwiska_ukryte', { wartosc: !!(ev && ev.target && ev.target.checked) }); }

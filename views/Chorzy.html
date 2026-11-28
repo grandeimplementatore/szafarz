@@ -385,11 +385,11 @@ visits, hasVisits: visits.length > 0, noNearest: !nearest,
 plan: () => goPlan(planIso, o),
 isAsking, code: isAsking ? code : '', err: isAsking && err, inputId: 'kod-' + s.id,
 onReveal: () => this.setState({ asking: s.id, code: '', err: false }),
-onHide: () => { const r = Object.assign({}, revealed); delete r[s.id]; this.setState({ revealed: r }); },
+onHide: () => { SZ.zdarzenie('ukryte', s.id); const r = Object.assign({}, revealed); delete r[s.id]; this.setState({ revealed: r }); },
 onCode: (e) => this.setState({ code: e.target.value, err: false }),
 onCancel: () => this.setState({ asking: null, code: '', err: false }),
-onSubmit: () => { if (String(code).trim() === CODE) this.setState({ revealed: Object.assign({}, revealed, { [s.id]: true }), asking: null, code: '', err: false }); else this.setState({ err: true }); },
-onKey: (e) => { if (e && e.key === 'Enter') { if (String(code).trim() === CODE) this.setState({ revealed: Object.assign({}, revealed, { [s.id]: true }), asking: null, code: '', err: false }); else this.setState({ err: true }); } },
+onSubmit: () => { if (String(code).trim() === CODE) { SZ.zdarzenie('odkryte', s.id); this.setState({ revealed: Object.assign({}, revealed, { [s.id]: true }), asking: null, code: '', err: false }); } else this.setState({ err: true }); },
+onKey: (e) => { if (e && e.key === 'Enter') { if (String(code).trim() === CODE) { SZ.zdarzenie('odkryte', s.id); this.setState({ revealed: Object.assign({}, revealed, { [s.id]: true }), asking: null, code: '', err: false }); } else this.setState({ err: true }); } },
 isEditing, notEditing: !isEditing,
 onEdit: () => this.setState({ editing: isEditing ? null : s.id, confirmDel: null, form: { fn: s.fn, ln: s.ln, street: s.street, no: s.no, flat: s.flat, floor: s.floor || '', note: s.note || '', os: o } }),
 fid: 'f-' + s.id,
@@ -419,14 +419,14 @@ const nextRows = OS.map((o) => ({ os: o, who: whoOn(nextIso, o), cnt: chorych(pl
 const maxC = Math.max.apply(null, OS.map((o) => counts[o]).concat([1]));
 const bars = OS.map((o) => ({ os: o, count: String(counts[o]), w: Math.round(counts[o] / maxC * 100) + '%' }));
 const askAll = asking === '__all';
-const subAll = () => { if (String(code).trim() === CODE) this.setState({ all: true, asking: null, code: '', err: false }); else this.setState({ err: true }); };
+const subAll = () => { if (String(code).trim() === CODE) { SZ.zdarzenie('odkryte'); this.setState({ all: true, asking: null, code: '', err: false }); } else this.setState({ err: true }); };
 return { isAdding: addOpen, notAdding: !addOpen, addErr: !!st.addErr, justAdded: !!st.added && !addOpen, justAddedText: 'Dodano chorego do listy. Możesz go teraz zaplanować w Plannerze.',
 onAddOpen: () => this.setState({ adding: true, added: null, nf: { os: osSel !== 'all' ? osSel : OS[0] }, addErr: false }), onAddCancel: () => this.setState({ adding: false, nf: {}, addErr: false }), onAddSave,
 nfFn: nf.fn || '', nfLn: nf.ln || '', nfStreet: nf.street || '', nfNo: nf.no || '', nfFlat: nf.flat || '', nfFloor: nf.floor || '', nfNote: nf.note || '', onNfFloor: nfield('floor'), onNfNote: nfield('note'), nfOs: nf.os || (osSel !== 'all' ? osSel : OS[0]),
 onNfFn: nfield('fn'), onNfLn: nfield('ln'), onNfStreet: nfield('street'), onNfNo: nfield('no'), onNfFlat: nfield('flat'), onNfOs: nfield('os'),
 nfOsOptions: OS.map((x) => ({ v: x, label: 'Osiedle ' + x })),
 allLocked: !allOn, allUnlocked: allOn, namesState: allOn ? 'dane widoczne' : 'dane ukryte', askAll, codeAll: askAll ? code : '', errAll: askAll && err,
-onRevealAll: () => this.setState({ asking: '__all', code: '', err: false }), onHideAll: () => this.setState({ all: false, revealed: {} }),
+onRevealAll: () => this.setState({ asking: '__all', code: '', err: false }), onHideAll: () => { SZ.zdarzenie('ukryte'); this.setState({ all: false, revealed: {} }); },
 onCodeAll: (e) => this.setState({ code: e.target.value, err: false }), onCancelAll: () => this.setState({ asking: null, code: '', err: false }),
 onSubmitAll: subAll, onKeyAll: (e) => { if (e && e.key === 'Enter') subAll(); }, listCount: String(people.length),
 accent, chips, osTiles, people, isEmpty: people.length === 0, nextDate: fmt(nextIso), nextName: (T.find((r) => r[0] === nextIso) || [])[1] || '', nextRows, bars, total: String(SICK.length) };

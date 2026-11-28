@@ -221,6 +221,11 @@
     ref: {},
     getItem: function () { return cache; },
     setItem: function (k, v) { cache = v; save(v); },
+    // zapis do logu zdarzenia bez zmiany danych (odkrycie / ukrycie nazwisk chorych – wszystkich albo jednego)
+    zdarzenie: function (nazwiska, chory) {
+      var strona = location.pathname.replace(/^\//, '');
+      fetch('/api/zdarzenie', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'szafarz' }, body: JSON.stringify({ nazwiska: nazwiska, strona: strona, chory: chory || null }) }).catch(function () {});
+    },
     mount: mount
   };
   window.DCLogic = DCLogic;
