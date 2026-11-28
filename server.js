@@ -64,12 +64,14 @@ async function handle(req, res) {
     try {
       if (req.method === 'GET' && !parts.length) return json(res, 200, await ust.lista(q));
       let body = {};
-      if (req.method === 'POST') { try { body = JSON.parse(await readBody(req) || '{}'); } catch (e) { return json(res, 400, { error: 'Nieprawidłowe dane.' }); } }
+      if (req.method === 'POST' || req.method === 'PUT') { try { body = JSON.parse(await readBody(req) || '{}'); } catch (e) { return json(res, 400, { error: 'Nieprawidłowe dane.' }); } }
       const route = req.method + ' ' + parts[0] + (parts.length > 1 ? '/:x' : '');
       const ops = {
         'POST szafarze': () => ust.dodajSzafarza(pool, body), 'DELETE szafarze/:x': () => ust.usunSzafarza(pool, parts[1]),
         'POST osiedla': () => ust.dodajOsiedle(pool, body), 'DELETE osiedla/:x': () => ust.usunOsiedle(pool, parts[1]),
-        'POST terminy': () => ust.dodajTermin(pool, body), 'DELETE terminy/:x': () => ust.usunTermin(pool, parts[1])
+        'POST terminy': () => ust.dodajTermin(pool, body), 'DELETE terminy/:x': () => ust.usunTermin(pool, parts[1]),
+        'PUT szafarze/:x': () => ust.zmienSzafarza(pool, parts[1], body), 'PUT osiedla/:x': () => ust.zmienOsiedle(pool, parts[1], body),
+        'PUT terminy/:x': () => ust.zmienTermin(pool, parts[1], body)
       };
       if (!ops[route]) return json(res, 404, { error: 'Nie ma takiej operacji.' });
       return json(res, 200, { message: await ops[route]() });
